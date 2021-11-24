@@ -7,11 +7,11 @@ DROP TABLE IF exists product;
 CREATE TABLE product (
 product_id char(9) not null,
 shop_id char(9) not null,
-product_name nvarchar(100) not null,
+product_name varchar(100) CHARSET utf8 not null,
 listed_price decimal(12,2) not null,
-origin nvarchar(100),
+origin varchar(100) CHARSET utf8,
 remaining_amount int,
-information nvarchar(300),
+information varchar(300) CHARSET utf8,
 
 primary key (product_id, shop_id)
 );
