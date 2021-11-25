@@ -5,7 +5,7 @@ USE e_commerce;
 -- table product
 DROP TABLE IF exists product;
 CREATE TABLE product (
-product_id char(9) not null,
+product_id int not null,
 shop_id char(9) not null,
 product_name varchar(100) CHARSET utf8 not null,
 listed_price decimal(12,2) not null,

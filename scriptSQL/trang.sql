@@ -5,7 +5,7 @@ USE e_commerce;
 -- table shop
 DROP TABLE IF EXISTS shop;
 CREATE TABLE shop (
-    shop_id varchar(9) not null,
+    shop_id int not null auto_increment,
     shop_name varchar(25) not null,
     shop_description text,
     shop_owner varchar(9) not null,
@@ -13,6 +13,7 @@ CREATE TABLE shop (
     -- amount_customer int,
     primary key(shop_id)
 );
+
 ALTER TABLE shop
 ADD FOREIGN KEY (shop_owner) REFERENCES user(user_id);
 
@@ -22,7 +23,7 @@ ADD FOREIGN KEY (shop_owner) REFERENCES user(user_id);
 -- table order_detail
 DROP TABLE IF EXISTS order_detail;
 CREATE TABLE order_detail (
-    order_id varchar(9) not null, 
+    order_id int not null auto_increment, 
     shipping_id int not null,
     order_status varchar(10),
     create_date date,
@@ -32,6 +33,7 @@ CREATE TABLE order_detail (
     sphone_number varchar(10) not null,
     primary key(order_id)
 );
+
 ALTER TABLE order_detail
 ADD FOREIGN KEY (user_id) REFERENCES user(user_id);
 ALTER TABLE order_detail
