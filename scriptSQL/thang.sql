@@ -1,7 +1,10 @@
-USE Ecommerce;
+-- Run this script once every git pull
 
-DROP TABLE IF exists Product;
-CREATE TABLE Product (
+USE e_commerce;
+
+-- table product
+DROP TABLE IF exists product;
+CREATE TABLE product (
 product_id int not null AUTO_INCREMENT,
 shop_id char(9) not null,
 product_name varchar(100) CHARSET utf8 not null,
@@ -13,8 +16,8 @@ information varchar(300) CHARSET utf8,
 primary key (product_id, shop_id)
 );
 
-ALTER TABLE Product
-ADD FOREIGN KEY (shop_id) REFERENCES Shop(shop_id);
+ALTER TABLE product
+ADD FOREIGN KEY (shop_id) REFERENCES shop(shop_id);
 
 -- Cửa hàng thời trang --
 -- Danh mục quần áo

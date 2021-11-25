@@ -1,8 +1,4 @@
--- SCRIPT CREATE DATABASE
+-- Run this script only once 
 
--- e-commerce
--- drop
--- create database
-
-DROP DATABASE IF EXISTS Ecommerce;
-CREATE DATABASE Ecommerce;
+DROP DATABASE IF EXISTS e_commerce;
+CREATE DATABASE e_commerce;

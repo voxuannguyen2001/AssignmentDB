@@ -1,23 +1,30 @@
-USE Ecommerce;
+-- Run this script once every git pull
 
-DROP TABLE IF exists User_manage_shop;
-CREATE TABLE User_manage_shop (
+USE e_commerce;
+
+-- table user_manage_shop
+DROP TABLE IF exists user_manage_shop;
+CREATE TABLE user_manage_shop (
 user_id		char(9)  not null,
 shop_id		char(9)  not null
 );
 
 -- constraint pk
-ALTER TABLE User_manage_shop
+ALTER TABLE user_manage_shop
 ADD CONSTRAINT user_shop_pk
 primary key (user_id, shop_id);
 
--- create data for table User_manage_shop
-insert into User_manage_shop values ('123456789','111111111');
-insert into User_manage_shop values ('123456789','222222222');
-insert into User_manage_shop values ('334455667','333333333');
-insert into User_manage_shop values ('234234234','333333333');
-insert into User_manage_shop values ('123123123','111111111');
+-- create data for table user_manage_shop
+insert into user_manage_shop values ('123456789','111111111');
+insert into user_manage_shop values ('123456789','222222222');
+insert into user_manage_shop values ('334455667','333333333');
+insert into user_manage_shop values ('234234234','333333333');
+insert into user_manage_shop values ('123123123','111111111');
 
+
+
+
+-- table shipping_unit
 DROP TABLE IF exists shipping_unit;
 CREATE TABLE shipping_unit (
 shipping_id		char(9)  not null,
@@ -35,6 +42,10 @@ insert into shipping_unit values ('345345345','superfastship','0934534534','supe
 insert into shipping_unit values ('456456456','giaohangdambao','0945645645','giaohangdambao.vn');
 insert into shipping_unit values ('567567567','shippingstar','0956756756','shippingstar.com');
 
+
+
+
+-- table cart_contain_product
 DROP TABLE IF exists cart_contain_product;
 CREATE TABLE cart_contain_product (
 cart_id		char(9)  not null,
@@ -66,24 +77,28 @@ insert into cart_contain_product values ('000000003','200000003','100000012','33
 insert into cart_contain_product values ('000000003','200000003','100000013','111111111',4,100000.5);
 insert into cart_contain_product values ('000000003','200000003','100000014','222222222',1,7000.5);
 
+
+
+
+
 -- constraint foreign key
 
--- table User_manage_shop
-ALTER TABLE User_manage_shop
+-- table user_manage_shop
+ALTER TABLE user_manage_shop
 ADD CONSTRAINT ums_shopfk
-FOREIGN KEY (Shop_id) REFERENCES shop(Shop_id);
+FOREIGN KEY (shop_id) REFERENCES shop(shop_id);
 
-ALTER TABLE User_manage_shop
+ALTER TABLE user_manage_shop
 ADD CONSTRAINT ums_userfk
-FOREIGN KEY (User_id) REFERENCES users(User_id);
+FOREIGN KEY (user_id) REFERENCES users(user_id);
 
 -- table shipping_unit
 
 -- table cart_contain_product
 ALTER TABLE cart_contain_product
 ADD CONSTRAINT cnp_prodshopfk
-FOREIGN KEY (Product_id,Shop_id) REFERENCES product(Product_id,Shop_id);
+FOREIGN KEY (product_id,shop_id) REFERENCES product(product_id,Shop_id);
 
 ALTER TABLE cart_contain_product
 ADD CONSTRAINT cnp_cartuserfk
-FOREIGN KEY (Cart_id,User_id) REFERENCES cart(Cart_id,User_id);
+FOREIGN KEY (cart_id,user_id) REFERENCES cart(cart_id,user_id);
