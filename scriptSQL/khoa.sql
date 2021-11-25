@@ -6,13 +6,10 @@ USE e_commerce;
 DROP TABLE IF exists user_manage_shop;
 CREATE TABLE user_manage_shop (
 user_id		char(9)  not null,
-shop_id		char(9)  not null
+shop_id		char(9)  not null,
+primary key (user_id, shop_id)
 );
 
--- constraint pk
-ALTER TABLE user_manage_shop
-ADD CONSTRAINT user_shop_pk
-primary key (user_id, shop_id);
 
 -- create data for table user_manage_shop
 insert into user_manage_shop values ('123456789','111111111');
@@ -77,28 +74,3 @@ insert into cart_contain_product values ('000000003','200000003','100000012','33
 insert into cart_contain_product values ('000000003','200000003','100000013','111111111',4,100000.5);
 insert into cart_contain_product values ('000000003','200000003','100000014','222222222',1,7000.5);
 
-
-
-
-
--- constraint foreign key
-
--- table user_manage_shop
-ALTER TABLE user_manage_shop
-ADD CONSTRAINT ums_shopfk
-FOREIGN KEY (shop_id) REFERENCES shop(shop_id);
-
-ALTER TABLE user_manage_shop
-ADD CONSTRAINT ums_userfk
-FOREIGN KEY (user_id) REFERENCES users(user_id);
-
--- table shipping_unit
-
--- table cart_contain_product
-ALTER TABLE cart_contain_product
-ADD CONSTRAINT cnp_prodshopfk
-FOREIGN KEY (product_id,shop_id) REFERENCES product(product_id,Shop_id);
-
-ALTER TABLE cart_contain_product
-ADD CONSTRAINT cnp_cartuserfk
-FOREIGN KEY (cart_id,user_id) REFERENCES cart(cart_id,user_id);
