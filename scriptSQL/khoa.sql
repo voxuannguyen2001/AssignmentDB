@@ -1,104 +1,109 @@
 -- Run this script once every git pull
 
-USE e_commerce;
+USE Ecommerce;
 
--- table user_manage_shop
-DROP TABLE IF exists user_manage_shop;
-CREATE TABLE user_manage_shop (
-user_id		char(9)  not null,
-shop_id		char(9)  not null
+DROP TABLE IF exists User_manage_shop;
+CREATE TABLE User_manage_shop (
+user_id	int not null,
+shop_id int not null
 );
 
 -- constraint pk
-ALTER TABLE user_manage_shop
+ALTER TABLE User_manage_shop
 ADD CONSTRAINT user_shop_pk
 primary key (user_id, shop_id);
 
--- create data for table user_manage_shop
-insert into user_manage_shop values ('123456789','111111111');
-insert into user_manage_shop values ('123456789','222222222');
-insert into user_manage_shop values ('334455667','333333333');
-insert into user_manage_shop values ('234234234','333333333');
-insert into user_manage_shop values ('123123123','111111111');
+-- create data for table User_manage_shop
+insert into User_manage_shop values (1,1);
+insert into User_manage_shop values (2,2);
+insert into User_manage_shop values (3,3);
+insert into User_manage_shop values (4,4);
+insert into User_manage_shop values (5,5);
 
-
-
-
--- table shipping_unit
 DROP TABLE IF exists shipping_unit;
 CREATE TABLE shipping_unit (
-shipping_id		char(9)  not null,
-shipping_name	varchar(20)  not null,
-shipping_phone	char(10),
-shipping_website	varchar(30),	
+shipping_id int not null auto_increment,
+shipping_name varchar(20) not null,
+shipping_phone char(10),
+shipping_website varchar(30),	
 primary key (shipping_id),
 unique(shipping_name)
 );
 
 -- create data for table shipping_unit
-insert into shipping_unit values ('123456789','giaohangnhanh','0912345678','giaohangnhanh.vn');
-insert into shipping_unit values ('234234234','giaohangtietkiem','0923423423','giaohangtietkiem.vn');
-insert into shipping_unit values ('345345345','superfastship','0934534534','superfastship.com');
-insert into shipping_unit values ('456456456','giaohangdambao','0945645645','giaohangdambao.vn');
-insert into shipping_unit values ('567567567','shippingstar','0956756756','shippingstar.com');
+insert into shipping_unit (shipping_name,shipping_phone,shipping_website) values ('giaohangnhanh','0912345678','giaohangnhanh.vn');
+insert into shipping_unit (shipping_name,shipping_phone,shipping_website) values ('giaohangtietkiem','0923423423','giaohangtietkiem.vn');
+insert into shipping_unit (shipping_name,shipping_phone,shipping_website) values ('superfastship','0934534534','superfastship.com');
+insert into shipping_unit (shipping_name,shipping_phone,shipping_website) values ('giaohangdambao','0945645645','giaohangdambao.vn');
+insert into shipping_unit (shipping_name,shipping_phone,shipping_website) values ('shippingstar','0956756756','shippingstar.com');
 
-
-
-
--- table cart_contain_product
 DROP TABLE IF exists cart_contain_product;
 CREATE TABLE cart_contain_product (
-cart_id		char(9)  not null,
-user_id	    char(9)  not null,
-product_id	char(9)  not null,
-shop_id	    char(9)  not null,
+cart_id	int  not null,
+user_id	int  not null,
+product_id int not null,
+shop_id int not null,
 product_count  int,
-saleprice 	DECIMAL(10,2),
+saleprice integer,
 primary key (cart_id, user_id, product_id, shop_id)
 );
 
 -- create data for table cart_contain_product
-insert into cart_contain_product values ('000000000','200000000','100000000','111111111',2,10000.5);
-insert into cart_contain_product values ('000000000','200000000','100000001','111111111',1,100000);
-insert into cart_contain_product values ('000000000','200000000','100000002','222222222',5,21000.3);
+-- shop_id 1 --> product_id 1->6
+-- shop_id 2 --> product_id 7->12
+-- shop_id 3 --> product_id 13->18
+-- shop_id 4 --> product_id 19->24
+-- shop_id 5 --> product_id 25->30
 
-insert into cart_contain_product values ('000000001','200000001','100000000','111111111',4,10000.5);
-insert into cart_contain_product values ('000000001','200000001','100000003','333333333',1,50000.7);
-insert into cart_contain_product values ('000000001','200000001','100000007','111111111',2,20000.5);
+-- cart of user 1
+insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (1,1,1,1,2,10000);
+insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (1,1,7,2,1,100000);
+insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (1,1,13,3,5,21000);
 
-insert into cart_contain_product values ('000000002','200000002','100000005','111111111',2,10000.5);
-insert into cart_contain_product values ('000000002','200000002','100000006','111111111',2,20000.5);
-insert into cart_contain_product values ('000000002','200000002','100000008','222222222',2,30000.5);
-insert into cart_contain_product values ('000000002','200000002','100000009','333333333',2,40000.5);
+-- cart of user 3
+insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (3,3,2,1,4,10000);
+insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (3,3,8,2,1,50000);
+insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (3,3,14,3,2,20000);
 
-insert into cart_contain_product values ('000000003','200000003','100000010','222222222',2,60000.5);
-insert into cart_contain_product values ('000000003','200000003','100000011','111111111',1,70000.5);
-insert into cart_contain_product values ('000000003','200000003','100000012','333333333',3,80000.5);
-insert into cart_contain_product values ('000000003','200000003','100000013','111111111',4,100000.5);
-insert into cart_contain_product values ('000000003','200000003','100000014','222222222',1,7000.5);
+-- cart of user 4
+insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (4,4,19,4,2,10000);
+insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (4,4,25,5,2,20000);
 
+-- cart of user 5
+insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (5,5,20,4,2,30000);
+insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (5,5,26,5,2,40000);
 
+-- cart of user 7
+insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (7,7,3,1,2,60000);
+insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (7,7,4,1,1,70000);
 
+-- cart of user 8
+insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (8,8,15,3,3,80000);
+insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (8,8,16,3,4,100000);
 
+-- cart of user 10
+insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (9,9,30,5,1,7000);
 
 -- constraint foreign key
 
--- table user_manage_shop
-ALTER TABLE user_manage_shop
+-- table User_manage_shop
+ALTER TABLE User_manage_shop
 ADD CONSTRAINT ums_shopfk
-FOREIGN KEY (shop_id) REFERENCES shop(shop_id);
+FOREIGN KEY (Shop_id) REFERENCES shop(Shop_id);
 
-ALTER TABLE user_manage_shop
+ALTER TABLE User_manage_shop
 ADD CONSTRAINT ums_userfk
-FOREIGN KEY (user_id) REFERENCES users(user_id);
+FOREIGN KEY (User_id) REFERENCES user(User_id);
 
 -- table shipping_unit
 
 -- table cart_contain_product
 ALTER TABLE cart_contain_product
 ADD CONSTRAINT cnp_prodshopfk
-FOREIGN KEY (product_id,shop_id) REFERENCES product(product_id,Shop_id);
+FOREIGN KEY (Product_id,Shop_id) REFERENCES product(Product_id,Shop_id);
 
 ALTER TABLE cart_contain_product
 ADD CONSTRAINT cnp_cartuserfk
-FOREIGN KEY (cart_id,user_id) REFERENCES cart(cart_id,user_id);
+FOREIGN KEY (Cart_id,User_id) REFERENCES cart(Cart_id,User_id);
+
+

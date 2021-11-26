@@ -16,8 +16,6 @@ information varchar(300) CHARSET utf8,
 primary key (product_id, shop_id)
 );
 
-ALTER TABLE product
-ADD FOREIGN KEY (shop_id) REFERENCES shop(shop_id);
 
 -- Cửa hàng thời trang --
 -- Danh mục quần áo
