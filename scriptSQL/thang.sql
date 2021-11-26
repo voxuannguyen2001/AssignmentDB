@@ -67,8 +67,9 @@ insert into Product (shop_id,product_name,listed_price,origin,remaining_amount,i
 insert into Product (shop_id,product_name,listed_price,origin,remaining_amount,information) values(5,N'Sữa rửa mặt Cosrx',150000.00,N'Việt Nam',10,N'Khối lượng: 320g');
 insert into Product (shop_id,product_name,listed_price,origin,remaining_amount,information) values(5,N'Sữa rửa mặt Catephil',200000.00,N'Việt Nam',10,N'Khối lượng: 320g');
 
-
-
+-- add foreign key
+ALTER TABLE product
+ADD FOREIGN KEY (shop_id) REFERENCES shop(shop_id);
 
 
 
