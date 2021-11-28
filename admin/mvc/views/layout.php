@@ -20,7 +20,7 @@ $DOMAIN = 'http://localhost/AssignmentDB/admin';
 
 <body>
     <div class="header">
-        <h1> <?php if ($data['render'] == 'order') echo "Manage Orders" /*else if($data['render'] == ??? ) echo ???*/ ?>
+        <h1> <?php if ($data['render'] == 'order' || $data['render'] == 'insertOrder') echo "Manage Orders" /*else if($data['render'] == ??? ) echo ???*/ ?>
         </h1>
     </div>
     <div class="container">
@@ -32,7 +32,7 @@ $DOMAIN = 'http://localhost/AssignmentDB/admin';
                 </form>
                 <!-- Add new form here -->
             </div>
-            
+
             <div class="col-lg-9 col-md-8 action">
                 <?php require_once $data['render'] . '.php' ?>
             </div>

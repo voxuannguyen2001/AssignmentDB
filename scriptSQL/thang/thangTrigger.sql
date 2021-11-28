@@ -1,4 +1,3 @@
--- Trigger khi thêm một row trong bảng order_contains_product, tự động trừ số lượng còn lại của trong bảng product. (chưa kiểm tra âm)
 
 DROP TRIGGER IF EXISTS before_insert_order_contains_product;
 DELIMITER $$
