@@ -51,3 +51,4 @@ INSERT INTO order_detail(shipping_id, order_status, create_date, user_id, sname,
 VALUES(2, 'processing', '2021-11-23', 2,'Tran Thang', 'TP.HCM', '0123456798');
 
 INSERT INTO product_category VALUES(1,1,1);
+-- hihi
