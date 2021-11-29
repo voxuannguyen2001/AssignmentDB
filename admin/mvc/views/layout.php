@@ -21,7 +21,9 @@ $DOMAIN = 'http://localhost/AssignmentDB/admin';
 <body>
     <div class="header">
         <h1> <?php if ($data['render'] == 'order' || $data['render'] == 'insertOrder') echo "Manage Orders"; 
-                    else if($data['render'] == 'feedback' ) echo "Feedback"?>
+                    else if($data['render'] == 'feedback' ) echo "Feedback";
+                    else if($data['render'] == 'product' ) echo "Manage Products";
+                ?>
         </h1>
     </div>
     <div class="container">
@@ -29,10 +31,13 @@ $DOMAIN = 'http://localhost/AssignmentDB/admin';
             <div class="col-lg-3 col-md-4 task">
                 <div class="title">TASK</div>
                 <form action="<?php echo $DOMAIN ?>/Order/OrderPage">
-                    <button class="order add-item bg-secondary mt-2">Manage Order</button>
+                    <button class="order add-item bg-secondary mt-2">Manage Orders</button>
                 </form>
                 <form action="<?php echo $DOMAIN ?>/Feedback/FeedbackPage">
                     <button class="order add-item bg-secondary mt-2">Manage Feedback</button>
+                </form>
+                <form action="<?php echo $DOMAIN ?>/Product/ProductPage">
+                    <button class="order add-item bg-secondary mt-2">Manage Products</button>
                 </form>
                 <!-- Add new form here -->
             </div>
