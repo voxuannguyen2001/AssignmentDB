@@ -8,7 +8,7 @@
             <div class="col-lg-8 form_insert_order">
                 <div>
                     <label for="input-shipping_id" class="form-label">Shipping ID: </label>
-                    <input type="text" class="form-control input-shipping_id" />
+                    <input type="number" min="1" class="form-control input-shipping_id" />
                 </div>
                 <div>
                     <label for="input-create_date" class="form-label mt-2">Date: </label>
@@ -21,6 +21,10 @@
                 <div>
                     <label for="input-sname" class="form-label mt-2">Name: </label>
                     <input type="text" class="form-control input-sname" />
+                </div>
+                <div>
+                    <label for="input-sphone_number" class="form-label mt-2">Phone: </label>
+                    <input type="text" class="form-control input-sphone_number" />
                 </div>
                 <div>
                     <label for="input-saddress" class="form-label mt-2">Address: </label>
@@ -40,5 +44,6 @@
         <div class="alert alert-insert-order mt-4 mb-4">
             <strong class="alert-insert-order-text"></strong>
         </div>
+
     </form>
 </div>

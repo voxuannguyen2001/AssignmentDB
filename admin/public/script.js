@@ -12,6 +12,7 @@ $(document).ready(function () {
                 create_date: $(".input-create_date").val(),
                 the_user_id: parseInt($(".input-the_user_id").val()),
                 sname: $(".input-sname").val(),
+                sphone_number: $(".input-sphone_number").val(),
                 saddress: $(".input-saddress").val(),
                 status: $(".input-status").val(),
             },
@@ -35,8 +36,6 @@ $(document).ready(function () {
                         $(".alert-insert-order").removeClass("alert-success");
                         $(".alert-insert-order-text").text("");
                     }, 1500);
-                    //reset form and image
-                    $("#form_insert_order")[0].reset();
                 } else {
                     $(".alert-insert-order").addClass("alert-danger");
                     $(".alert-insert-order-text").text("Error! Can't add into database");
@@ -47,6 +46,7 @@ $(document).ready(function () {
                         $(".alert-insert-order").removeClass("alert-danger");
                     }, 1500);
                 }
+                $("#form_insert_order")[0].reset();
             },
             error: function () { },
         });
