@@ -16,6 +16,11 @@ class OrderModel extends Database
         $sql = "DELETE FROM order_detail WHERE order_id = '$orderID'";
         $this->query($sql);
     }
+    function insert_order($shipping_id, $create_date, $the_user_id, $sname, $saddress, $sphone_number, $status)
+    {
+        $sql = "INSERT INTO order_detail(shipping_id, order_status, create_date, the_user_id, sname, saddress, sphone_number ) VALUES($shipping_id, '$status', '$create_date', $the_user_id,'$sname', '$saddress', '$sphone_number')";
+        return $this->query($sql);
+    }
     function remove_all()
     {
         $sql = "DELETE FROM order_detail";
