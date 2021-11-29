@@ -7,7 +7,7 @@ drop table if exists user;
 create table user(
 	user_id integer not null auto_increment,
     username varchar(30) not null,
-    pass varchar(30) not null,
+    pass varchar(50) not null,
     mobile varchar(16),
     email varchar(50),
     fullname varchar(50) not null ,
@@ -16,6 +16,7 @@ create table user(
     avatar varchar(64),
     seller_flag boolean,
     buyer_flag boolean,
+    num_shop_managing integer default 0,
     
     primary key(user_id)
 );
@@ -43,7 +44,7 @@ drop procedure if exists add_user;
 delimiter //
 create procedure add_user (
 	in username varchar(30), 
-    in pass varchar(30),
+    in pass varchar(50),
     in mobile varchar(12),
     in email varchar(50),
     in fullname varchar(50),
@@ -54,6 +55,31 @@ create procedure add_user (
     in buyer_flag boolean
 )
 begin
+	if not regexp_like(username, '^[a-z0-9_.]*$') then
+		signal sqlstate '45000' 
+			set message_text = 'username can only contains lowercase characters, numbers, dot(.) and underscore(_)';
+    end if;
+    
+    if char_length(username) < 6 or char_length(username) > 30 then 
+		signal sqlstate '45000' 
+			set message_text = 'username\'s length must be between 6 and 30';
+    end if;
+    
+    if char_length(pass) < 8 then 
+		signal sqlstate '45000'
+			set message_text = 'password\'s length must be at least 8 characters';
+    end if;
+    
+    if not regexp_like(mobile, '^[0-9]*$') then
+		signal sqlstate '45000'
+			set message_text = 'mobile number can only contains numbers';
+	end if;
+    
+    if not regexp_like(email, '@.*\.') then
+		signal sqlstate '45000'
+			set message_text = 'email is not valid';
+    end if;
+    
 	insert into user (username, pass, mobile, email, fullname, sex, dob, avatar, seller_flag, buyer_flag)
 		values (username, pass, mobile, email, fullname, sex, dob, avatar, seller_flag, buyer_flag);
 end//
@@ -65,7 +91,7 @@ delimiter ;
 -- insert data to user
 call add_user (
 'voxuannguyen2001',
-'123456',
+'12345678',
 '0397003301',
 'voxuannguyen2001@gmail.com',
 'Vo Trinh Xuan Nguyen',
@@ -156,7 +182,7 @@ true
 
 call add_user (
 'yennhi_01',
-'123456',
+'12345678',
 '091334987',
 'yennhi_le@hcmut.edu.vn',
 'Le Nguyen Yen Nhi',
@@ -186,13 +212,25 @@ call add_user (
 '0918239861',
 'tnkhanhtran@hcmut.edu.vn',
 'Tran Ngoc Khanh Tran',
-'M',
+'F',
 date('2001-03-23'),
 concat('khanhchann/avatar_', date_format(now(), "%Y_%j_%H%_%i_%s")),
 false,
 true
 );
 
+call add_user (
+'phuvotrinhan',
+'anphu123',
+'0915236160',
+'anphu02@gmail.com',
+'Vo Trinh An Phu',
+'M',
+date('2008-01-05'),
+null,
+false,
+true
+);
 
 -- insert data into contains_product
 insert into order_contains_product values (1, 1, 1, 3, 17000);
@@ -236,4 +274,32 @@ insert into order_contains_product values (1, 3, 11, 1, 57000);
 
 insert into order_contains_product values (5, 1, 12, 1, 87000);
 insert into order_contains_product values (3, 3, 12, 1, 229000);
+
+
+
+
+delimiter //
+create trigger on_create_shop after insert on shop
+for each row
+begin
+	set @found_user = (select count(*) from user where id = new.shop_owner);
+    if @found_user = 0 then
+		signal sqlstate '45000' set message_text = 'shop_owner not found';
+	end if;
+	update user set seller_flag = true 
+	where id = new.shop_owner;
+end;//
+delimiter ;
+
+
+delimiter //
+create trigger on_unset_seller after update on user
+for each row
+begin
+	if old.seller_flag = true and new.seller_flag = false then
+		update shop set shop_condition = false
+		where shop_owner = new.id;
+	end if;
+end;//
+delimiter ;
 

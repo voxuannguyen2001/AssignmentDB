@@ -36,7 +36,7 @@ $DOMAIN = 'http://localhost/AssignmentDB/admin';
                 </form>
                 <!-- Add new form here -->
             </div>
-            
+
             <div class="col-lg-9 col-md-8 action">
                 <?php require_once $data['render'] . '.php' ?>
             </div>
