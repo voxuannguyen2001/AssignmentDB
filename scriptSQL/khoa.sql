@@ -1,24 +1,34 @@
 -- Run this script once every git pull
 
-USE Ecommerce;
+USE e_commerce;
 
-DROP TABLE IF exists User_manage_shop;
-CREATE TABLE User_manage_shop (
+DROP TABLE IF exists user_manage_shop;
+CREATE TABLE user_manage_shop (
 user_id	int not null,
-shop_id int not null
+shop_id int not null,
+start_date date not null
 );
 
+delimiter //
+create trigger on_insert_user_manage_shop before insert on user_manage_shop
+for each row
+if (isnull(new.start_date)) then
+	set new.start_date = curdate();
+end if;
+//
+delimiter ;
+
 -- constraint pk
-ALTER TABLE User_manage_shop
+ALTER TABLE user_manage_shop
 ADD CONSTRAINT user_shop_pk
 primary key (user_id, shop_id);
 
--- create data for table User_manage_shop
-insert into User_manage_shop values (1,1);
-insert into User_manage_shop values (2,2);
-insert into User_manage_shop values (3,3);
-insert into User_manage_shop values (4,4);
-insert into User_manage_shop values (5,5);
+-- create data for table user_manage_shop
+insert into user_manage_shop(user_id, shop_id) values (1,1);
+insert into user_manage_shop(user_id, shop_id) values (2,2);
+insert into user_manage_shop(user_id, shop_id) values (3,3);
+insert into user_manage_shop(user_id, shop_id) values (4,4);
+insert into user_manage_shop(user_id, shop_id) values (5,5);
 
 DROP TABLE IF exists shipping_unit;
 CREATE TABLE shipping_unit (
@@ -84,26 +94,6 @@ insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product
 -- cart of user 10
 insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (9,9,30,5,1,7000);
 
--- constraint foreign key
 
--- table User_manage_shop
-ALTER TABLE User_manage_shop
-ADD CONSTRAINT ums_shopfk
-FOREIGN KEY (Shop_id) REFERENCES shop(Shop_id);
-
-ALTER TABLE User_manage_shop
-ADD CONSTRAINT ums_userfk
-FOREIGN KEY (User_id) REFERENCES user(User_id);
-
--- table shipping_unit
-
--- table cart_contain_product
-ALTER TABLE cart_contain_product
-ADD CONSTRAINT cnp_prodshopfk
-FOREIGN KEY (Product_id,Shop_id) REFERENCES product(Product_id,Shop_id);
-
-ALTER TABLE cart_contain_product
-ADD CONSTRAINT cnp_cartuserfk
-FOREIGN KEY (Cart_id,User_id) REFERENCES cart(Cart_id,User_id);
 
 

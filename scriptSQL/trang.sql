@@ -10,7 +10,6 @@ CREATE TABLE shop (
     shop_description text,
     shop_owner varchar(9) not null,
     create_date date,
-    shop_condition bool not null default true, # true: still working normally / false: no longer functioning
     -- amount_customer int,
     primary key(shop_id)
 );
