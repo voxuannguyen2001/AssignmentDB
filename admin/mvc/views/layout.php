@@ -23,6 +23,7 @@ $DOMAIN = 'http://localhost/AssignmentDB/admin';
         <h1> <?php if ($data['render'] == 'order' || $data['render'] == 'insertOrder') echo "Manage Orders"; 
                     else if($data['render'] == 'feedback' ) echo "Feedback";
                     else if($data['render'] == 'product' ) echo "Manage Products";
+                    else if ($data['render'] == 'ccp' ) echo "Manage Product in User's cart";
                 ?>
         </h1>
     </div>
@@ -38,6 +39,9 @@ $DOMAIN = 'http://localhost/AssignmentDB/admin';
                 </form>
                 <form action="<?php echo $DOMAIN ?>/Product/ProductPage">
                     <button class="order add-item bg-secondary mt-2">Manage Products</button>
+                </form>
+                <form action="<?php echo $DOMAIN ?>/cart_contain_product/cart_contain_product_page">
+                    <button class="order add-item bg-info text-light mt-2"><strong>Manage Product in cart</strong></button>
                 </form>
                 <!-- Add new form here -->
             </div>
