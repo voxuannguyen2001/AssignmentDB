@@ -24,10 +24,30 @@ class Order extends Controller
         $this->data['render'] = 'insertOrder';
         $this->view('layout', $this->data);
     }
+    function doInsertOrder()
+    {
+        if (
+            empty($_POST['shipping_id']) || empty($_POST['create_date']) || empty($_POST['the_user_id'])
+            || empty($_POST['sname']) || empty($_POST['saddress']) || empty($_POST['sphone_number']) || empty($_POST['status'])
+        ) {
+            echo 'failed';
+        } else {
+            $check = $this->orderModel->insert_order(
+                $_POST['shipping_id'],
+                $_POST['create_date'],
+                $_POST['the_user_id'],
+                $_POST['sname'],
+                $_POST['saddress'],
+                $_POST['sphone_number'],
+                $_POST['status']
+            );
+            echo $check;
+        }
+    }
     // function removeAll()
     // {
     //     $orderModel = $this->model('OrderModel');
     //     $orderModel->remove_all();
-    //     header("Location: http://localhost/CPP_Assignment_CNPM/SourceMVC/admin/Order/OrderPage");
+    //     header("Location: http://localhost/AssignmentDB/admin/Order/OrderPage");
     // }
 }

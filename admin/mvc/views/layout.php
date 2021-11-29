@@ -20,8 +20,11 @@ $DOMAIN = 'http://localhost/AssignmentDB/admin';
 
 <body>
     <div class="header">
-        <h1> <?php if ($data['render'] == 'order') echo "Manage Orders"; 
-                    else if($data['render'] == 'feedback' ) echo "Feedback"?>
+        <h1> <?php if ($data['render'] == 'order' || $data['render'] == 'insertOrder') echo "Manage Orders"; 
+                    else if($data['render'] == 'feedback' ) echo "Feedback";
+                    else if($data['render'] == 'product' ) echo "Manage Products";
+                    else if ($data['render'] == 'ccp' ) echo "Manage Product in User's cart";
+                ?>
         </h1>
     </div>
     <div class="container">
@@ -29,10 +32,16 @@ $DOMAIN = 'http://localhost/AssignmentDB/admin';
             <div class="col-lg-3 col-md-4 task">
                 <div class="title">TASK</div>
                 <form action="<?php echo $DOMAIN ?>/Order/OrderPage">
-                    <button class="order add-item bg-secondary mt-2">Manage Order</button>
+                    <button class="order add-item bg-secondary mt-2">Manage Orders</button>
                 </form>
                 <form action="<?php echo $DOMAIN ?>/Feedback/FeedbackPage">
                     <button class="order add-item bg-secondary mt-2">Manage Feedback</button>
+                </form>
+                <form action="<?php echo $DOMAIN ?>/Product/ProductPage">
+                    <button class="order add-item bg-secondary mt-2">Manage Products</button>
+                </form>
+                <form action="<?php echo $DOMAIN ?>/cart_contain_product/cart_contain_product_page">
+                    <button class="order add-item bg-info text-light mt-2"><strong>Manage Product in cart</strong></button>
                 </form>
                 <!-- Add new form here -->
             </div>

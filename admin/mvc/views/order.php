@@ -23,9 +23,10 @@
           <td><?php echo $value['shipping_id'] ?></td>
           <td><?php echo $value['create_date'] ?></td>
           <td><?php echo $value['sname'] ?></td>
-          <td><?php echo $value['saddress'] ?></td>
           <td><?php echo $value['sphone_number'] ?></td>
-          <td><?php echo $value['total'] ?></td>
+          <td><?php echo $value['saddress'] ?></td>
+          <!-- <td><?php echo $value['total'] ?></td> -->
+          <td></td>
           <td><?php echo $value['order_status'] ?></td>
           <td style="display:flex">
             <a class="text-danger" href="<?php echo $DOMAIN ?>/Order/deleteOrder/<?php echo $value['order_id'] ?>">
@@ -33,7 +34,6 @@
             </a>
           </td>
         </tr>
-
     <?php  }
     } ?>
   </tbody>
@@ -51,3 +51,5 @@
     </a>
   </div>
 </div>
+
+<style>
