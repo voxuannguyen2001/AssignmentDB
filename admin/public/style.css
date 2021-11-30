@@ -78,6 +78,9 @@ body {
 .form_insert_order{
     margin: auto;
 }
+.btn-action{
+    margin: 5px;
+}
 /* end manage order*/
 
 /* manage product */
@@ -117,3 +120,8 @@ body {
     background-color: #3e8e41;
 } 
 /* end manage product */
+
+
+.form_edit-ocp{
+    margin: auto;
+}

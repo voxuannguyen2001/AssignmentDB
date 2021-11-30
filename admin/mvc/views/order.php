@@ -29,8 +29,11 @@
           <td></td>
           <td><?php echo $value['order_status'] ?></td>
           <td style="display:flex">
-            <a class="text-danger" href="<?php echo $DOMAIN ?>/Order/deleteOrder/<?php echo $value['order_id'] ?>">
-              <button type="button" class="btn btn-danger">Delete</button>
+            <a href="<?php echo $DOMAIN ?>/Order/deleteOrder/<?php echo $value['order_id'] ?>">
+              <button type="button" class="btn btn-danger btn-action">Delete</button>
+            </a>
+            <a href="<?php echo $DOMAIN ?>/OrderContainsProduct/OrderContainsProductPage/<?php echo $value['order_id'] ?>">
+              <button type="button" class="btn btn-success btn-action">View</button>
             </a>
           </td>
         </tr>
