@@ -2,7 +2,7 @@
 class cart_contain_product extends Controller
 {
     public $data = array();
-    protected $orderModel;
+    protected $cartContainProductModel;
     function __construct()
     {
         $this->cartContainProductModel = $this->model('CartContainProductModel');
