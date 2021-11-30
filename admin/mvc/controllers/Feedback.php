@@ -47,4 +47,9 @@ class Feedback extends Controller
         }
         header('location: http://localhost/AssignmentDB/admin/feedback/feedbackPage');
     }
+    function viewfeedback($feedbackID)
+    {
+        $this->feedbackModel->view_feedback($feedbackID);
+        // header("Location: http://localhost/AssignmentDB/admin/feedback/feedbackPage");
+    }
 }

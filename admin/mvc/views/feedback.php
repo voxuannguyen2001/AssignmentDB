@@ -10,6 +10,7 @@
             <th scope="col">Rating</th>
             <th scope="col">Created</th>
             <th scope="col">By User</th>
+            <th scope="col">Action</th>
         </tr>
     </thead>
     <tbody>
@@ -29,6 +30,7 @@
                             <button type="button" class="btn btn-danger">Delete</button>
                         </a>
                     </td>
+
                 </tr>
 
         <?php  }
