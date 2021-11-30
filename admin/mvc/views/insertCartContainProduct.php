@@ -35,7 +35,7 @@
                 </div>
 
                 <div class="contain-button">
-                    <button class="btn btn-primary btn-insert-cpp mt-3">Insert New</button>
+                    <button class="btn btn-primary btn-insert-ccp mt-3">Insert New</button>
                 </div>
             </div>
         </div>

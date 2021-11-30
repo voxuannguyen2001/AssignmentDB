@@ -6,14 +6,15 @@ class CartContainProductModel extends Database
         $sql = "SELECT * From cart_contain_product";
         return $this->get_list($sql);
     }
+
     function get_ccp($cart_id, $the_user_id, $product_id, $shop_id)
     {
-        $sql = "SELECT * FROM cart_contain_product WHERE cart_id = '$cart_id', the_user_id = '$the_user_id', product_id = '$product_id', shop_id = '$shop_id' ";
+        $sql = "SELECT * FROM cart_contain_product WHERE cart_id = '$cart_id' and the_user_id = '$the_user_id' and product_id = '$product_id' and shop_id = '$shop_id' ";
         return $this->get_one($sql);
     }
-    function remove_ccp($cart_id, $the_user_id, $product_id, $shop_id)
+    function remove_ccp($cart_id,$the_user_id,$product_id,$shop_id)
     {
-        $sql = "DELETE FROM cart_contain_product WHERE cart_id = '$cart_id', the_user_id = '$the_user_id', product_id = '$product_id', shop_id = '$shop_id' ";
+        $sql = "DELETE FROM cart_contain_product WHERE cart_id = '$cart_id' and the_user_id = '$the_user_id' and product_id = '$product_id' and shop_id = '$shop_id' ";
         $this->query($sql);
     }
     function insert_record_into_ccp($cart_id, $the_user_id, $product_id, $shop_id, $product_count, $saleprice)
