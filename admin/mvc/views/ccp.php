@@ -103,6 +103,61 @@
 ?>
 
 <p>--------------------------------------------------</p>
+<div class="mt-4 mb-2"><strong>$$ Retrieve Users have total money of products in cart that have saleprice >= input: </strong> <br></div>
+<div class="mb-2">ASCENDING ORDER OF TOTAL MONEY<br></div>
+
+
+<form action="" method="post" class="mb-3">
+    Input: <input type="number" name="input" value="">
+    <button type="submit">Send</button>
+</form>
+
+
+<?php 
+    if (empty($_POST["input"])) {
+      echo "Please fill in all box!";
+    }
+    
+    else if(isset($_POST["input"])) { 
+    $input = $_POST["input"];
+    $sql = " SELECT the_user_id, sum(saleprice*product_count) as total_money
+    from cart_contain_product
+    group by the_user_id
+    having total_money >= $input
+    order by total_money;";
+    
+    $hostname = "localhost";
+    $username = "root";
+    $password = "10042002";
+    $dbname = 'E_commerce';
+
+    $conn = mysqli_connect($hostname, $username, $password, $dbname);
+    mysqli_set_charset($conn, 'utf8');
+    $res = mysqli_query($conn,$sql);
+
+    $data = [];
+    
+    $count = 0;
+
+    while($row = mysqli_fetch_assoc($res)) {
+        echo "USER : {$row['the_user_id']} ------------------ {$row['total_money']} <br> ";
+         $data[] = $row;
+         $count = $count + 1; 
+    }
+  
+  mysqli_close($conn);
+
+  if ($count == 0) {
+    echo "No user satisfy!";
+  }
+}
+
+else {
+  echo "Invalid Input!";
+}
+?>
+
+<p>--------------------------------------------------</p>
 <div class="mt-2 mb-2"><strong>$$ Input record needed to update with attribute column: </strong> <br></div>
 
 <form action="" method="post">
