@@ -4,6 +4,11 @@
 
 <div class="form">
     <form action="" onsubmit="return false" id="form_insert_order">
+
+        <div class="alert alert-insert-order mt-4 mb-4">
+            <strong class="alert-insert-order-text"></strong>
+        </div>
+
         <div class="row">
             <div class="col-lg-8 form_insert_order">
                 <div>
@@ -40,10 +45,5 @@
                 </div>
             </div>
         </div>
-
-        <div class="alert alert-insert-order mt-4 mb-4">
-            <strong class="alert-insert-order-text"></strong>
-        </div>
-
     </form>
 </div>

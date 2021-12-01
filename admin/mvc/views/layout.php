@@ -20,11 +20,12 @@ $DOMAIN = 'http://localhost/AssignmentDB/admin';
 
 <body>
     <div class="header">
-        <h1> <?php if ($data['render'] == 'order' || $data['render'] == 'insertOrder') echo "Manage Orders"; 
-                    else if($data['render'] == 'feedback' ) echo "Feedback";
-                    else if($data['render'] == 'product' ) echo "Manage Products";
-                    else if ($data['render'] == 'ccp' ) echo "Manage Product in User's cart";
+        <h1> <?php if ($data['render'] == 'order' || $data['render'] == 'insertOrder' || $data['render'] == 'orderContainsProduct') echo "Manage Orders"; 
+                    else if ($data['render'] == 'feedback') echo "Feedback";
+                    else if ($data['render'] == 'product') echo "Manage Products";
+                    else if ($data['render'] == 'ccp') echo "Manage Product in User's cart";
                     else if ($data['render'] == 'user') echo 'Manage Users';
+                    
                 ?>
         </h1>
     </div>

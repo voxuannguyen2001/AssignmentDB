@@ -53,7 +53,7 @@ $(document).ready(function () {
     });
     //end ajax insert order
     
-     //ajax insert new record into cart_contain_product
+    //ajax insert new record into cart_contain_product
     $(".alert-insert-ccp").fadeOut();
     $(".btn-insert-ccp").click(function () {
         $.ajax({
@@ -104,6 +104,56 @@ $(document).ready(function () {
     });
     //end ajax insert new record into cart_contain_product
 
+    //ajax edit order_contains_product
+    $(".alert-edit-ocp").fadeOut();
+    $(".btn-edit-ocp").click(function () {
+        var link = $(this).attr("id");
+        link = link.substr(12, 999);
+        $.ajax({
+            url: DOMAIN + "/OrderContainsProduct/doEdit/" + link,
+            method: "post",
+            data: {
+                amount: $(".input-amount").val(),
+                price: $(".input-price").val(),
+            },
+            success: function (result) {
+                if (result == "failed") {
+                    $(".alert-edit-ocp").addClass("alert-danger");
+                    $(".alert-edit-ocp-text").text("Failed!! You should fill all input");
+                    $(".alert-edit-ocp").fadeIn();
+                    setTimeout(function () {
+                        $(".alert-edit-ocp").fadeOut();
+                        $(".alert-edit-ocp-text").text("");
+                        $(".alert-edit-ocp").removeClass("alert-danger");
+                    }, 1500);
+
+                } else if (result == "1") {
+                    $(".alert-edit-ocp").fadeIn();
+                    $(".alert-edit-ocp").addClass("alert-success");
+                    $(".alert-edit-ocp-text").text("Success!!");
+                    setTimeout(function () {
+                        $(".alert-edit-ocp").fadeOut();
+                        $(".alert-edit-ocp").removeClass("alert-success");
+                        $(".alert-edit-ocp-text").text("");
+                    }, 1500);
+                } else {
+                    $(".alert-edit-ocp").addClass("alert-danger");
+                    $(".alert-edit-ocp-text").text("Error! The values invalid");
+                    $(".alert-edit-ocp").fadeIn();
+                    setTimeout(function () {
+                        $(".alert-edit-ocp").fadeOut();
+                        $(".alert-edit-ocp-text").text("");
+                        $(".alert-edit-ocp").removeClass("alert-danger");
+                    }, 1500);
+                }
+                $("#form_edit-ocp")[0].reset();
+            },
+            error: function () {},
+        });
+    });
+    //end edit order_contains_product
+
+    // add user
     $(".alert-insert-user").fadeOut();
     $(".btn-insert-user").click(function () {
         let username = $("#adduser-username").val();
@@ -166,7 +216,7 @@ $(document).ready(function () {
                     }, 1500);
                 }
                 $("#form_insert_user")[0].reset();
-                console.log(result);
+                // console.log(result);
                 // $(".alert-insert-user").addClass("alert-danger");
                 // $(".alert-insert-user-text").text(result);
                 // $(".alert-insert-user").fadeIn();
