@@ -1,0 +1,43 @@
+<?php
+class UserModel extends Database
+{
+    function get_all_users()
+    {
+        $sql = "SELECT * From the_user";
+        return $this->get_list($sql);
+    }
+    function get_user($user_id)
+    {
+        $sql = "SELECT * FROM the_user WHERE user_id = '$user_id' ";
+        return $this->get_one($sql);
+    }
+    function remove_user($user_id)
+    {
+        $sql = "DELETE FROM the_user WHERE user_id = '$user_id'";
+        $this->query($sql);
+    }
+    // function insert_order($shipping_id, $create_date, $the_user_id, $sname, $saddress, $sphone_number, $status)
+    // {
+    //     $sql = "INSERT INTO order_detail(shipping_id, order_status, create_date, the_user_id, sname, saddress, sphone_number ) VALUES($shipping_id, '$status', '$create_date', $the_user_id,'$sname', '$saddress', '$sphone_number')";
+    //     return $this->query($sql);
+    // }
+    function remove_all()
+    {
+        $sql = "DELETE FROM the_user";
+        $this->query($sql);
+    }
+
+    function insert_user($username, $password, $mobile, $email, $fullname, $dob, $sex, $avatar) 
+    {   
+        $mobile = !empty($mobile) ? "'$mobile'" : "NULL";
+        $email = !empty($email) ? "'$email'" : "NULL";
+        $fullname = !empty($fullname) ? "'$fullname'" : "NULL";
+        $dob = !empty($dob) ? "'$dob'" : "NULL";
+        $sex = !empty($sex) ? "'$sex'" : "NULL";
+        $avatar = !empty($avatar) ? "'$avatar'" : "NULL";
+        
+        $sql = "CALL add_user($username, $password, $mobile, $email, $fullname, $sex, $dob, $avatar, false, true)";
+        $this->query($sql);
+        return "1";
+    }
+}
