@@ -27,7 +27,7 @@ CREATE TABLE order_detail (
     sname varchar(40) not null,
     saddress text not null,
     sphone_number varchar(10) not null,
-    total decimal(10,2) default 0.0,
+    total decimal(12,2) default 0.0,
     primary key(order_id)
 );
 
