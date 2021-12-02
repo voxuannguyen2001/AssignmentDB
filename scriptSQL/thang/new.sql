@@ -3,11 +3,11 @@ CREATE DATABASE e_commerce;
 
 use e_commerce;
 
--- table user 
-drop table if exists user;
-create table user(
-	user_id integer not null auto_increment,
-    username varchar(30) not null,
+-- table the_user 
+drop table if exists the_user;
+create table the_user(
+	the_user_id integer not null auto_increment,
+    the_username varchar(30) not null,
     pass varchar(50) not null,
     mobile varchar(16),
     email varchar(50),
@@ -19,7 +19,7 @@ create table user(
     buyer_flag boolean,
     date_created date not null,
 
-    primary key(user_id)
+    primary key(the_user_id)
 );
 
 -- table order contains_product
@@ -53,7 +53,7 @@ CREATE TABLE order_detail (
     shipping_id int not null,
     order_status varchar(10),
     create_date date,
-    user_id int not null,
+    the_user_id int not null,
     sname varchar(40) not null,
     saddress text not null,
     sphone_number varchar(10) not null,
@@ -94,22 +94,22 @@ CREATE TABLE feedback (
     review_content text,
     rating int not null,
     create_date date,
-    user_id int not null,
+    the_user_id int not null,
     primary key(feedback_id, shop_id, product_id),
     constraint rating_ck check (rating between 0 and 5)
 );
 
--- table user_manage_shop
-DROP TABLE IF exists user_manage_shop;
-CREATE TABLE user_manage_shop (
-user_id	int not null,
+-- table the_user_manage_shop
+DROP TABLE IF exists the_user_manage_shop;
+CREATE TABLE the_user_manage_shop (
+the_user_id	int not null,
 shop_id int not null
 );
 
--- constraint pk user_manage_shop
-ALTER TABLE user_manage_shop
-ADD CONSTRAINT user_shop_pk
-primary key (user_id, shop_id);
+-- constraint pk the_user_manage_shop
+ALTER TABLE the_user_manage_shop
+ADD CONSTRAINT the_user_shop_pk
+primary key (the_user_id, shop_id);
 
 DROP TABLE IF exists shipping_unit;
 CREATE TABLE shipping_unit (
@@ -124,20 +124,20 @@ unique(shipping_name)
 DROP TABLE IF exists cart_contain_product;
 CREATE TABLE cart_contain_product (
 cart_id	int  not null,
-user_id	int  not null,
+the_user_id	int  not null,
 product_id int not null,
 shop_id int not null,
 product_count  int,
 saleprice integer,
-primary key (cart_id, user_id, product_id, shop_id)
+primary key (cart_id, the_user_id, product_id, shop_id)
 );
 
 DROP TABLE IF EXISTS cart;
 CREATE TABLE cart (
     cart_id int not null AUTO_INCREMENT,
-    user_id int not null,
+    the_user_id int not null,
 
-    primary key(cart_id,user_id)
+    primary key(cart_id,the_user_id)
 );
 
 DROP TABLE IF EXISTS category;
@@ -150,11 +150,11 @@ CREATE TABLE category (
     primary key(category_id)
 );
 
--- insert to user procedure
-drop procedure if exists add_user;
+-- insert to the_user procedure
+drop procedure if exists add_the_user;
 delimiter //
-create procedure add_user (
-	in username varchar(30), 
+create procedure add_the_user (
+	in the_username varchar(30), 
     in pass varchar(30),
     in mobile varchar(12),
     in email varchar(50),
@@ -166,14 +166,14 @@ create procedure add_user (
     in buyer_flag boolean
 )
 begin
-	insert into user (username, pass, mobile, email, fullname, sex, dob, avatar, seller_flag, buyer_flag)
-		values (username, pass, mobile, email, fullname, sex, dob, avatar, seller_flag, buyer_flag);
+	insert into the_user (the_username, pass, mobile, email, fullname, sex, dob, avatar, seller_flag, buyer_flag)
+		values (the_username, pass, mobile, email, fullname, sex, dob, avatar, seller_flag, buyer_flag);
 end//
 delimiter ;
 
-drop trigger if exists on_create_user;
+drop trigger if exists on_create_the_user;
 delimiter //
-create trigger on_create_user before insert on user
+create trigger on_create_the_user before insert on the_user
 for each row
 if (isnull(new.date_created)) then
 	set new.date_created = curdate();
@@ -181,8 +181,8 @@ end if;
 //
 delimiter ;
 
--- insert data to user
-call add_user (
+-- insert data to the_user
+call add_the_user (
 'voxuannguyen2001',
 '12345678',
 '0397003301',
@@ -195,7 +195,7 @@ false,
 true
 );
 
-call add_user (
+call add_the_user (
 'nguyenphuoctri',
 '12345689',
 '0914370975',
@@ -208,7 +208,7 @@ false,
 true
 );
 
-call add_user (
+call add_the_user (
 'nguyenphuoctri',
 '12345689',
 '0914370975',
@@ -221,7 +221,7 @@ false,
 true
 );
 
-call add_user (
+call add_the_user (
 'hotruongluong',
 'htluong123',
 '01678934556',
@@ -234,7 +234,7 @@ false,
 true
 );
 
-call add_user (
+call add_the_user (
 'nguyenthanhcong',
 'ntcong01',
 '01697053312',
@@ -247,7 +247,7 @@ false,
 true
 );
 
-call add_user (
+call add_the_user (
 'nguyenhaison',
 'sonhainguyenbmt',
 '0915559871',
@@ -260,7 +260,7 @@ false,
 true
 );
 
-call add_user (
+call add_the_user (
 'nguyenminhhai',
 'minhhaivippro',
 '0913737095',
@@ -273,7 +273,7 @@ false,
 true
 );
 
-call add_user (
+call add_the_user (
 'yennhi_01',
 '12345678',
 '091334987',
@@ -286,7 +286,7 @@ false,
 true
 );
 
-call add_user (
+call add_the_user (
 'linhchidepgai',
 'linhchi01',
 '0167642349',
@@ -299,7 +299,7 @@ false,
 true
 );
 
-call add_user (
+call add_the_user (
 'khanhchann',
 'khanhtranxinhdep',
 '0918239861',
@@ -312,7 +312,7 @@ false,
 true
 );
 
-call add_user (
+call add_the_user (
 'phuvotrinhan',
 'anphu123',
 '0915236160',
@@ -376,29 +376,29 @@ INSERT INTO shop(shop_name, shop_description, shop_owner_id, create_date) VALUES
 INSERT INTO shop(shop_name, shop_description, shop_owner_id, create_date) VALUES('Book World','All thing you need',4,'2021-11-04');
 INSERT INTO shop(shop_name, shop_description, shop_owner_id, create_date) VALUES('Cosmetics','You are beautiful',5,'2021-11-05');
 
-INSERT INTO order_detail(shipping_id, order_status, create_date, user_id, sname, saddress,sphone_number )  
+INSERT INTO order_detail(shipping_id, order_status, create_date, the_user_id, sname, saddress,sphone_number )  
 VALUES(1, 'waiting', '2021-11-23', 1,'Nguyen Trang', 'Phu Yen', '0123456789');
-INSERT INTO order_detail(shipping_id, order_status, create_date, user_id, sname, saddress,sphone_number )  
+INSERT INTO order_detail(shipping_id, order_status, create_date, the_user_id, sname, saddress,sphone_number )  
 VALUES(2, 'processing', '2021-11-23', 2,'Tran Thang', 'TP.HCM', '0123456798');
-INSERT INTO order_detail(shipping_id, order_status, create_date, user_id, sname, saddress,sphone_number )  
+INSERT INTO order_detail(shipping_id, order_status, create_date, the_user_id, sname, saddress,sphone_number )  
 VALUES(3, 'success', '2021-11-27', 3,'Le Hoang Phuc', 'TP.HCM', '0123456700');
-INSERT INTO order_detail(shipping_id, order_status, create_date, user_id, sname, saddress,sphone_number )  
+INSERT INTO order_detail(shipping_id, order_status, create_date, the_user_id, sname, saddress,sphone_number )  
 VALUES(4, 'success', '2021-11-27', 4,'Le Tuyet Anh', 'TP.HCM', '0123456700');
-INSERT INTO order_detail(shipping_id, order_status, create_date, user_id, sname, saddress,sphone_number )  
+INSERT INTO order_detail(shipping_id, order_status, create_date, the_user_id, sname, saddress,sphone_number )  
 VALUES(1, 'waiting', '2021-11-23', 1,'Nguyen Bao', 'Phu Yen', '0123456789');
-INSERT INTO order_detail(shipping_id, order_status, create_date, user_id, sname, saddress,sphone_number )  
+INSERT INTO order_detail(shipping_id, order_status, create_date, the_user_id, sname, saddress,sphone_number )  
 VALUES(2, 'processing', '2021-11-23', 2,'Tran Hung', 'TP.HCM', '0123456798');
-INSERT INTO order_detail(shipping_id, order_status, create_date, user_id, sname, saddress,sphone_number )  
+INSERT INTO order_detail(shipping_id, order_status, create_date, the_user_id, sname, saddress,sphone_number )  
 VALUES(3, 'success', '2021-11-27', 3,'Thu Vi', 'TP.HCM', '0123456700');
-INSERT INTO order_detail(shipping_id, order_status, create_date, user_id, sname, saddress,sphone_number )  
+INSERT INTO order_detail(shipping_id, order_status, create_date, the_user_id, sname, saddress,sphone_number )  
 VALUES(4, 'success', '2021-11-27', 4,'Dan Anh', 'TP.HCM', '0123456700');
-INSERT INTO order_detail(shipping_id, order_status, create_date, user_id, sname, saddress,sphone_number )  
+INSERT INTO order_detail(shipping_id, order_status, create_date, the_user_id, sname, saddress,sphone_number )  
 VALUES(3, 'success', '2021-11-27', 3,'Lam Truong', 'TP.HCM', '0123456700');
-INSERT INTO order_detail(shipping_id, order_status, create_date, user_id, sname, saddress,sphone_number )  
+INSERT INTO order_detail(shipping_id, order_status, create_date, the_user_id, sname, saddress,sphone_number )  
 VALUES(4, 'success', '2021-11-27', 4,'Le Trung', 'TP.HCM', '0123456700');
-INSERT INTO order_detail(shipping_id, order_status, create_date, user_id, sname, saddress,sphone_number )  
+INSERT INTO order_detail(shipping_id, order_status, create_date, the_user_id, sname, saddress,sphone_number )  
 VALUES(3, 'success', '2021-11-27', 3,'Tan Truong', 'TP.HCM', '0123456700');
-INSERT INTO order_detail(shipping_id, order_status, create_date, user_id, sname, saddress,sphone_number )  
+INSERT INTO order_detail(shipping_id, order_status, create_date, the_user_id, sname, saddress,sphone_number )  
 VALUES(4, 'success', '2021-11-27', 4,'NGoc Trung', 'TP.HCM', '0123456700');
 
 -- create data for table shipping_unit
@@ -408,40 +408,40 @@ insert into shipping_unit (shipping_name,shipping_phone,shipping_website) values
 insert into shipping_unit (shipping_name,shipping_phone,shipping_website) values ('giaohangdambao','0945645645','giaohangdambao.vn');
 insert into shipping_unit (shipping_name,shipping_phone,shipping_website) values ('shippingstar','0956756756','shippingstar.com');
 
--- cart of user 1
-insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (1,1,1,1,2,10000);
-insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (1,1,7,2,1,100000);
-insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (1,1,13,3,5,21000);
+-- cart of the_user 1
+insert into cart_contain_product (cart_id, the_user_id, product_id, shop_id, product_count, saleprice) values (1,1,1,1,2,10000);
+insert into cart_contain_product (cart_id, the_user_id, product_id, shop_id, product_count, saleprice) values (1,1,7,2,1,100000);
+insert into cart_contain_product (cart_id, the_user_id, product_id, shop_id, product_count, saleprice) values (1,1,13,3,5,21000);
 
--- cart of user 3
-insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (3,3,2,1,4,10000);
-insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (3,3,8,2,1,50000);
-insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (3,3,14,3,2,20000);
+-- cart of the_user 3
+insert into cart_contain_product (cart_id, the_user_id, product_id, shop_id, product_count, saleprice) values (3,3,2,1,4,10000);
+insert into cart_contain_product (cart_id, the_user_id, product_id, shop_id, product_count, saleprice) values (3,3,8,2,1,50000);
+insert into cart_contain_product (cart_id, the_user_id, product_id, shop_id, product_count, saleprice) values (3,3,14,3,2,20000);
 
--- cart of user 4
-insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (4,4,19,4,2,10000);
-insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (4,4,25,5,2,20000);
+-- cart of the_user 4
+insert into cart_contain_product (cart_id, the_user_id, product_id, shop_id, product_count, saleprice) values (4,4,19,4,2,10000);
+insert into cart_contain_product (cart_id, the_user_id, product_id, shop_id, product_count, saleprice) values (4,4,25,5,2,20000);
 
--- cart of user 5
-insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (5,5,20,4,2,30000);
-insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (5,5,26,5,2,40000);
+-- cart of the_user 5
+insert into cart_contain_product (cart_id, the_user_id, product_id, shop_id, product_count, saleprice) values (5,5,20,4,2,30000);
+insert into cart_contain_product (cart_id, the_user_id, product_id, shop_id, product_count, saleprice) values (5,5,26,5,2,40000);
 
--- cart of user 7
-insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (7,7,3,1,2,60000);
-insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (7,7,4,1,1,70000);
+-- cart of the_user 7
+insert into cart_contain_product (cart_id, the_user_id, product_id, shop_id, product_count, saleprice) values (7,7,3,1,2,60000);
+insert into cart_contain_product (cart_id, the_user_id, product_id, shop_id, product_count, saleprice) values (7,7,4,1,1,70000);
 
--- cart of user 8
-insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (8,8,15,3,3,80000);
-insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (8,8,16,3,4,100000);
+-- cart of the_user 8
+insert into cart_contain_product (cart_id, the_user_id, product_id, shop_id, product_count, saleprice) values (8,8,15,3,3,80000);
+insert into cart_contain_product (cart_id, the_user_id, product_id, shop_id, product_count, saleprice) values (8,8,16,3,4,100000);
 
--- cart of user 10
-insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (9,9,30,5,1,7000);
+-- cart of the_user 10
+insert into cart_contain_product (cart_id, the_user_id, product_id, shop_id, product_count, saleprice) values (9,9,30,5,1,7000);
 
-insert into user_manage_shop values (1,1);
-insert into user_manage_shop values (2,2);
-insert into user_manage_shop values (3,3);
-insert into user_manage_shop values (4,4);
-insert into user_manage_shop values (5,5);
+insert into the_user_manage_shop values (1,1);
+insert into the_user_manage_shop values (2,2);
+insert into the_user_manage_shop values (3,3);
+insert into the_user_manage_shop values (4,4);
+insert into the_user_manage_shop values (5,5);
 
 
 -- Cửa hàng thời trang --
@@ -495,17 +495,17 @@ insert into Product (shop_id,product_name,listed_price,origin,remaining_amount,i
 insert into Product (shop_id,product_name,listed_price,origin,remaining_amount,information) values(5,N'Sữa rửa mặt Catephil',200000.00,N'Việt Nam',10,N'Khối lượng: 320g');
 
 
-insert into cart (user_id) values (1);
-insert into cart (user_id) values (2);
-insert into cart (user_id) values (3);
-insert into cart (user_id) values (4);
-insert into cart (user_id) values (5);
-insert into cart (user_id) values (6);
-insert into cart (user_id) values (7);
-insert into cart (user_id) values (8);
-insert into cart (user_id) values (9);
-insert into cart (user_id) values (10);
-insert into cart (user_id) values (11);
+insert into cart (the_user_id) values (1);
+insert into cart (the_user_id) values (2);
+insert into cart (the_user_id) values (3);
+insert into cart (the_user_id) values (4);
+insert into cart (the_user_id) values (5);
+insert into cart (the_user_id) values (6);
+insert into cart (the_user_id) values (7);
+insert into cart (the_user_id) values (8);
+insert into cart (the_user_id) values (9);
+insert into cart (the_user_id) values (10);
+insert into cart (the_user_id) values (11);
 
 insert into category (name_category) values ('categort_1');
 insert into category (name_category) values ('categort_2');
@@ -529,10 +529,10 @@ ALTER TABLE order_contains_product
 ADD FOREIGN KEY (shop_id, product_id) REFERENCES product(shop_id, product_id);
 
 ALTER TABLE shop
-ADD FOREIGN KEY (shop_owner_id) REFERENCES user(user_id);
+ADD FOREIGN KEY (shop_owner_id) REFERENCES the_user(the_user_id);
 
 ALTER TABLE order_detail
-ADD FOREIGN KEY (user_id) REFERENCES user(user_id);
+ADD FOREIGN KEY (the_user_id) REFERENCES the_user(the_user_id);
 
 ALTER TABLE order_detail
 ADD FOREIGN KEY (shipping_id) REFERENCES shipping_unit(shipping_id);
@@ -543,20 +543,20 @@ ADD FOREIGN KEY (shop_id, product_id) REFERENCES product(shop_id, product_id);
 ALTER TABLE product_category
 ADD FOREIGN KEY (category_id) REFERENCES category(category_id);
 
-ALTER TABLE user_manage_shop
+ALTER TABLE the_user_manage_shop
 ADD FOREIGN KEY (shop_id) REFERENCES shop(shop_id);
 
-ALTER TABLE user_manage_shop
-ADD FOREIGN KEY (user_id) REFERENCES user(user_id);
+ALTER TABLE the_user_manage_shop
+ADD FOREIGN KEY (the_user_id) REFERENCES the_user(the_user_id);
 
 ALTER TABLE cart_contain_product
 ADD FOREIGN KEY (product_id,shop_id) REFERENCES product(product_id,shop_id);
 
 ALTER TABLE cart_contain_product
-ADD FOREIGN KEY (cart_id,user_id) REFERENCES cart(cart_id,user_id);
+ADD FOREIGN KEY (cart_id,the_user_id) REFERENCES cart(cart_id,the_user_id);
 
 ALTER TABLE cart
-add foreign key(user_id) references user(user_id);
+add foreign key(the_user_id) references the_user(the_user_id);
 
 ALTER TABLE category
 add foreign key(parent_category_id) references category(category_id);
@@ -565,4 +565,4 @@ ALTER TABLE feedback
 ADD FOREIGN KEY ( product_id,shop_id) REFERENCES product(product_id,shop_id);
 
 ALTER TABLE feedback
-ADD FOREIGN KEY ( user_id) REFERENCES user(user_id);
+ADD FOREIGN KEY ( the_user_id) REFERENCES the_user(the_user_id);

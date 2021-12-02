@@ -1,4 +1,4 @@
-<div class="table-title">All Orders</div>
+<div class="table-title">Products Table</div>
 
 <br />
 

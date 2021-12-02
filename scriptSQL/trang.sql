@@ -27,7 +27,7 @@ CREATE TABLE order_detail (
     sname varchar(40) not null,
     saddress text not null,
     sphone_number varchar(10) not null,
-    total decimal(10,2) default 0.0,
+    total decimal(12,2) default 0.0,
     primary key(order_id)
 );
 
@@ -330,6 +330,12 @@ BEGIN
  END $$
  DELIMITER ;
 
+<<<<<<< HEAD
+ALTER TABLE feedback
+ADD FOREIGN KEY ( product_id,shop_id) REFERENCES product(product_id,shop_id);
+ALTER TABLE feedback
+ADD FOREIGN KEY ( user_id) REFERENCES user(user_id);
+=======
 
 -- 4.2
 drop function if exists get_shop_level;
@@ -394,3 +400,4 @@ ALTER TABLE feedback
 ADD FOREIGN KEY ( user_id) REFERENCES users(user_id);
 
 
+>>>>>>> efa7ec048a51228e61e2e454f9c76ce6d2616352
