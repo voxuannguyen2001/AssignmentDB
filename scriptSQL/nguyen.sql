@@ -6,7 +6,7 @@ use e_commerce;
 drop table if exists the_user;
 create table the_user(
 	user_id integer not null auto_increment,
-    username varchar(30) not null,
+    username varchar(30) not null unique,
     pass varchar(50) not null,
     mobile varchar(16),
     email varchar(50),
@@ -186,6 +186,7 @@ end //
 delimiter ;
 
 
+# Function: Determine membership of a buyer
 drop function if exists get_buyer_membership;
 delimiter //
 create function get_buyer_membership (_user_id integer)
@@ -211,6 +212,26 @@ delimiter ;
 
 
 
+# Procedure: update user info
+drop procedure if exists update_user_info;
+delimiter //
+create procedure update_user_info (
+    in _user_id integer, 
+    in _mobile varchar(12),
+    in _email varchar(12), 
+    in _fullname varchar(50),
+    in _sex char(1),
+    in _dob date,
+    in _avatar varchar(64),
+    in _seller_flag boolean,
+    in _buyer_flag boolean
+)
+begin
+    update the_user
+    set mobile = _mobile, email = _email, fullname = _fullname, sex = _sex, dob = _dob, avatar = _avatar, seller_flag = _seller_flag, buyer_flag = _buyer_flag
+    where user_id = _user_id;
+end //
+delimiter ;
 
 -- insert data to user
 call add_user (

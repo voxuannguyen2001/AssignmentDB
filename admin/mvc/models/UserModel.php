@@ -27,17 +27,30 @@ class UserModel extends Database
         $this->query($sql);
     }
 
-    function insert_user($username, $password, $mobile, $email, $fullname, $dob, $sex, $avatar) 
+    function insert_user($username, $password, $mobile, $email, $fullname, $dob, $sex, $avatar, $is_seller, $is_buyer) 
     {   
         $mobile = !empty($mobile) ? "'$mobile'" : "NULL";
         $email = !empty($email) ? "'$email'" : "NULL";
-        $fullname = !empty($fullname) ? "'$fullname'" : "NULL";
         $dob = !empty($dob) ? "'$dob'" : "NULL";
         $sex = !empty($sex) ? "'$sex'" : "NULL";
         $avatar = !empty($avatar) ? "'$avatar'" : "NULL";
-        
-        $sql = "CALL add_user($username, $password, $mobile, $email, $fullname, $sex, $dob, $avatar, false, true)";
-        $this->query($sql);
-        return "1";
+        $is_buyer = intval($is_buyer);
+        $is_seller = intval($is_seller);
+        $sql = "CALL add_user('$username', '$password', $mobile, $email, '$fullname', $sex, $dob, $avatar, $is_seller, $is_buyer)";
+        return $this->query($sql);
+    }
+
+    function update_user($user_id, $mobile, $email, $fullname, $dob, $sex, $avatar, $is_seller, $is_buyer) 
+    {   
+        $mobile = !empty($mobile) ? "'$mobile'" : "NULL";
+        $email = !empty($email) ? "'$email'" : "NULL";
+        $dob = !empty($dob) ? "'$dob'" : "NULL";
+        $sex = !empty($sex) ? "'$sex'" : "NULL";
+        $avatar = !empty($avatar) ? "'$avatar'" : "NULL";
+        $is_buyer = intval($is_buyer);
+        $is_seller = intval($is_seller);
+
+        $sql = "CALL update_user_info('$user_id', $mobile, $email, '$fullname', $sex, $dob, $avatar, $is_seller, $is_buyer)";
+        return $this->query($sql);
     }
 }

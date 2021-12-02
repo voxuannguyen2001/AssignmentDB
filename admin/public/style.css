@@ -125,3 +125,7 @@ body {
 .form_edit-ocp{
     margin: auto;
 }
+
+#manage-user {
+    height: 750px;
+}
