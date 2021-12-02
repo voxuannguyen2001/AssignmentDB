@@ -681,16 +681,38 @@ FOREIGN KEY (Cart_id,User_id) REFERENCES cart(Cart_id,User_id);
 
 -- end-----------------------------------------------------------------------------
 
--- add product_id 30 of shop_id 5 into cart of user_id 2
-call add_product_into_cart(2,2,30,5,2,200000);
+-- sample call and select
+-- call insert procedure
+call add_product_into_cart(2,2,30,5,1,200000);
+-- throw error
+-- call add_product_into_cart(2,2,30,5,11,100000); 
+
+-- call for trigger1
+call add_product_into_cart(2,2,29,5,2,100000);
 call add_product_into_cart(1,1,29,5,1,100000);
+
+-- call procedure1
 select * from cart_contain_product;
 call get_product_info_in_cart(3,"DESC");
+call get_product_info_in_cart(1,"ASC");
+
+-- call procedure2
 call get_total_money_in_cart_and_user_info(200000,"DESC");
+call get_total_money_in_cart_and_user_info(100000,"ASC");
+
+-- select for function1
 select * from order_contains_product where order_id = 3;
-select num_of_product_type_in_order(3,2000000);
+ select num_of_product_type_in_order(3,40000);
+-- throw error
+-- select num_of_product_type_in_order(3,2000000);
+
+-- select for function2
 select * from cart_contain_product where shop_id = 1;
 select total_money_pay_shop_in_cart(1);
+-- throw error
+select total_money_pay_shop_in_cart(31);
+
+
 
 
 
