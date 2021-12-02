@@ -1,4 +1,4 @@
-USE Ecommerce1;
+USE e_commerce;
 
 DROP TABLE IF exists User_manage_shop;
 CREATE TABLE User_manage_shop (
@@ -32,9 +32,9 @@ saleprice integer,
 primary key (cart_id, user_id, product_id, shop_id)
 );
 
--- table user 
-drop table if exists user;
-create table user(
+-- table the_user 
+drop table if exists the_user;
+create table the_user(
 	user_id integer not null auto_increment,
     username varchar(30) not null,
     pass varchar(30) not null,
@@ -66,7 +66,7 @@ create procedure add_user (
     in buyer_flag boolean
 )
 begin
-	insert into user (username, pass, mobile, email, fullname, sex, dob, avatar, seller_flag, buyer_flag)
+	insert into the_user (username, pass, mobile, email, fullname, sex, dob, avatar, seller_flag, buyer_flag)
 		values (username, pass, mobile, email, fullname, sex, dob, avatar, seller_flag, buyer_flag);
 end//
 delimiter ;
@@ -182,6 +182,67 @@ BEGIN
  END $$
  DELIMITER ;  
 
+-- function2
+-- tính tổng tiền của các sản phẩm thuộc 1 shop nào đó trong giỏ hàng của tất cả user
+-- truyen vao tham so la shop_id
+
+DELIMITER $$
+DROP function if exists total_money_pay_shop_in_cart $$
+CREATE function total_money_pay_shop_in_cart(para_shop_id int)
+returns int
+READS SQL DATA
+DETERMINISTIC
+BEGIN
+	-- kiem tra shop_id truyen vao co ton tai ko
+    declare input_valid bool default true;
+    declare tmp_id int default -1;
+    declare cur_check cursor for 
+		select shop_id 
+		from shop
+		where shop_id = para_shop_id;
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET input_valid = false;
+	OPEN cur_check;
+    check_loop: loop
+		fetch cur_check into tmp_id;
+        IF (input_valid = false) THEN
+			CLOSE cur_check;
+			LEAVE check_loop;        
+		END IF;
+        if (tmp_id > -1) then
+			CLOSE cur_check;
+			LEAVE check_loop;        
+		END IF;
+	end loop check_loop;
+    
+    -- neu shop_id truyen vao khong ton tai
+	if (input_valid = false) then
+		signal sqlstate '45000' set message_text = "Invalid shop_id!";
+    else
+    begin
+		DECLARE total int default 0;  
+        declare amount int; 
+		declare func_saleprice int;
+		DECLARE exit_loop BOOLEAN;  
+		DECLARE cur CURSOR FOR
+			SELECT product_count, saleprice
+			FROM cart_contain_product
+			where shop_id = para_shop_id;
+		DECLARE CONTINUE HANDLER FOR NOT FOUND SET exit_loop = TRUE;
+		OPEN cur;
+		cart_loop: LOOP
+			FETCH cur INTO amount,func_saleprice;
+			IF exit_loop THEN
+				CLOSE cur;
+				LEAVE cart_loop;        
+			END IF;
+			set total = total + amount*func_saleprice;
+		END LOOP cart_loop;
+		return total;
+		end;
+    end if;
+ END $$
+ DELIMITER ;  
+ 
 -- trigger1
 -- neu 1 user_id them 1 loai san pham vs so luong sp cua loai vao gio hang cua ho --> kiem 
 -- tra gio hang da day chua? (gio hang chua toi da la 20 loai san pham)
@@ -281,9 +342,9 @@ begin
     if type_order = "ASC"
     then
     begin
-        select user.user_id, username, fullname, mobile, sum(saleprice*product_count) as total_money
-        from user, cart_contain_product
-        where user.user_id = cart_contain_product.user_id
+        select the_user.user_id, username, fullname, mobile, sum(saleprice*product_count) as total_money
+        from the_user, cart_contain_product
+        where the_user.user_id = cart_contain_product.user_id
         group by cart_contain_product.user_id
         having total_money >= x
         order by total_money;
@@ -292,9 +353,9 @@ begin
     if type_order = "DESC"
     then
     begin
-        select user.user_id, username, fullname, mobile, sum(saleprice*product_count) as total_money
-        from user, cart_contain_product
-        where user.user_id = cart_contain_product.user_id
+        select the_user.user_id, username, fullname, mobile, sum(saleprice*product_count) as total_money
+        from the_user, cart_contain_product
+        where the_user.user_id = cart_contain_product.user_id
         group by cart_contain_product.user_id
         having total_money >= x
         order by total_money DESC;
@@ -303,67 +364,6 @@ begin
 end;
 $$
 Delimiter ;
-
--- function2
--- tính tổng tiền của các sản phẩm thuộc 1 shop nào đó trong giỏ hàng của tất cả user
--- truyen vao tham so la shop_id
-
-DELIMITER $$
-DROP function if exists total_money_pay_shop_in_cart $$
-CREATE function total_money_pay_shop_in_cart(para_shop_id int)
-returns int
-READS SQL DATA
-DETERMINISTIC
-BEGIN
-	-- kiem tra shop_id truyen vao co ton tai ko
-    declare input_valid bool default true;
-    declare tmp_id int default -1;
-    declare cur_check cursor for 
-		select shop_id 
-		from shop
-		where shop_id = para_shop_id;
-	DECLARE CONTINUE HANDLER FOR NOT FOUND SET input_valid = false;
-	OPEN cur_check;
-    check_loop: loop
-		fetch cur_check into tmp_id;
-        IF (input_valid = false) THEN
-			CLOSE cur_check;
-			LEAVE check_loop;        
-		END IF;
-        if (tmp_id > -1) then
-			CLOSE cur_check;
-			LEAVE check_loop;        
-		END IF;
-	end loop check_loop;
-    
-    -- neu shop_id truyen vao khong ton tai
-	if (input_valid = false) then
-		signal sqlstate '45000' set message_text = "Invalid shop_id!";
-    else
-    begin
-		DECLARE total int default 0;  
-        declare amount int; 
-		declare func_saleprice int;
-		DECLARE exit_loop BOOLEAN;  
-		DECLARE cur CURSOR FOR
-			SELECT product_count, saleprice
-			FROM cart_contain_product
-			where shop_id = para_shop_id;
-		DECLARE CONTINUE HANDLER FOR NOT FOUND SET exit_loop = TRUE;
-		OPEN cur;
-		cart_loop: LOOP
-			FETCH cur INTO amount,func_saleprice;
-			IF exit_loop THEN
-				CLOSE cur;
-				LEAVE cart_loop;        
-			END IF;
-			set total = total + amount*func_saleprice;
-		END LOOP cart_loop;
-		return total;
-		end;
-    end if;
- END $$
- DELIMITER ;  
 
 -- create data ----------------------------------------------------------------------------------------------
 -- create data for table shipping_unit
@@ -666,7 +666,7 @@ FOREIGN KEY (Shop_id) REFERENCES shop(Shop_id);
 
 ALTER TABLE User_manage_shop
 ADD CONSTRAINT ums_userfk
-FOREIGN KEY (User_id) REFERENCES user(User_id);
+FOREIGN KEY (User_id) REFERENCES the_user(User_id);
 
 -- table shipping_unit
 
@@ -691,7 +691,6 @@ select * from order_contains_product where order_id = 3;
 select num_of_product_type_in_order(3,2000000);
 select * from cart_contain_product where shop_id = 1;
 select total_money_pay_shop_in_cart(1);
-
 
 
 
