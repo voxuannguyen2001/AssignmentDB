@@ -442,4 +442,4 @@ create index idx_fullname on the_user(fullname);
 
 -- call get_order_count_all_users(0);
 
-select get_buyer_membership(0);
+-- select get_buyer_membership(0);

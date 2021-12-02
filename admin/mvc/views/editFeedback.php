@@ -4,8 +4,8 @@
 
 <div class="form-container">
   <form id="form_edit_feedback" action="" onsubmit="return false">
-  <div class="alert alert-edit-user mt-4 mb-4">
-      <strong class="alert-edit-user-text"></strong>
+  <div class="alert alert-edit-feedback mt-4 mb-4">
+      <strong class="alert-edit-feedback-text"></strong>
     </div>
     <div class="row justify-content-center">
       <div class="col-md-8 form_edit_feedback">
@@ -28,7 +28,7 @@
           <input 
           type="text" 
           class="form-control"
-           oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(.*)\./g, '$1');" 
+           
            id="editfeedback-review_content" 
            value="<?php echo $data['feedback']['review_content'] ?>" />
         </div>

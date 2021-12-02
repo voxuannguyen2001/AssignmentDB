@@ -16,4 +16,9 @@ class ProductModel extends Database
         $sql = "DELETE FROM product WHERE shop_id = $shopID AND product_id = $productID";
         $this->query($sql);
     }
+    function get_products_ordered_by_user_in_order_of_price($userID)
+    {
+        $sql = "call get_products_ordered_by_user_in_order_of_price($userID)";
+        return $this->get_list($sql);
+    }
 }

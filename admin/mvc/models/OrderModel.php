@@ -5,13 +5,11 @@ class OrderModel extends Database
     {
         $sql = "SELECT * From order_detail";
         $data = $this->get_list($sql);
-        foreach ($data as &$order)
+        foreach ($data as $key => $value)
         {
-            $id = $order['order_id'];
-            $sql = "select getTotal('$id')";//function(procedure) update total of order in trang.sql
-            $this->query($sql);
+            $total = $this->get_total($value['order_id']);
+            $data[$key]['total'] = $total['total'];
         }
-
         return $data;
     }
     function get_order($orderID)
@@ -33,5 +31,10 @@ class OrderModel extends Database
     {
         $sql = "DELETE FROM order_detail";
         $this->query($sql);
+    }
+    function get_total($orderID)
+    {
+        $sql = "select calculate_total_of_order($orderID) as total";
+        return $this->get_one($sql);
     }
 }

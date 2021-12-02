@@ -153,6 +153,20 @@ $(document).ready(function () {
     });
     //end edit order_contains_product
 
+    //Thang_procedure1
+    $(".btn-Thang_procedure1").click(function () {
+        let userID = $("#input-user_id_for_procedure").val();
+        window.location = ("http://localhost/AssignmentDB/admin/Product/ProductByUser/" + userID);
+    })
+    //Thang_procedure1
+
+    //Thang_procedure2
+    $(".btn-Thang_procedure2").click(function () {
+        let shopID = $("#input-shop_id_for_procedure").val();
+        window.location = ("http://localhost/AssignmentDB/admin/User/UserByShop/" + shopID);
+    })
+    //Thang_procedure2
+
     // add user
     $(".alert-insert-user").fadeOut();
     $(".btn-insert-user").click(function () {
@@ -318,8 +332,6 @@ $(document).ready(function () {
             rating,
             user_id
         }
-
-        console.log(body);
 
         if (!(body.product_id && body.review_content && body.rating && body.user_id)) {
             $(".alert-insert-feedback").addClass("alert-danger");

@@ -26,9 +26,17 @@ class Product extends Controller
         $this->data['shop'] = $shop;
         $this->data['productList'] = $products;
         $this->view('layout', $this->data);
-    }function deleteProduct($shopID, $productID)
-    {
-        $this->productModel->remove_product($shopID, $productID);
-        header("Location: http://localhost/AssignmentDB/admin/Product/ProductTable/" . $shopID);
     }
+    function ProductByUser($userID)
+    {
+        $products = $this->productModel->get_products_ordered_by_user_in_order_of_price($userID);
+        $this->data['render'] = 'productByUser';
+        $this->data['productList'] = $products;
+        $this->view('layout', $this->data);
+    }
+    // function deleteProduct($shopID, $productID)
+    // {
+    //     $this->productModel->remove_product($shopID, $productID);
+    //     header("Location: http://localhost/AssignmentDB/admin/Product/ProductTable/" . $shopID);
+    // }
 }
