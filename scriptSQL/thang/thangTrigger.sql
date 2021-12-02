@@ -6,6 +6,8 @@ FOR EACH ROW
 BEGIN
     DECLARE newAmount int;
     DECLARE curAmount int;
+    DECLARE curPrice decimal(12,2);
+    
     SELECT remaining_amount INTO curAmount FROM product WHERE (product.product_id = new.product_id and product.shop_id = new.shop_id); 
     SET newAmount = curAmount - new.amount;
     IF newAmount < 0 THEN
@@ -14,7 +16,43 @@ BEGIN
 	ELSE
         UPDATE product SET remaining_amount = newAmount WHERE (product_id = new.product_id and shop_id = new.shop_id);
 	END IF;
+   
+    SELECT listed_price INTO curPrice FROM product WHERE (product.product_id = new.product_id and product.shop_id = new.shop_id);
+    IF new.selling_price < curPrice THEN
+        SET new.selling_price = curPrice;
+    END IF;
+   
 END$$
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS before_update_order_contains_product;
+DELIMITER $$
+CREATE TRIGGER before_update_order_contains_product
+BEFORE UPDATE
+ON order_contains_product FOR EACH ROW
+BEGIN
+    DECLARE newAmount int;
+    DECLARE curAmount int;
+    DECLARE curPrice decimal(12,2);
+    
+    SELECT remaining_amount INTO curAmount FROM product WHERE (product.product_id = new.product_id and product.shop_id = new.shop_id);
+    IF new.amount > old.amount THEN 
+        SET newAmount = curAmount - (new.amount - old.amount);
+        IF newAmount < 0 THEN
+            SET new.amount = curAmount;  
+            UPDATE product SET remaining_amount + old.amount = 0 WHERE (product_id = new.product_id and shop_id = new.shop_id);
+	    ELSE
+            UPDATE product SET remaining_amount = newAmount WHERE (product_id = new.product_id and shop_id = new.shop_id);
+	    END IF;
+    ELSE
+        UPDATE product SET remaining_amount = curAmount + old.amount - new.amount WHERE (product_id = new.product_id and shop_id = new.shop_id);
+   
+    SELECT listed_price INTO curPrice FROM product WHERE (product.product_id = new.product_id and product.shop_id = new.shop_id);
+    IF new.selling_price < curPrice THEN
+        SET new.selling_price = curPrice;
+    END IF;
+END$$    
+
 DELIMITER ;
 
 DROP TRIGGER IF EXISTS before_insert_order_contains_product;
@@ -157,3 +195,14 @@ BEGIN
  DELIMITER ;
  
  select rank_product_based_rating(1,10);
+
+
+DROP TRIGGER IF EXISTS before_insert_order_detail;
+DELIMITER $$
+CREATE TRIGGER before_insert_order_detail 
+BEFORE INSERT ON order_detail 
+FOR EACH ROW
+BEGIN
+    SET new.total = 
+END$$
+DELIMITER ;
