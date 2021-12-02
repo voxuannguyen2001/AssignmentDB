@@ -40,7 +40,12 @@ call add_feedback(4,20,
 call add_feedback(1,6,
     "Very much worth the cost",
     5,'2021-12-02',3);
-
+call add_feedback(3,18,
+    "I will buy it next times",
+    5,'2021-12-02',4);
+call add_feedback(1,1,
+    "I like it",
+    5,'2021-12-02',4);    
 -- foreign key at the end of page
 USE e_commerce;
 
@@ -50,7 +55,7 @@ CREATE TABLE shop (
     shop_id int not null auto_increment,
     shop_name varchar(25) not null,
     shop_description text,
-    shop_owner varchar(9) not null,
+    shop_owner int not null,
     create_date date,
     -- amount_customer int,
     primary key(shop_id)
@@ -83,6 +88,19 @@ CREATE TABLE product_category(
 );
 
 
+
+# Trigger: after insert a new shop. Insert (user_id, shop_id) into table user_manage_shop
+drop trigger if exists on_create_shop;
+delimiter //
+create trigger on_create_shop after insert on shop
+for each row
+begin
+    insert into user_manage_shop values(new.shop_owner, new.shop_id, CURRENT_DATE);
+end;//
+delimiter ;
+
+
+
 -- INSERT DATA INTO TABLES
 drop procedure if exists add_shop;
 delimiter //
@@ -111,7 +129,7 @@ delimiter ;
 call add_shop (
 'Casio',
 'Phố Đồng Hồ',
-11,
+7,
 date('2021-11-05')
 );
 
@@ -120,6 +138,7 @@ INSERT INTO shop(shop_name, shop_description, shop_owner, create_date) VALUES ('
 INSERT INTO shop(shop_name, shop_description, shop_owner, create_date) VALUES('PS','health care',3,'2021-11-03');
 INSERT INTO shop(shop_name, shop_description, shop_owner, create_date) VALUES('Blue Light','',4,'2021-11-04');
 INSERT INTO shop(shop_name, shop_description, shop_owner, create_date) VALUES('Eye Plus','',5,'2021-11-05');
+insert into shop(shop_name, shop_description, shop_owner, create_date) values("Nguyen'store", "Everything you need for your computers", 6, CURRENT_DATE);
 
 INSERT INTO order_detail(shipping_id, order_status, create_date, user_id, sname, saddress,sphone_number )  
 VALUES(1, 'waiting', '2021-11-23', 1,'Nguyen Trang', 'Phu Yen', '0123456789');
@@ -220,16 +239,11 @@ end;
 Delimiter ;
 
 -- add feedback- success with user purchased this product when run trigger 2.1 feedback_check
-insert into feedback(shop_id, product_id, review_content, rating, create_date,user_id) values(1,1,'okay',3,date('2021-11-27'),5);
-call add_feedback(1,3,"fine", 4, date('2021-11-27'),2);
-call add_feedback(1,1,"normal", 3, date('2021-11-27'),2);
-call add_feedback(1,1,"awesome", 5, date('2021-11-27'),1);
-call add_feedback(1,1,"amazming in shop_id = 1", 4, date('2021-11-27'),3);
-
-
-
-
-
+insert into feedback(shop_id, product_id, review_content, rating, create_date,user_id) values(1,1,'okay',3,date('2021-11-27'),1);
+call add_feedback(1,3,"fine", 4, date('2021-11-27'),1);
+call add_feedback(1,1,"normal", 3, date('2021-11-27'),3);
+call add_feedback(1,1,"awesome", 5, date('2021-11-27'),8);
+call add_feedback(1,1,"amazming in shop_id = 1", 4, date('2021-11-27'),4);
 
 
 -- 2.2
@@ -370,7 +384,6 @@ BEGIN
    
  END $$
  DELIMITER ;
-
 
 -- 4.2
 drop function if exists get_shop_level;

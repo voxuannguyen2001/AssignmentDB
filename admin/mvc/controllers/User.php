@@ -74,33 +74,46 @@ class User extends Controller
         }
     }
 
-    function editUser($user_id) {
+    function editUser($user_id)
+    {
         $this->data['user'] = $this->userModel->get_user($user_id);
         $this->data['render'] = 'editUser';
         $this->view('layout', $this->data);
     }
 
-    function removeAll() {
+    function removeAll()
+    {
         $this->userModel->remove_all();
         header("Location: http://localhost/AssignmentDB/admin/User/userPage");
     }
 
-    function getShops($user_id) {
+    function getShops($user_id)
+    {
         $this->data['shopList'] = $this->userModel->get_shops_managed_by_user($user_id);
         $this->data['render'] = 'shopsManagedByUser';
         $this->view('layout', $this->data);
     }
 
-    function searchUser($username = '') {
+    function searchUser($username = '')
+    {
         $this->data['userList'] = $this->userModel->search_user_by_username($username);
         $this->data['render'] = 'user';
         $this->view('layout', $this->data);
     }
 
-    function userStats($min_order_count = "0") {
+    function userStats($min_order_count = "0")
+    {
         $this->data['min_order_count'] = $min_order_count;
         $this->data['userStats'] = $this->userModel->get_order_count_all_users($min_order_count);
         $this->data['render'] = 'userStats';
+        $this->view('layout', $this->data);
+    }
+
+    function UserByShop($shopID)
+    {
+        $users = $this->userModel->get_users_ordered_by_number_of_order_from_a_shop($shopID);
+        $this->data['render'] = 'userByShop';
+        $this->data['userList'] = $users;
         $this->view('layout', $this->data);
     }
 }

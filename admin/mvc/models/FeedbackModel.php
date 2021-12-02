@@ -42,9 +42,10 @@ class FeedbackModel extends Database
         $sql = "call getFeedbackOfProduct($feedbackID, 'ASC')";
         $this->query($sql);
     }
-    function get_numfeedback_by_shop($shopID)
+    function get_numfeedback_by_shop($shopID, $type="")
     {
-        $sql = "CALL getFeedbackOfShop('$shopID','')";
+        if ($type == "TTT") $type = "";
+        $sql = "CALL getFeedbackOfShop('$shopID','$type')";
         return $this->get_list($sql);
     }
 
