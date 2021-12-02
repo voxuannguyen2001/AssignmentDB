@@ -1,5 +1,51 @@
 -- Run this script once every git pull
 
+
+call add_feedback(1,1,
+    "great deal",
+    4,'2021-11-27',3);
+call add_feedback(1,2,
+    "White, square and functional, like a librarian",
+    4,'2021-11-28',3);
+call add_feedback(2,9,
+    "high quality",
+    4,'2021-11-29',3);
+call add_feedback(2,10,
+    "great price",
+    4,'2021-11-30',4);
+call add_feedback(3,14,
+    "pencils ever",
+    5,'2021-11-30',4);
+call add_feedback(2,11,
+    "good value",
+    3,'2021-12-01',3);
+call add_feedback(1,3,
+    " It sets us up for criticism. That said - there is no way we can recommend this paper.",
+    1,'2021-12-01',4);
+call add_feedback(2,8,
+    " If you work in an office and know your paper, YOU WILL NOT LIKE THIS PAPER",
+    2,'2021-12-02',4);
+call add_feedback(3,15,
+    " The paper is exactly what I expected.",
+    5,'2021-12-02',4);
+call add_feedback(1,4,
+    " waste of time.",
+    1,'2021-12-02',3);
+call add_feedback(2,12,
+    " Do *NOT* order this product! it may not work and you wont' get a refund.",
+    1,'2021-12-02',3);
+call add_feedback(4,20,
+    "Not new, broken packages.",
+    1,'2021-12-02',4);
+call add_feedback(1,6,
+    "Very much worth the cost",
+    5,'2021-12-02',3);
+call add_feedback(3,18,
+    "I will buy it next times",
+    5,'2021-12-02',4);
+call add_feedback(1,1,
+    "I like it",
+    5,'2021-12-02',4);    
 -- foreign key at the end of page
 USE e_commerce;
 

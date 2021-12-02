@@ -1,5 +1,3 @@
--- Run this script once every git pull
-
 USE e_commerce;
 
 DROP TABLE IF exists user_manage_shop;
@@ -93,7 +91,3 @@ insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product
 
 -- cart of user 10
 insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (9,9,30,5,1,7000);
-
-
-
-
