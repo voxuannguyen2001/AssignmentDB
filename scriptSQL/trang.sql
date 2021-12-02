@@ -57,7 +57,7 @@ begin
 		signal sqlstate '45000' set message_text = "this user already owns a shop";
 	end;    
     end if;
-    if (ishop_name in (select shope_name from shop)) then 
+    if (ishop_name in (select shop_name from shop)) then 
     begin
 		signal sqlstate '45000' set message_text = "this name already is used for a shop";
 	end;    
@@ -147,34 +147,34 @@ end//
 delimiter ;
 
 
--- -- 2.1
--- drop trigger feedback_check
--- delimiter |
--- create trigger feedback_check before insert on feedback
--- for each row
--- begin
--- 	if (new.user_id not in (
--- 		select user_id 
---         from order_detail, order_contains_product
--- 		where order_detail.order_id = order_contains_product.order_id 
--- 		and new.product_id = order_contains_product.product_id
--- 		and new.shop_id = order_contains_product.shop_id
--- 		and order_detail.order_status = "success"
---     ))  then 
---     begin 
--- 		signal sqlstate '45000' set message_text = "this user hasn't purchased this product successfully";
--- 	end;
---     end if;
---     if new.user_id in (
--- 		select user_id
---         from feedback
---         where user_id = new.user_id and shop_id = new.shop_id and product_id = new.product_id)
--- 	then 
---     begin 
--- 		signal sqlstate '45000' set message_text = "this user has sent feedback for this product";
--- 	end;
---     end if;
--- end;
+-- 2.1
+drop trigger feedback_check
+delimiter |
+create trigger feedback_check before insert on feedback
+for each row
+begin
+	if (new.user_id not in (
+		select user_id 
+        from order_detail, order_contains_product
+		where order_detail.order_id = order_contains_product.order_id 
+		and new.product_id = order_contains_product.product_id
+		and new.shop_id = order_contains_product.shop_id
+		and order_detail.order_status = "success"
+    ))  then 
+    begin 
+		signal sqlstate '45000' set message_text = "this user hasn't purchased this product successfully";
+	end;
+    end if;
+    if new.user_id in (
+		select user_id
+        from feedback
+        where user_id = new.user_id and shop_id = new.shop_id and product_id = new.product_id)
+	then 
+    begin 
+		signal sqlstate '45000' set message_text = "this user has sent feedback for this product";
+	end;
+    end if;
+end;
 | 
 Delimiter ;
 
@@ -299,8 +299,8 @@ Delimiter ;
 
 -- 4.1 function just calculate the total of order by orderID
 DELIMITER $$
-DROP function IF EXISTS  calculate_total_of_order $$
-CREATE function calculate_total_of_order(iorder_id int)
+DROP function IF EXISTS  getTotal $$
+CREATE function getTotal(iorder_id int)
 returns int 
 READS SQL DATA
 DETERMINISTIC
@@ -330,12 +330,6 @@ BEGIN
  END $$
  DELIMITER ;
 
-<<<<<<< HEAD
-ALTER TABLE feedback
-ADD FOREIGN KEY ( product_id,shop_id) REFERENCES product(product_id,shop_id);
-ALTER TABLE feedback
-ADD FOREIGN KEY ( user_id) REFERENCES user(user_id);
-=======
 
 -- 4.2
 drop function if exists get_shop_level;
@@ -400,4 +394,3 @@ ALTER TABLE feedback
 ADD FOREIGN KEY ( user_id) REFERENCES users(user_id);
 
 
->>>>>>> efa7ec048a51228e61e2e454f9c76ce6d2616352

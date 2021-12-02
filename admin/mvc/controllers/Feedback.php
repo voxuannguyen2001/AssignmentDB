@@ -61,8 +61,9 @@ class Feedback extends Controller
       $create_date = date("Y/m/d");
       $user_id = $_POST['user_id'];
 
-      $sql = "INSERT INTO feedback(shop_id, product_id, review_content, rating, create_date, user_id) VALUES ('$shop_id', '$product_id','$review_content','$rating','$create_date','$user_id')";
+      $sql = "call add_feedback('$shop_id', '$product_id','$review_content','$rating','$create_date','$user_id')";
       $success = $this->feedbackModel->addFeedback($sql);
+      if ($success == 1) $success = " Add successfully";
       echo $success;
     }
     //header('location: http://localhost/AssignmentDB/admin/feedback/feedbackPage');
