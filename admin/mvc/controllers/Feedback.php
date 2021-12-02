@@ -42,6 +42,12 @@ class Feedback extends Controller
             $user_id = $_POST['user_id'];
             $sql = "INSERT INTO feedback(shop_id, product_id, review_content, rating, create_date, user_id) VALUES ('$shop_id', '$product_id','$review_content','$rating','$create_date','$user_id')";
             $success = $this->feedbackModel->addFeedback($sql);
+            if ($success) {
+                $message = "great answer";
+            } else {
+                $message = "failed";
+            }
+            echo "<script type='text/javascript'>alert('$message');</script>";
 
         }
         header('location: http://localhost/AssignmentDB/admin/feedback/feedbackPage');
