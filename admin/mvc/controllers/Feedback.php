@@ -18,6 +18,17 @@ class Feedback extends Controller
     $this->data['shopList'] = $shops;
     $this->view('layout', $this->data);
   }
+  function FeedbackInShop($shopID)
+  {
+    $products = $this->feedbackModel->get_numfeedback_by_shop($shopID);
+    $shops = $this->shopModel->get_all_shop();
+    $shop = $this->shopModel->get_shop_by($shopID);
+    $this->data['render'] = 'feedbackInShop';
+    $this->data['shopList'] = $shops;
+    $this->data['shop'] = $shop;
+    $this->data['productList'] = $products;
+    $this->view('layout', $this->data);
+  }
   function deletefeedback($feedbackID)
   {
     $this->feedbackModel->remove_feedback($feedbackID);
@@ -79,17 +90,7 @@ function doEditFeedback()
         echo $check;
     // }
 }
-  function FeedbackInShop($shopID)
-  {
-    $products = $this->productModel->get_product_by_shop($shopID);
-    $shops = $this->shopModel->get_all_shop();
-    $shop = $this->shopModel->get_shop_by($shopID);
-    $this->data['render'] = 'productTable';
-    $this->data['shopList'] = $shops;
-    $this->data['shop'] = $shop;
-    $this->data['productList'] = $products;
-    $this->view('layout', $this->data);
-  }
+
   function viewfeedback($feedbackID)
   {
     $this->feedbackModel->view_feedback($feedbackID);
