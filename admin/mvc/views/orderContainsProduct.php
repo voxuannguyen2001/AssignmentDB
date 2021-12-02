@@ -1,4 +1,4 @@
-<div class="table-title">The Order Have:<?php if ($data['list']) echo "HAHAHA" ?></div>
+<div class="table-title">The Order Have: </div>
 
 <table class="table table-striped mt-4">
   <thead>
@@ -20,7 +20,7 @@
           <td><?php echo $value['amount'] ?></td>
           <td><?php echo $value['selling_price'] ?></td>
           <td style="display:flex">
-            <a href="<?php echo $DOMAIN ?>/Order/deleteOrder/<?php echo $value['order_id'] ?>">
+            <a href="<?php echo $DOMAIN ?>/OrderContainsProduct/delete/<?php echo $data['orderID'] ?>/<?php echo $value['shop_id'] ?>/<?php echo $value['product_id'] ?>">
               <button type="button" class="btn btn-danger btn-action">Delete</button>
             </a>
             <a href="<?php echo $DOMAIN ?>/OrderContainsProduct/edit/<?php echo $data['orderID'] ?>/<?php echo $value['shop_id'] ?>/<?php echo $value['product_id'] ?>">
@@ -40,7 +40,7 @@
     </a>
   </div>
   <div class="function-text">
-    <a class="text-primary" href="<?php echo $DOMAIN ?>/Order/insertOrder">
+    <a class="text-primary" href="<?php echo $DOMAIN ?>/OrderContainsProduct/insert">
       Insert New
     </a>
   </div>

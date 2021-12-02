@@ -19,7 +19,7 @@ $(document).ready(function () {
             success: function (result) {
                 if (result == "failed") {
                     $(".alert-insert-order").addClass("alert-danger");
-                    $(".alert-insert-order-text").text("Failed!! You should fill all input");
+                    $(".alert-insert-order-text").text("Failed!! You should fill all inputs");
                     $(".alert-insert-order").fadeIn();
                     setTimeout(function () {
                         $(".alert-insert-order").fadeOut();
@@ -153,5 +153,81 @@ $(document).ready(function () {
     });
     //end edit order_contains_product
 
-});
+    // add user
+    $(".alert-insert-user").fadeOut();
+    $(".btn-insert-user").click(function () {
+        let username = $("#adduser-username").val();
+        let password = $("#adduser-password").val();
+        let mobile = $("#adduser-mobile").val();
+        let email = $("#adduser-email").val();
+        let fullname = $("#adduser-fullname").val();
+        let dob = $("#adduser-dob").val();
+        let sex = $(".adduser-sex:checked").val();
+        let avatar = $("#adduser-avatar").val();
+        let body = {
+            username,
+            password,
+            mobile,
+            email,
+            fullname,
+            dob,
+            sex,
+            avatar
+        } 
+        if (!(body.username && body.password && body.fullname)) {
+            $(".alert-insert-user").addClass("alert-danger");
+            $(".alert-insert-user-text").text("Failed!! You should fill all required input");
+            $(".alert-insert-user").fadeIn();
+            setTimeout(function () {
+                $(".alert-insert-user").fadeOut();
+                $(".alert-insert-user-text").text("");
+                $(".alert-insert-user").removeClass("alert-danger");
+            }, 1500);
+            return;
+        }
+        Object.keys(body).forEach(key => {
+            if (!body[key])
+                body[key] = null;
+        })
 
+        console.log(body);
+        $.ajax({
+            url: DOMAIN + "/User/doInsertUser",
+            method: "post",
+            data: body,
+            success: function (result) {
+                if (result == "1") {
+                    $(".alert-insert-user").fadeIn();
+                    $(".alert-insert-user").addClass("alert-success");
+                    $(".alert-insert-user-text").text("Success!!");
+                    setTimeout(function () {
+                        $(".alert-insert-user").fadeOut();
+                        $(".alert-insert-user").removeClass("alert-success");
+                        $(".alert-insert-user-text").text("");
+                    }, 1500);
+                } else {
+                    $(".alert-insert-user").addClass("alert-danger");
+                    $(".alert-insert-user-text").text("Error! Can't add into database");
+                    $(".alert-insert-user").fadeIn();
+                    setTimeout(function () {
+                        $(".alert-insert-user").fadeOut();
+                        $(".alert-insert-user-text").text("");
+                        $(".alert-insert-user").removeClass("alert-danger");
+                    }, 1500);
+                }
+                $("#form_insert_user")[0].reset();
+                // console.log(result);
+                // $(".alert-insert-user").addClass("alert-danger");
+                // $(".alert-insert-user-text").text(result);
+                // $(".alert-insert-user").fadeIn();
+                // setTimeout(function () {
+                //     $(".alert-insert-user").fadeOut();
+                //     $(".alert-insert-user-text").text("");
+                //     $(".alert-insert-user").removeClass("alert-danger");
+                // }, 2500);
+                
+            },
+            error: function () { },
+        });
+    });
+});

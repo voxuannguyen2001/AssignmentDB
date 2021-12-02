@@ -21,16 +21,16 @@ class OrderContainsProductModel extends Database
         $sql = "UPDATE order_contains_product SET amount = $amount, selling_price = $price WHERE order_id = $orderID AND shop_id = $shopID AND product_id = $productID";
         return $this->query($sql);
     }
-    // function remove_order($orderID)
-    // {
-    //     $sql = "DELETE FROM order_detail WHERE order_id = '$orderID'";
-    //     $this->query($sql);
-    // }
-    // function insert_order($shipping_id, $create_date, $the_user_id, $sname, $saddress, $sphone_number, $status)
-    // {
-    //     $sql = "INSERT INTO order_detail(shipping_id, order_status, create_date, the_user_id, sname, saddress, sphone_number ) VALUES($shipping_id, '$status', '$create_date', $the_user_id,'$sname', '$saddress', '$sphone_number')";
-    //     return $this->query($sql);
-    // }
+    function remove($orderID, $shopID, $productID)
+    {
+        $sql = "DELETE FROM order_contains_product WHERE order_id = $orderID AND shop_id = $shopID AND product_id = $productID";
+        $this->query($sql);
+    }
+    function do_insert($orderID, $shopID, $productID, $amount, $price)
+    {
+        $sql = "INSERT INTO order_contains_product(order_id, shop_id, product_id, amount_id, price) VALUES($orderID, $shopID, $productID, $amount, $price)";
+        return $this->query($sql);
+    }
     // function remove_all()
     // {
     //     $sql = "DELETE FROM order_detail";
