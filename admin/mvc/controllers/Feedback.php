@@ -1,64 +1,98 @@
 <?php
 class Feedback extends Controller
 {
-    public $data = array();
-    protected $feedbackModel;
-    protected $shopModel;
-    function __construct()
-    {
-        $this->feedbackModel = $this->model('FeedbackModel');
-        $this->shopModel = $this->model('ShopModel');
-    }
-    function FeedbackPage()
-    {
-        $feedbacks = $this->feedbackModel->get_all_feedback();
-        $shops = $this->shopModel->get_all_shop();
-        $this->data['render'] = 'feedback';
-        $this->data['feedbackList'] = $feedbacks;
-        $this->data['shopList'] = $shops;
-        $this->view('layout', $this->data);
-    }
-    function deletefeedback($feedbackID)
-    {
-        $this->feedbackModel->remove_feedback($feedbackID);
-        header("Location: http://localhost/AssignmentDB/admin/feedback/feedbackPage");
-    }
-    function insertfeedback()
-    {
-        $this->data['render'] = 'insertfeedback';
-        $this->view('layout', $this->data);
-    }
-    function edit_submit()
-    {
+  public $data = array();
+  protected $feedbackModel;
+  protected $shopModel;
+  function __construct()
+  {
+    $this->feedbackModel = $this->model('FeedbackModel');
+    $this->shopModel = $this->model('ShopModel');
+  }
+  function FeedbackPage()
+  {
+    $feedbacks = $this->feedbackModel->get_all_feedback();
+    $shops = $this->shopModel->get_all_shop();
+    $this->data['render'] = 'feedback';
+    $this->data['feedbackList'] = $feedbacks;
+    $this->data['shopList'] = $shops;
+    $this->view('layout', $this->data);
+  }
+  function deletefeedback($feedbackID)
+  {
+    $this->feedbackModel->remove_feedback($feedbackID);
+    header("Location: http://localhost/AssignmentDB/admin/feedback/feedbackPage");
+  }
+  function insertfeedback()
+  {
+    $this->data['render'] = 'insertfeedback';
+    $this->view('layout', $this->data);
+  }
+  function doInsertFeedback()
+  {
+    if (
+      empty($_POST['product_id'])
+      || empty($_POST['review_content'])
+      || empty($_POST['rating'])
+      || empty($_POST['user_id'])
+    ) {
+      echo 'failed';
+    } else {
+      echo '$action';
+      
+      $product_id = $_POST['product_id'];
 
-        $action = $_POST['submit'];
-        if ($action == 'submit') {
-            echo '$action';
-            $shop_id = $_POST['shop_id'];
-            $product_id = $_POST['product_id'];
-            $review_content = $_POST['review_content'];
-            $rating = $_POST['rating'];
-            $create_date = date("Y/m/d");
-            $user_id = $_POST['user_id'];
-            $sql = "INSERT INTO feedback(shop_id, product_id, review_content, rating, create_date, user_id) VALUES ('$shop_id', '$product_id','$review_content','$rating','$create_date','$user_id')";
-            $success = $this->feedbackModel->addFeedback($sql);
-            if ($success) {
-                $message = "great answer";
-            } else {
-                $message = "failed";
-            }
-            echo "<script type='text/javascript'>alert('$message');</script>";
+      $shop_id = 1;
 
-        }
-        header('location: http://localhost/AssignmentDB/admin/feedback/feedbackPage');
+
+      $review_content = $_POST['review_content'];
+      $rating = $_POST['rating'];
+      $create_date = date("Y/m/d");
+      $user_id = $_POST['user_id'];
+
+      $sql = "INSERT INTO feedback(shop_id, product_id, review_content, rating, create_date, user_id) VALUES ('$shop_id', '$product_id','$review_content','$rating','$create_date','$user_id')";
+      $success = $this->feedbackModel->addFeedback($sql);
+      echo $success;
     }
-    function FeedbackInShop($shopID)
-    {
-        // $feedback = $this->feedbackModel->
-    }
-    function viewfeedback($feedbackID)
-    {
-        $this->feedbackModel->view_feedback($feedbackID);
-        // header("Location: http://localhost/AssignmentDB/admin/feedback/feedbackPage");
-    }
+    //header('location: http://localhost/AssignmentDB/admin/feedback/feedbackPage');
+
+  }
+  function editFeedback($feedback_id) {
+    $this->data['feedback'] = $this->feedbackModel->get_feedback($feedback_id);
+    $this->data['render'] = 'editFeedback';
+    $this->view('layout', $this->data);
+}
+
+function doEditFeedback()
+{
+    // if (
+    //     empty($_POST['fullname'])
+    // ) {
+    //     echo 'failed';
+    // } else {
+
+        $check = $this->feedbackModel->update_feedback(
+            $_POST['feedback_id'],
+            $_POST['review_content'],
+            $_POST['rating']
+        );
+        echo $check;
+    // }
+}
+  function FeedbackInShop($shopID)
+  {
+    $products = $this->productModel->get_product_by_shop($shopID);
+    $shops = $this->shopModel->get_all_shop();
+    $shop = $this->shopModel->get_shop_by($shopID);
+    $this->data['render'] = 'productTable';
+    $this->data['shopList'] = $shops;
+    $this->data['shop'] = $shop;
+    $this->data['productList'] = $products;
+    $this->view('layout', $this->data);
+  }
+  function viewfeedback($feedbackID)
+  {
+    $this->feedbackModel->view_feedback($feedbackID);
+    // header("Location: http://localhost/AssignmentDB/admin/feedback/feedbackPage");
+  }
 }
