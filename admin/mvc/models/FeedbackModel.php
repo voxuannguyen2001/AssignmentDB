@@ -1,4 +1,5 @@
 <?php
+
 class FeedbackModel extends Database
 {
     function get_all_feedback()
@@ -23,15 +24,19 @@ class FeedbackModel extends Database
     }    
     function addFeedback($sql)
 	{
-        $result = $this->query($sql); 
-        if (!$result) {
-            die (" hihi ERROR: Adding record failed: " . mysqli_error($this->conn));
-            // Thông báo lỗi nếu thực thi câu lệnh thất bại
-        } else {
-            echo "Add feedbacksuccessful";
-            return $result;
-        }
+        return $this->query($sql); 
 	}
+    // function getShopByProductId($product_id)
+    // {
+    //   $sql = "SELECT shop_id FROM PRODUCT where product_id = '$product_id'";
+    //   print($sql);
+    //   return $this->get_one($sql);
+    // }
+    function update_feedback($feedback_id, $review_content, $rating) 
+    {   
+        $sql = "UPDATE feedback SET review_content=$review_content, rating=$rating WHERE feedback_id=$feedback_id";
+        return $this->query($sql);
+    }
     function view_feedback($feedbackID)
     {
         $sql = "call getFeedbackOfProduct($feedbackID, 'ASC')";

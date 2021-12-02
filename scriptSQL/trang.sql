@@ -243,9 +243,9 @@ Delimiter ;
 
 -- 3.2
 
-drop procedure if exists getFeedbackOfProduct
+drop procedure if exists getFeedbackOfShop
 delimiter |
-create procedure getFeedbackOfProduct(
+create procedure getFeedbackOfShop(
     in ishop_id int,
     in type_order varchar(4)
     )
