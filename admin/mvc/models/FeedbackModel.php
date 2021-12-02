@@ -32,5 +32,10 @@ class FeedbackModel extends Database
             return $result;
         }
 	}
+    function view_feedback($feedbackID)
+    {
+        $sql = "call getFeedbackOfProduct($feedbackID, 'ASC')";
+        $this->query($sql);
+    }
 
 }
