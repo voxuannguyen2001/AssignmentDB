@@ -1,3 +1,4 @@
+
 <div class="table-title">All feedbacks in shop</div>
 <div class="dropdown">
     <button class="dropbtn">Choose the shop</button>
@@ -9,6 +10,15 @@
         } ?>
     </div>
 </div>
+<?php
+$link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+// echo $link;
+
+$tmp = explode("/", $link);
+
+$shopID = end($tmp);
+
+?>
 <table class="table table-striped mt-4">
     <thead>
         <tr>
@@ -18,7 +28,14 @@
             <th scope="col">Origin</th>
             <th scope="col">Amount</th>
             <th scope="col">Information</th>
-            <th scope="col">Number of feedbacks</th>
+            <th scope="col">
+                <a class="" href="<?php echo $DOMAIN ?>/Feedback/FeedbackInShopASC/<?php echo $shopID?>">
+                    <button type="button" class="">Number of feedbacks</button>
+                </a>
+                <a class="" href="<?php echo $DOMAIN ?>/Feedback/FeedbackInShopDESC/<?php echo $shopID?>">
+                    <button type="button" class="">DESC</button>
+                </a>
+            </th>
         </tr>
     </thead>
     <tbody>

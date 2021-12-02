@@ -40,7 +40,12 @@ call add_feedback(4,20,
 call add_feedback(1,6,
     "Very much worth the cost",
     5,'2021-12-02',3);
-
+call add_feedback(3,18,
+    "I will buy it next times",
+    5,'2021-12-02',4);
+call add_feedback(1,1,
+    "I like it",
+    5,'2021-12-02',4);    
 -- foreign key at the end of page
 USE e_commerce;
 

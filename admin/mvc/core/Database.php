@@ -5,7 +5,7 @@ class Database
     protected $hostname = "localhost";
     protected $username = "root";
     protected $password = "";
-    protected $dbname = 'e_commerce';
+    protected $dbname = 'e_commerce2';
     function __construct()
     {
         $this->conn = mysqli_connect($this->hostname, $this->username, $this->password, $this->dbname) or die('Can\'t connect to database');
