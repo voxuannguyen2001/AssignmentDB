@@ -121,7 +121,13 @@ body {
 } 
 /* end manage product */
 
-
 .form_edit-ocp{
     margin: auto;
+}
+.form_insert-ocp{
+    margin: auto;
+}
+
+#manage-user {
+    height: 750px;
 }

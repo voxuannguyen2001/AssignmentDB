@@ -4,21 +4,21 @@
 
 <div class="form">
 <form action="" onsubmit="return false" id="form_insert-ocp">
-        <div class="alert alert-edit-ocp mt-4 mb-4">
-            <strong class="alert-edit-ocp-text"></strong>
+        <div class="alert alert-insert-ocp mt-4 mb-4">
+            <strong class="alert-insert-ocp-text"></strong>
         </div>
         <div class="row" >
             <div class="col-lg-8 form_insert-ocp">
                 <div>
-                    <label for="input-order_id" class="form-label">Order ID: </label>
-                    <input type="number" class="form-control input-order_id" />
+                    <label for="input-order_id" class="form-label mt-2">Order ID: </label>
+                    <text type="number" class="form-control input-order_id" readonly><?php echo $data['orderID']?></text>
                 </div>
                 <div>
-                    <label for="input-shop_id" class="form-label">Shop ID: </label>
+                    <label for="input-shop_id" class="form-label mt-2">Shop ID: </label>
                     <input type="number" class="form-control input-shop_id" />
                 <div>
                     <label for="input-product_id" class="form-label mt-2">Product ID: </label>
-                    <text type="number" class="form-control input-product_id">
+                    <input type="number" class="form-control input-product_id" />
                 </div>
                 <div>
                     <label for="input-amount" class="form-label mt-2">Amount: </label>
@@ -30,7 +30,7 @@
                 </div>
 
                 <div class="contain-button">
-                    <button class="btn btn-primary btn-edit-ocp mt-3" id = "btn-insert-ocp">Insert New</button>
+                    <button class="btn btn-primary btn-insert-ocp mt-3" id="btn-insert-ocp<?php echo $data['orderID']?>">Insert New</button>
                 </div>
             </div>
         </div>

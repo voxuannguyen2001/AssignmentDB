@@ -33,25 +33,50 @@
                 </div>
                 
                 <div>
-                    <label class="form-label mt-2">Sex: </label>
-                    <div class="form-check">
-                    <input class="form-check-input adduser-sex" type="radio" name="Sex" id="Male" value="M">
-                    <label class="form-check-label" for="Male">
-                        Male
-                    </label>
-                    </div>
-                    <div class="form-check">
-                    <input class="form-check-input adduser-sex" type="radio" name="Sex" id="Female" value="F">
-                    <label class="form-check-label" for="Female">
-                        Female
-                    </label>
+                    <label class="form-label mt-2" for="user-avatar">Select Avatar </label>
+                    <input class="form-control" type="file" id="adduser-avatar" name="user-avatar" accept="image/*">
+                </div>
+
+                <div>
+                    <label class="form-label mt-2">Sex</label>
+                    <div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input adduser-sex" type="radio" name="Sex" id="adduser-sex-male" value="M">
+                            <label class="form-check-label" for="adduser-sex-male">
+                                Male
+                            </label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input adduser-sex" type="radio" name="Sex" id="adduser-sex-female" value="F">
+                            <label class="form-check-label" for="adduser-sex-female">
+                                Female
+                            </label>
+                        </div>
                     </div>
                 </div>
 
                 <div>
-                    <label class="form-label mt-2" for="user-avatar">Select Avatar:</label>
-                    <input class="form-control" type="file" id="adduser-avatar" name="user-avatar" accept="image/*">
+                    <label class="form-label mt-2">User type</label>
+                    <div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input adduser-usertype" type="checkbox" value="" id="adduser-usertype-buyer" checked>
+                            <label class="form-check-label" for="adduser-usertype-buyer">
+                                Buyer
+                            </label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input adduser-usertype" type="checkbox" value="" id="adduser-usertype-seller">
+                            <label class="form-check-label" for="adduser-usertype-seller">
+                                Seller
+                            </label>
+                        </div>
+                    </div>
                 </div>
+
+
+
                 <div class="contain-button">
                     <button class="btn btn-primary btn-insert-user mt-3" type="submit">Add New User</button>
                 </div>

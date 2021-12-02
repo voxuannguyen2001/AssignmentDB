@@ -1,4 +1,4 @@
-<div class="table-title">All Orders</div>
+<div class="table-title">Products Table</div>
 
 <br />
 
@@ -26,7 +26,7 @@
             <th scope="col">Origin</th>
             <th scope="col">Amount</th>
             <th scope="col">Information</th>
-            <th scope="col">Action</th>
+            <!-- <th scope="col">Action</th> -->
         </tr>
     </thead>
     <tbody>
@@ -40,11 +40,11 @@
                     <td><?php echo $value['origin'] ?></td>
                     <td><?php echo $value['remaining_amount'] ?></td>
                     <td><?php echo $value['information'] ?></td>
-                    <td style="display:flex">
+                    <!-- <td style="display:flex">
                         <a class="text-danger" href="<?php echo $DOMAIN ?>/Product/deleteProduct/<?php echo $data['shop']['shop_id']?>/<?php echo $value['product_id']?>">
                             <button type="button" class="btn btn-danger">Delete</button>
                         </a>
-                    </td>
+                    </td> -->
                 </tr>
         <?php  }
         } ?>

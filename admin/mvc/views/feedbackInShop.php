@@ -1,4 +1,4 @@
-<div class="table-title">All feedbacks</div>
+<div class="table-title">All feedbacks in shop</div>
 <div class="dropdown">
     <button class="dropbtn">Choose the shop</button>
     <div class="dropdown-content">
@@ -33,7 +33,7 @@
                     <td><?php echo $value['review_content'] ?></td>
                     <td><?php echo $value['rating'] ?></td>
                     <td><?php echo $value['create_date'] ?></td>
-                    <td><?php echo $value['users_id'] ?></td>
+                    <td><?php echo $value['user_id'] ?></td>
                     <td style="display:flex">
                         <a class="text-danger" href="<?php echo $DOMAIN ?>/feedback/deletefeedback/<?php echo $value['feedback_id'] ?>">
                             <button type="button" class="btn btn-danger">Delete</button>

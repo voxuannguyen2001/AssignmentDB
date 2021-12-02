@@ -6,7 +6,7 @@ use e_commerce;
 drop table if exists the_user;
 create table the_user(
 	user_id integer not null auto_increment,
-    username varchar(30) not null,
+    username varchar(30) not null unique,
     pass varchar(50) not null,
     mobile varchar(16),
     email varchar(50),
@@ -20,8 +20,7 @@ create table the_user(
     primary key(user_id)
 );
 
-
--- table order contains_product
+# Table order contains_product
 drop table if exists order_contains_product;
 create table order_contains_product(
 	shop_id integer not null,
@@ -33,7 +32,7 @@ create table order_contains_product(
 );
 
 
--- procedure: insert to user procedure with input validation
+# Procedure: insert to user procedure with input validation
 drop procedure if exists add_user;
 delimiter //
 create procedure add_user (
@@ -81,19 +80,27 @@ end//
 delimiter ;
 
 
-# Trigger: when create a new shop. Change the shop owner's seller_flag to true and insert (user_id, shop_id) into table user_manage_shop
+# Trigger: when create a new shop. Insert (user_id, shop_id) into table user_manage_shop
 drop trigger if exists on_create_shop;
 delimiter //
 create trigger on_create_shop after insert on shop
 for each row
 begin
-	set @found_user = (select count(*) from the_user where id = new.shop_owner);
-    if @found_user = 0 then
-		signal sqlstate '45000' set message_text = 'shop_owner not found';
-	end if;
 	update the_user set seller_flag = true 
 	where user_id = new.shop_owner;
     insert into user_manage_shop values(shop_owner, new.shop_id);
+end;//
+delimiter ;
+
+
+# Trigger: after insert new data to user_manage_shop, change user's seller_flag to true
+drop trigger if exists on_insert_user_manage_shop;
+delimiter //
+create trigger on_insert_user_manage_shop before insert on user_manage_shop
+for each row
+begin
+	update the_user set seller_flag = true 
+	where user_id = new.user_id;
 end;//
 delimiter ;
 
@@ -110,14 +117,15 @@ end if;
 delimiter ;
 
 
-# Procedure: get shop owned by a user
-drop procedure if exists get_shop_owned_by_user;
+# Procedure: get shop managed by a user
+drop procedure if exists get_shops_managed_by_user;
 delimiter //
-create procedure get_shop_owned_by_user (in _username varchar(30))
+create procedure get_shops_managed_by_user (in _user_id int)
 begin
-	select username, fullname, shop_id, shop_name, create_date 
-    from user, shop
-    where username = _username and user_id = shop_owner;
+	select u.username as username, u.fullname as fullname, s.shop_name as shop_name, s.create_date as create_date, ums.start_date as start_date
+    from the_user as u, user_manage_shop as ums, shop as s
+    where u.user_id = _user_id and u.user_id = ums.user_id and ums.shop_id = s.shop_id
+    order by create_date;
 end //
 delimiter ;
 
@@ -186,6 +194,7 @@ end //
 delimiter ;
 
 
+# Function: Determine membership of a buyer
 drop function if exists get_buyer_membership;
 delimiter //
 create function get_buyer_membership (_user_id integer)
@@ -211,6 +220,26 @@ delimiter ;
 
 
 
+# Procedure: update user info
+drop procedure if exists update_user_info;
+delimiter //
+create procedure update_user_info (
+    in _user_id integer, 
+    in _mobile varchar(12),
+    in _email varchar(12), 
+    in _fullname varchar(50),
+    in _sex char(1),
+    in _dob date,
+    in _avatar varchar(64),
+    in _seller_flag boolean,
+    in _buyer_flag boolean
+)
+begin
+    update the_user
+    set mobile = _mobile, email = _email, fullname = _fullname, sex = _sex, dob = _dob, avatar = _avatar, seller_flag = _seller_flag, buyer_flag = _buyer_flag
+    where user_id = _user_id;
+end //
+delimiter ;
 
 -- insert data to user
 call add_user (

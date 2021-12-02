@@ -28,12 +28,12 @@ class OrderContainsProductModel extends Database
     }
     function do_insert($orderID, $shopID, $productID, $amount, $price)
     {
-        $sql = "INSERT INTO order_contains_product(order_id, shop_id, product_id, amount_id, price) VALUES($orderID, $shopID, $productID, $amount, $price)";
+        $sql = "INSERT INTO order_contains_product(order_id, shop_id, product_id, amount, selling_price) VALUES($orderID, $shopID, $productID, $amount, $price)";
         return $this->query($sql);
     }
-    // function remove_all()
-    // {
-    //     $sql = "DELETE FROM order_detail";
-    //     $this->query($sql);
-    // }
+    function remove_all($orderID)
+    {
+        $sql = "DELETE FROM order_contains_product WHERE order_id = $orderID";
+        $this->query($sql);
+    }
 }

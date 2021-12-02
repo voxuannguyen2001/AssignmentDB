@@ -1,4 +1,4 @@
-<div class="table-title">The Order Have: </div>
+<div class="table-title">The Order Has: </div>
 
 <table class="table table-striped mt-4">
   <thead>
@@ -35,12 +35,12 @@
 
 <div class="manage-order">
   <div class="function-text">
-    <a class="text-danger" href="<?php echo $DOMAIN ?>/Order/removeAll">
+    <a class="text-danger" href="<?php echo $DOMAIN ?>/OrderContainsProduct/removeAll/<?php echo $data['orderID']?>">
       Delete All
     </a>
   </div>
   <div class="function-text">
-    <a class="text-primary" href="<?php echo $DOMAIN ?>/OrderContainsProduct/insert">
+    <a class="text-primary" href="<?php echo $DOMAIN ?>/OrderContainsProduct/insert/<?php echo $data['orderID']?>">
       Insert New
     </a>
   </div>

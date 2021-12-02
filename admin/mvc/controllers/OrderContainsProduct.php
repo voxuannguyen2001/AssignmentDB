@@ -37,9 +37,10 @@ class OrderContainsProduct extends Controller
         $this->orderContainsProductModel->remove($orderID, $shopID, $productID);
         header("Location: http://localhost/AssignmentDB/admin/OrderContainsProduct/OrderContainsProductPage/" . $orderID);
     }
-    function insert()
+    function insert($orderID)
     {
         $this->data['render'] = 'insertOrderContainsProduct';
+        $this->data['orderID'] = $orderID;
         $this->view('layout', $this->data);
     }
     function doInsert($orderID)
@@ -51,10 +52,9 @@ class OrderContainsProduct extends Controller
             echo $check;
         }
     }
-    // function removeAll()
-    // {
-    //     $orderModel = $this->model('OrderModel');
-    //     $orderModel->remove_all();
-    //     header("Location: http://localhost/AssignmentDB/admin/Order/OrderPage");
-    // }
+    function removeAll($orderID)
+    {
+        $this->orderContainsProductModel->remove_all($orderID);
+        header("Location: http://localhost/AssignmentDB/admin/orderContainsProduct/OrderContainsProductPage/" . $orderID);
+    }
 }

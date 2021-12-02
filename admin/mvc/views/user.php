@@ -1,6 +1,6 @@
 <div class="table-title">All Users</div>
 
-<div class="table-responsive" style='height: 750px;'>
+<div class="table-responsive" id="manage-user">
     <table class="table table-striped mt-4 table-hover mh-100">
     <thead>
         <tr>
@@ -38,9 +38,17 @@
             <td><?php echo $value['date_created'] ?></td>
 
             <td>
-                <a class="text-danger" href="<?php echo $DOMAIN ?>/User/deleteUser/<?php echo $value['user_id'] ?>">
-                <button type="button" class="btn btn-danger">Delete</button>
-                </a>
+                <div class="d-flex align-items-center">
+                    <a href="<?php echo $DOMAIN ?>/User/deleteUser/<?php echo $value['user_id'] ?>">
+                        <button type="button" class="btn btn-danger btn-action">Delete</button>
+                    </a>
+                    <a href="<?php echo $DOMAIN ?>/User/editUser/<?php echo $value['user_id'] ?>">
+                        <button type="button" class="btn btn-success btn-action">Edit</button>
+                    </a>
+                    <a href="<?php echo $DOMAIN ?>/User/getShops/<?php echo $value['user_id'] ?>">
+                        <button type="button" class="btn btn-success btn-action text-nowrap">Get Shops</button>
+                    </a>
+                </div>
             </td>
             </tr>
         <?php  }
@@ -61,9 +69,3 @@
     </div>
     
 </div>
-
-<style>
-    .user-function-btn {
-        display: flex;
-    }
-</style>
