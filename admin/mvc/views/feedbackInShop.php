@@ -12,36 +12,33 @@
 <table class="table table-striped mt-4">
     <thead>
         <tr>
-            <th scope="col">feedback ID</th>
-            <th scope="col">Shop ID</th>
-            <th scope="col">Product ID</th>
-            <th scope="col">Content</th>
-            <th scope="col">Rating</th>
-            <th scope="col">Created</th>
-            <th scope="col">By User</th>
-            <th scope="col">Action</th>
+        <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Listed Price</th>
+            <th scope="col">Origin</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Information</th>
+            <th scope="col">Number of feedbacks</th>
         </tr>
     </thead>
     <tbody>
 
-        <?php if ($data['feedbackList']) {
-            foreach ($data['feedbackList'] as $key => $value) { ?>
+    <?php if ($data['productList']) {
+            foreach ($data['productList'] as $key => $value) { ?>
                 <tr>
-                    <td><?php echo $value['feedback_id'] ?> </td>
-                    <td><?php echo $value['shop_id'] ?></td>
-                    <td><?php echo $value['product_id'] ?></td>
-                    <td><?php echo $value['review_content'] ?></td>
-                    <td><?php echo $value['rating'] ?></td>
-                    <td><?php echo $value['create_date'] ?></td>
-                    <td><?php echo $value['user_id'] ?></td>
-                    <td style="display:flex">
-                        <a class="text-danger" href="<?php echo $DOMAIN ?>/feedback/deletefeedback/<?php echo $value['feedback_id'] ?>">
+                    <td><?php echo $value['product_id'] ?> </td>
+                    <td><?php echo $value['product_name'] ?></td>
+                    <td><?php echo $value['listed_price'] ?></td>
+                    <td><?php echo $value['origin'] ?></td>
+                    <td><?php echo $value['remaining_amount'] ?></td>
+                    <td><?php echo $value['information'] ?></td>
+                    <td><?php echo $value['numFeedback']?></td>
+                    <!-- <td style="display:flex">
+                        <a class="text-danger" href="<?php echo $DOMAIN ?>/Product/deleteProduct/<?php echo $data['shop']['shop_id']?>/<?php echo $value['product_id']?>">
                             <button type="button" class="btn btn-danger">Delete</button>
                         </a>
-                    </td>
-
+                    </td> -->
                 </tr>
-
         <?php  }
         } ?>
     </tbody>

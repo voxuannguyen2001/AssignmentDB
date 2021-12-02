@@ -122,9 +122,9 @@ drop procedure if exists get_shops_managed_by_user;
 delimiter //
 create procedure get_shops_managed_by_user (in _user_id int)
 begin
-	select u.username as username, u.fullname as fullname, s.shop_name as shop_name, s.create_date as create_date, ums.start_date as start_date
-    from the_user as u, user_manage_shop as ums, shop as s
-    where u.user_id = _user_id and u.user_id = ums.user_id and ums.shop_id = s.shop_id
+	select owner.username as username, owner.fullname as owner_name, s.shop_name as shop_name, s.create_date as create_date, ums.start_date as start_date
+    from the_user as u, user_manage_shop as ums, shop as s, the_user as owner
+    where u.user_id = _user_id and u.user_id = ums.user_id and ums.shop_id = s.shop_id and s.shop_owner = owner.user_id
     order by create_date;
 end //
 delimiter ;
@@ -164,17 +164,17 @@ end //
 delimiter ;
 
 
-# Procedure: get order ids of a user
-drop procedure if exists get_order_details_of_user;
+# Procedure: get number of orders of all users
+drop procedure if exists get_order_count_all_users;
 delimiter //
-create procedure get_order_details_of_user (in name varchar(30))
+create procedure get_order_count_all_users (in min_count int)
 begin
-	select od.order_id as Order_Id, (select(get_total_price(od.order_id))) as Total_Price, od.create_date as Date_Created,
-		count(*) as Number_of_products
+	select u.user_id as user_id, u.username as username, u.fullname as fullname, count(*) as order_count
     from the_user as u, order_detail as od
-    where u.username = name and u.user_id = od.user_id
-    group by od.order_id
-    order by od.create_date;
+    where u.user_id = od.user_id
+    group by u.user_id
+    having count(*) >= min_count
+    order by count(*), u.user_id;
 end //
 delimiter ;
 
@@ -415,9 +415,6 @@ insert into order_contains_product values (1, 3, 11, 1, 57000);
 
 insert into order_contains_product values (5, 1, 12, 1, 87000);
 insert into order_contains_product values (3, 3, 12, 1, 229000);
-
-
-
 
 insert into the_user (username, pass, mobile, email, fullname, sex, dob, avatar, seller_flag, buyer_flag)
 	values ('aaaaaaaa', 'aaaaaaaa', '0910290192', '123123123@gmail.com', 'abc', 'M', '2001-02-18', null, 1, 0);

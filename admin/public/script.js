@@ -428,9 +428,11 @@ $(document).ready(function () {
             error: function () { },
         });
     });
-});
+    
+    // search user
 
-function Thang_procedure1() {
-    document.getElementById
-    window.location = ("http://localhost/AssignmentDB/admin");
-}
+    $("#searchuser-btn").click(async () => {
+        let url = DOMAIN + '/User/searchUser/' + $("#searchuser-input").val();
+        window.location = url;
+    })
+});
