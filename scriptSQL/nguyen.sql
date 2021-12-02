@@ -17,6 +17,7 @@ create table the_user(
     seller_flag boolean,
     buyer_flag boolean,
     date_created date not null,
+    shop_manage_count integer not null default 0,
     primary key(user_id)
 );
 
@@ -80,29 +81,27 @@ end//
 delimiter ;
 
 
-# Trigger: when create a new shop. Insert (user_id, shop_id) into table user_manage_shop
-drop trigger if exists on_create_shop;
-delimiter //
-create trigger on_create_shop after insert on shop
-for each row
-begin
-	update the_user set seller_flag = true 
-	where user_id = new.shop_owner;
-    insert into user_manage_shop values(shop_owner, new.shop_id);
-end;//
-delimiter ;
+-- # Trigger: after insert a new shop. Insert (user_id, shop_id) into table user_manage_shop
+-- drop trigger if exists on_create_shop;
+-- delimiter //
+-- create trigger on_create_shop after insert on shop
+-- for each row
+-- begin
+--     insert into user_manage_shop values(new.shop_owner, new.shop_id, CURRENT_DATE);
+-- end;//
+-- delimiter ;
 
 
-# Trigger: after insert new data to user_manage_shop, change user's seller_flag to true
-drop trigger if exists on_insert_user_manage_shop;
-delimiter //
-create trigger on_insert_user_manage_shop before insert on user_manage_shop
-for each row
-begin
-	update the_user set seller_flag = true 
-	where user_id = new.user_id;
-end;//
-delimiter ;
+-- # Trigger: after insert new data to user_manage_shop, change user's seller_flag to true and increase shop_manage_count to one
+-- drop trigger if exists on_insert_user_manage_shop;
+-- delimiter //
+-- create trigger on_insert_user_manage_shop after insert on user_manage_shop
+-- for each row
+-- begin
+-- 	update the_user set seller_flag = true, shop_manage_count = shop_manage_count + 1
+-- 	where user_id = new.user_id;
+-- end;//
+-- delimiter ;
 
 
 # Trigger: before inserting a new user, assign date_created to current date if it is not set
@@ -169,7 +168,7 @@ drop procedure if exists get_order_count_all_users;
 delimiter //
 create procedure get_order_count_all_users (in min_count int)
 begin
-	select u.user_id as user_id, u.username as username, u.fullname as fullname, count(*) as order_count
+    select u.user_id as user_id, u.username as username, u.fullname as fullname, count(*) as order_count
     from the_user as u, order_detail as od
     where u.user_id = od.user_id
     group by u.user_id
@@ -207,7 +206,7 @@ begin
     
     set order_cnt = (select count(*) from order_detail 
 						where user_id = _user_id and year(create_date) = cur_year);
-	if order_cnt >= 10 and order_cnt < 30 then
+	if order_cnt < 30 then
 		set membership = 'Silver';
 	elseif order_cnt >= 30 and order_cnt < 50 then
 		set membership = 'Gold';
@@ -250,7 +249,7 @@ call add_user (
 'Vo Trinh Xuan Nguyen',
 'M',
 date('2001-02-18'),
-concat('voxuannguyen2001/avatar_', date_format(now(), "%Y_%j_%H%_%i_%s")),
+concat('img/voxuannguyen2001/avatar_', date_format(now(), "%Y_%j_%H%_%i_%s")),
 false,
 true
 );
@@ -263,7 +262,7 @@ call add_user (
 'Nguyen Phuoc Tri',
 'M',
 date('2001-08-28'),
-concat('nguyenphuoctri/avatar_', date_format(now(), "%Y_%j_%H%_%i_%s")),
+concat('img/nguyenphuoctri/avatar_', date_format(now(), "%Y_%j_%H%_%i_%s")),
 false,
 true
 );
@@ -277,7 +276,7 @@ call add_user (
 'Ho Truong Luong',
 'M',
 date('2001-10-08'),
-concat('hotruongluong/avatar_', date_format(now(), "%Y_%j_%H%_%i_%s")),
+concat('img/hotruongluong/avatar_', date_format(now(), "%Y_%j_%H%_%i_%s")),
 false,
 true
 );
@@ -290,7 +289,7 @@ call add_user (
 'Nguyen Thanh Cong',
 'M',
 date('2001-07-15'),
-concat('nguyenthanhcong/avatar_', date_format(now(), "%Y_%j_%H%_%i_%s")),
+concat('img/nguyenthanhcong/avatar_', date_format(now(), "%Y_%j_%H%_%i_%s")),
 false,
 true
 );
@@ -303,7 +302,7 @@ call add_user (
 'Nguyen Hai Son',
 'M',
 date('2001-02-24'),
-concat('nguyenhaison/avatar_', date_format(now(), "%Y_%j_%H%_%i_%s")),
+concat('img/nguyenhaison/avatar_', date_format(now(), "%Y_%j_%H%_%i_%s")),
 false,
 true
 );
@@ -316,7 +315,7 @@ call add_user (
 'Nguyen Minh Hai',
 'M',
 date('2001-10-19'),
-concat('nguyenminhhai/avatar_', date_format(now(), "%Y_%j_%H%_%i_%s")),
+concat('img/nguyenminhhai/avatar_', date_format(now(), "%Y_%j_%H%_%i_%s")),
 false,
 true
 );
@@ -329,33 +328,33 @@ call add_user (
 'Le Nguyen Yen Nhi',
 'F',
 date('2001-04-19'),
-concat('yennhi_le/avatar_', date_format(now(), "%Y_%j_%H%_%i_%s")),
+concat('img/yennhi_le/avatar_', date_format(now(), "%Y_%j_%H%_%i_%s")),
 false,
 true
 );
 
 call add_user (
-'linhchidepgai',
+'ltlinhchi',
 'linhchi01',
 '0167642349',
 'linhchi_lethi@hcmut.edu.vn',
 'Le Thi Linh Chi',
 'F',
 date('2000-12-25'),
-concat('linhchidepgai/avatar_', date_format(now(), "%Y_%j_%H%_%i_%s")),
+concat('img/ltlinhchi/avatar_', date_format(now(), "%Y_%j_%H%_%i_%s")),
 false,
 true
 );
 
 call add_user (
-'khanhchann',
-'khanhtranxinhdep',
+'khanhtran.2001',
+'khanhchannn',
 '0918239861',
 'tnkhanhtran@hcmut.edu.vn',
 'Tran Ngoc Khanh Tran',
 'F',
 date('2001-03-23'),
-concat('khanhchann/avatar_', date_format(now(), "%Y_%j_%H%_%i_%s")),
+concat('img/khanhtran.2001/avatar_', date_format(now(), "%Y_%j_%H%_%i_%s")),
 false,
 true
 );
@@ -417,7 +416,30 @@ insert into order_contains_product values (5, 1, 12, 1, 87000);
 insert into order_contains_product values (3, 3, 12, 1, 229000);
 
 
+alter table the_user 
+drop index if exists idx_fullname;
+create index idx_fullname on the_user(fullname);
 
+-- explain select * from the_user where fullname = 'Vo Trinh Xuan Nguyen';
 
-insert into the_user (username, pass, mobile, email, fullname, sex, dob, avatar, seller_flag, buyer_flag)
-	values ('aaaaaaaa', 'aaaaaaaa', '0910290192', '123123123@gmail.com', 'abc', 'M', '2001-02-18', null, 1, 0);
+-- show index from the_user;
+
+-- insert into shop(shop_name, shop_description, shop_owner, create_date) values("Nguyen'store", "Everything you need for your computers", 13, CURRENT_DATE);
+-- call add_user (
+-- 'voxuannguyen01',
+-- '12345678',
+-- '0397003301',
+-- 'voxuannguyen2001@gmail.com',
+-- 'Vo Trinh Xuan Nguyen',
+-- 'M',
+-- date('2001-02-18'),
+-- concat('img/voxuannguyen2001/avatar_', date_format(now(), "%Y_%j_%H%_%i_%s")),
+-- false,
+-- true
+-- );
+
+-- call get_shops_managed_by_user(1);
+
+-- call get_order_count_all_users(0);
+
+select get_buyer_membership(0);

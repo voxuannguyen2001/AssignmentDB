@@ -9,7 +9,7 @@ CREATE TABLE shop (
     shop_id int not null auto_increment,
     shop_name varchar(25) not null,
     shop_description text,
-    shop_owner varchar(9) not null,
+    shop_owner int not null,
     create_date date,
     -- amount_customer int,
     primary key(shop_id)
@@ -42,6 +42,19 @@ CREATE TABLE product_category(
 );
 
 
+
+# Trigger: after insert a new shop. Insert (user_id, shop_id) into table user_manage_shop
+drop trigger if exists on_create_shop;
+delimiter //
+create trigger on_create_shop after insert on shop
+for each row
+begin
+    insert into user_manage_shop values(new.shop_owner, new.shop_id, CURRENT_DATE);
+end;//
+delimiter ;
+
+
+
 -- INSERT DATA INTO TABLES
 drop procedure if exists add_shop;
 delimiter //
@@ -57,7 +70,7 @@ begin
 		signal sqlstate '45000' set message_text = "this user already owns a shop";
 	end;    
     end if;
-    if (ishop_name in (select shope_name from shop)) then 
+    if (ishop_name in (select shop_name from shop)) then 
     begin
 		signal sqlstate '45000' set message_text = "this name already is used for a shop";
 	end;    
@@ -70,7 +83,7 @@ delimiter ;
 call add_shop (
 'Casio',
 'Phố Đồng Hồ',
-11,
+7,
 date('2021-11-05')
 );
 
@@ -79,6 +92,7 @@ INSERT INTO shop(shop_name, shop_description, shop_owner, create_date) VALUES ('
 INSERT INTO shop(shop_name, shop_description, shop_owner, create_date) VALUES('PS','health care',3,'2021-11-03');
 INSERT INTO shop(shop_name, shop_description, shop_owner, create_date) VALUES('Blue Light','',4,'2021-11-04');
 INSERT INTO shop(shop_name, shop_description, shop_owner, create_date) VALUES('Eye Plus','',5,'2021-11-05');
+insert into shop(shop_name, shop_description, shop_owner, create_date) values("Nguyen'store", "Everything you need for your computers", 6, CURRENT_DATE);
 
 INSERT INTO order_detail(shipping_id, order_status, create_date, user_id, sname, saddress,sphone_number )  
 VALUES(1, 'waiting', '2021-11-23', 1,'Nguyen Trang', 'Phu Yen', '0123456789');
@@ -330,12 +344,6 @@ BEGIN
  END $$
  DELIMITER ;
 
-<<<<<<< HEAD
-ALTER TABLE feedback
-ADD FOREIGN KEY ( product_id,shop_id) REFERENCES product(product_id,shop_id);
-ALTER TABLE feedback
-ADD FOREIGN KEY ( user_id) REFERENCES user(user_id);
-=======
 
 -- 4.2
 drop function if exists get_shop_level;
@@ -400,4 +408,3 @@ ALTER TABLE feedback
 ADD FOREIGN KEY ( user_id) REFERENCES users(user_id);
 
 
->>>>>>> efa7ec048a51228e61e2e454f9c76ce6d2616352

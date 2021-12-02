@@ -18,6 +18,19 @@ end if;
 //
 delimiter ;
 
+
+# Trigger: after insert new data to user_manage_shop, change user's seller_flag to true and increase shop_manage_count to one
+drop trigger if exists on_insert_user_manage_shop;
+delimiter //
+create trigger on_insert_user_manage_shop after insert on user_manage_shop
+for each row
+begin
+	update the_user set seller_flag = true, shop_manage_count = shop_manage_count + 1
+	where user_id = new.user_id;
+end;//
+delimiter ;
+
+
 -- constraint pk
 ALTER TABLE user_manage_shop
 ADD CONSTRAINT user_shop_pk
