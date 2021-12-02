@@ -25,8 +25,8 @@
           <td><?php echo $value['sname'] ?></td>
           <td><?php echo $value['sphone_number'] ?></td>
           <td><?php echo $value['saddress'] ?></td>
-          <!-- <td><?php echo $value['total'] ?></td> -->
-          <td></td>
+          <td><?php echo $value['total'] ?></td>
+          <!-- <td></td> -->
           <td><?php echo $value['order_status'] ?></td>
           <td style="display:flex">
             <a href="<?php echo $DOMAIN ?>/Order/deleteOrder/<?php echo $value['order_id'] ?>">

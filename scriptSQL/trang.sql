@@ -137,6 +137,10 @@ create procedure add_feedback (
     in user_id int
 )
 begin
+    if rating < 1 or rating > 5 then 
+		signal sqlstate '45000' 
+			set message_text = 'rating must be between 1 and 5';
+    end if;
 	insert into feedback(shop_id, product_id, review_content, rating, create_date, user_id)
 		values (shop_id, product_id, review_content, rating, create_date,user_id);
 end//

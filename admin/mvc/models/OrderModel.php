@@ -4,7 +4,15 @@ class OrderModel extends Database
     function get_all_order()
     {
         $sql = "SELECT * From order_detail";
-        return $this->get_list($sql);
+        $data = $this->get_list($sql);
+        foreach ($data as &$order)
+        {
+            $id = $order['order_id'];
+            $sql = "select getTotal('$id')";//function(procedure) update total of order in trang.sql
+            $this->query($sql);
+        }
+
+        return $data;
     }
     function get_order($orderID)
     {
