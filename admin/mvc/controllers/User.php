@@ -84,4 +84,10 @@ class User extends Controller
         $this->userModel->remove_all();
         header("Location: http://localhost/AssignmentDB/admin/User/userPage");
     }
+
+    function getShops($user_id) {
+        $this->data['shopList'] = $this->userModel->get_shops_managed_by_user($user_id);
+        $this->data['render'] = 'shopsManagedByUser';
+        $this->view('layout', $this->data);
+    }
 }

@@ -45,6 +45,9 @@
                     <a href="<?php echo $DOMAIN ?>/User/editUser/<?php echo $value['user_id'] ?>">
                         <button type="button" class="btn btn-success btn-action">Edit</button>
                     </a>
+                    <a href="<?php echo $DOMAIN ?>/User/getShops/<?php echo $value['user_id'] ?>">
+                        <button type="button" class="btn btn-success btn-action text-nowrap">Get Shops</button>
+                    </a>
                 </div>
             </td>
             </tr>
@@ -66,9 +69,3 @@
     </div>
     
 </div>
-
-<style>
-    .user-function-btn {
-        display: flex;
-    }
-</style>

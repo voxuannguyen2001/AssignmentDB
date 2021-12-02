@@ -50,7 +50,12 @@ class UserModel extends Database
         $is_buyer = intval($is_buyer);
         $is_seller = intval($is_seller);
 
-        $sql = "CALL update_user_info('$user_id', $mobile, $email, '$fullname', $sex, $dob, $avatar, $is_seller, $is_buyer)";
+        $sql = "call update_user_info('$user_id', $mobile, $email, '$fullname', $sex, $dob, $avatar, $is_seller, $is_buyer)";
         return $this->query($sql);
+    }
+
+    function get_shops_managed_by_user($user_id) {
+        $sql = "call get_shops_managed_by_user('$user_id')";
+        return $this->get_list($sql);
     }
 }
