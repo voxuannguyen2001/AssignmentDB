@@ -90,4 +90,17 @@ class User extends Controller
         $this->data['render'] = 'shopsManagedByUser';
         $this->view('layout', $this->data);
     }
+
+    function searchUser($username = '') {
+        $this->data['userList'] = $this->userModel->search_user_by_username($username);
+        $this->data['render'] = 'user';
+        $this->view('layout', $this->data);
+    }
+
+    function userStats($min_order_count = "0") {
+        $this->data['min_order_count'] = $min_order_count;
+        $this->data['userStats'] = $this->userModel->get_order_count_all_users($min_order_count);
+        $this->data['render'] = 'userStats';
+        $this->view('layout', $this->data);
+    }
 }

@@ -356,4 +356,11 @@ $(document).ready(function () {
             error: function () { },
         });
     });
+    
+    // search user
+
+    $("#searchuser-btn").click(async () => {
+        let url = DOMAIN + '/User/searchUser/' + $("#searchuser-input").val();
+        window.location = url;
+    })
 });

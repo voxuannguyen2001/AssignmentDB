@@ -14,7 +14,7 @@ $DOMAIN = 'http://localhost/AssignmentDB/admin';
     <script src="<?php echo $DOMAIN ?>/public/bootstrap5/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href=" <?php echo $DOMAIN ?>/public/style.css" />
     <script src="<?php echo $DOMAIN ?>/public/script.js"></script>
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <title>Admin</title>
 </head>
 
@@ -24,7 +24,8 @@ $DOMAIN = 'http://localhost/AssignmentDB/admin';
                     else if ($data['render'] == 'feedback') echo "Feedback";
                     else if ($data['render'] == 'product') echo "Manage Products";
                     else if ($data['render'] == 'ccp') echo "Manage Product in User's cart";
-                    else if ($data['render'] == 'user') echo 'Manage Users';
+                    else if ($data['render'] == 'user' || $data['render'] == 'shopsManagedByUser' 
+                    || $data['render'] == 'insertUser' || $data['render'] == 'userStats') echo 'Manage Users';
                     
                 ?>
         </h1>

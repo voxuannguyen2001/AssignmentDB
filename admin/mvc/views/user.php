@@ -1,7 +1,12 @@
 <div class="table-title">All Users</div>
 
-<div class="table-responsive" id="manage-user">
-    <table class="table table-striped mt-4 table-hover mh-100">
+<div class="input-group mt-3 w-50 ">
+  <input type="text" class="form-control" placeholder="Search user by username" id="searchuser-input">
+  <a class="btn btn-primary" id="searchuser-btn">Seach</a>
+</div>
+
+<div class="table-responsive mt-4 table-bordered" id="manage-user">
+    <table class="table table-striped table-hover mh-100">
     <thead>
         <tr>
         <th scope="col">User ID</th>
@@ -56,6 +61,7 @@
     </tbody>
     </table>
 </div>
+
 <div class="user-function-btn mt-3">
     <div class="btn btn-primary btn-lg active">
         <a class="text-light text-decoration-none" role="button" href="<?php echo $DOMAIN ?>/User/removeAll">
@@ -67,5 +73,9 @@
         Add User
         </a>
     </div>
-    
+    <div class="btn btn-primary btn-lg active ms-3">
+        <a class="text-light text-decoration-none" href="<?php echo $DOMAIN ?>/User/userStats">
+        User statistics
+        </a>
+    </div>
 </div>
