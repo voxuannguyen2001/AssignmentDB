@@ -127,6 +127,14 @@ body {
 .form_insert-ocp{
     margin: auto;
 }
+#input-user_id_for_procedure{
+    width: 300px;
+    margin-bottom: 10px;
+}
+#input-shop_id_for_procedure{
+    width: 300px;
+    margin-bottom: 10px;
+}
 
 #manage-user {
     height: 750px;

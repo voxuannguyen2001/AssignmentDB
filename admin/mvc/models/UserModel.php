@@ -58,4 +58,10 @@ class UserModel extends Database
         $sql = "call get_shops_managed_by_user('$user_id')";
         return $this->get_list($sql);
     }
+
+    function get_users_ordered_by_number_of_order_from_a_shop($shop_id)
+    {
+        $sql = "call get_users_ordered_by_number_of_order_from_a_shop($shop_id)";
+        return $this->get_list($sql);
+    }
 }

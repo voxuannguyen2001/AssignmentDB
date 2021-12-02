@@ -84,9 +84,9 @@ BEGIN
 END$$
 DELIMITER ;
 
-DROP PROCEDURE IF EXISTS get_products_orderd_by_user_in_order_of_price;
+DROP PROCEDURE IF EXISTS get_products_ordered_by_user_in_order_of_price;
 DELIMITER $$
-CREATE PROCEDURE get_products_orderd_by_user_in_order_of_price(
+CREATE PROCEDURE get_products_ordered_by_user_in_order_of_price(
     in user_idx int
 )
 BEGIN
@@ -98,19 +98,21 @@ END;
 
 
 -- lấy danh sách khách hàng sắp xếp theo số lượt mua hàng của shop
-DROP PROCEDURE IF EXISTS get_users_orderd_by_number_of_order_from_a_shop;
+DROP PROCEDURE IF EXISTS get_users_ordered_by_number_of_order_from_a_shop;
 DELIMITER $$
-CREATE PROCEDURE get_users_orderd_by_number_of_order_from_a_shop(
+CREATE PROCEDURE get_users_ordered_by_number_of_order_from_a_shop(
     in shop_idx int
 )
 BEGIN
-    SELECT user.user_id, user.username, SUM(newtable.num) AS total_num FROM user
-    INNER JOIN (SELECT order_detail.user_id, COUNT(order_detail.user_id) AS num FROM shop 
+    SELECT the_user.the_user_id, the_user.the_username, SUM(newtable.num) AS total_num FROM the_user
+    INNER JOIN (SELECT order_detail.the_user_id, COUNT(order_detail.the_user_id) AS num FROM shop 
                 INNER JOIN order_contains_product ON shop.shop_id = order_contains_product.shop_id 
                 INNER JOIN order_detail ON order_detail.order_id = order_contains_product.order_id 
                 WHERE shop.shop_id = 1 GROUP BY order_contains_product.order_id) AS newtable 
-    ON user.user_id = newtable.user_id GROUP BY user.user_id ORDER BY total_num DESC; 
+    ON the_user.the_user_id = newtable.the_user_id GROUP BY the_user.the_user_id ORDER BY total_num DESC; 
 END;
+
+call get_users_ordered_by_number_of_order_from_a_shop(1);
 
 -- tính tổng doanh thu của một shop_id trong 1 năm
 DROP FUNCTION IF EXISTS  calculate_total_sales_of_shop_a_year;

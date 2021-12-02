@@ -90,4 +90,12 @@ class User extends Controller
         $this->data['render'] = 'shopsManagedByUser';
         $this->view('layout', $this->data);
     }
+
+    function UserByShop($shopID)
+    {
+        $users = $this->userModel->get_users_ordered_by_number_of_order_from_a_shop($shopID);
+        $this->data['render'] = 'userByShop';
+        $this->data['userList'] = $users;
+        $this->view('layout', $this->data);
+    }
 }
