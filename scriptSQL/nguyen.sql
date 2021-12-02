@@ -3,10 +3,10 @@
 use e_commerce;
 
 -- table user 
-drop table if exists user;
-create table user(
+drop table if exists the_user;
+create table the_user(
 	user_id integer not null auto_increment,
-    username varchar(30) not null,
+    username varchar(30) not null unique,
     pass varchar(50) not null,
     mobile varchar(16),
     email varchar(50),
@@ -50,7 +50,7 @@ create procedure add_user (
 )
 
 begin
-	if not regexp_like(username, '^[a-z0-9_.]*$') then
+	if not (username regexp '^[a-z0-9_.]*$') then
 		signal sqlstate '45000' 
 			set message_text = 'username can only contains lowercase characters, numbers, dot(.) and underscore(_)';
     end if;
@@ -65,17 +65,17 @@ begin
 			set message_text = 'password\'s length must be at least 8 characters';
     end if;
     
-    if not regexp_like(mobile, '^[0-9]*$') then
+    if not (mobile regexp '^[0-9]*$') then
 		signal sqlstate '45000'
 			set message_text = 'mobile number can only contains numbers';
 	end if;
     
-    if not regexp_like(email, '@.*\.') then
+    if not (email regexp '@.*\.') then
 		signal sqlstate '45000'
 			set message_text = 'email is not valid';
     end if;
     
-	insert into user (username, pass, mobile, email, fullname, sex, dob, avatar, seller_flag, buyer_flag)
+	insert into the_user (username, pass, mobile, email, fullname, sex, dob, avatar, seller_flag, buyer_flag)
 		values (username, pass, mobile, email, fullname, sex, dob, avatar, seller_flag, buyer_flag);
 end//
 delimiter ;
@@ -87,23 +87,23 @@ delimiter //
 create trigger on_create_shop after insert on shop
 for each row
 begin
-	set @found_user = (select count(*) from user where id = new.shop_owner);
+	set @found_user = (select count(*) from the_user where id = new.shop_owner);
     if @found_user = 0 then
 		signal sqlstate '45000' set message_text = 'shop_owner not found';
 	end if;
-	update user set seller_flag = true 
+	update the_user set seller_flag = true 
 	where user_id = new.shop_owner;
     insert into user_manage_shop values(shop_owner, new.shop_id);
 end;//
 delimiter ;
 
 
-# Trigger: before inserting a new user, assign date_created to current date if it is null
+# Trigger: before inserting a new user, assign date_created to current date if it is not set
 drop trigger if exists on_create_user;
 delimiter //
-create trigger on_create_user before insert on user
+create trigger on_create_user before insert on the_user
 for each row
-if (isnull(new.date_created)) then
+if (new.date_created = 0) then
 	set new.date_created = curdate();
 end if;
 //
@@ -111,7 +111,7 @@ delimiter ;
 
 
 # Procedure: get shop owned by a user
-drop procedure if exists get_shop_owned_by_user
+drop procedure if exists get_shop_owned_by_user;
 delimiter //
 create procedure get_shop_owned_by_user (in _username varchar(30))
 begin
@@ -163,7 +163,7 @@ create procedure get_order_details_of_user (in name varchar(30))
 begin
 	select od.order_id as Order_Id, (select(get_total_price(od.order_id))) as Total_Price, od.create_date as Date_Created,
 		count(*) as Number_of_products
-    from user as u, order_detail as od
+    from the_user as u, order_detail as od
     where u.username = name and u.user_id = od.user_id
     group by od.order_id
     order by od.create_date;
@@ -186,6 +186,7 @@ end //
 delimiter ;
 
 
+# Function: Determine membership of a buyer
 drop function if exists get_buyer_membership;
 delimiter //
 create function get_buyer_membership (_user_id integer)
@@ -211,6 +212,26 @@ delimiter ;
 
 
 
+# Procedure: update user info
+drop procedure if exists update_user_info;
+delimiter //
+create procedure update_user_info (
+    in _user_id integer, 
+    in _mobile varchar(12),
+    in _email varchar(12), 
+    in _fullname varchar(50),
+    in _sex char(1),
+    in _dob date,
+    in _avatar varchar(64),
+    in _seller_flag boolean,
+    in _buyer_flag boolean
+)
+begin
+    update the_user
+    set mobile = _mobile, email = _email, fullname = _fullname, sex = _sex, dob = _dob, avatar = _avatar, seller_flag = _seller_flag, buyer_flag = _buyer_flag
+    where user_id = _user_id;
+end //
+delimiter ;
 
 -- insert data to user
 call add_user (
@@ -239,18 +260,6 @@ false,
 true
 );
 
-call add_user (
-'nguyenphuoctri',
-'12345689',
-'0914370975',
-'ngphuoctri.bmt@gmail.com',
-'Nguyen Phuoc Tri',
-'M',
-date('2001-08-28'),
-concat('nguyenphuoctri/avatar_', date_format(now(), "%Y_%j_%H%_%i_%s")),
-false,
-true
-);
 
 call add_user (
 'hotruongluong',
@@ -402,3 +411,5 @@ insert into order_contains_product values (3, 3, 12, 1, 229000);
 
 
 
+insert into the_user (username, pass, mobile, email, fullname, sex, dob, avatar, seller_flag, buyer_flag)
+	values ('aaaaaaaa', 'aaaaaaaa', '0910290192', '123123123@gmail.com', 'abc', 'M', '2001-02-18', null, 1, 0);

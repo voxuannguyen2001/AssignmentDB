@@ -126,7 +126,7 @@ CREATE TABLE feedback (
 
 
 -- 1
-drop procedure if exists add_feedback 
+drop procedure if exists add_feedback;
 delimiter //
 create procedure add_feedback (
 	in shop_id int,
@@ -143,34 +143,34 @@ end//
 delimiter ;
 
 
--- 2.1
-drop trigger feedback_check
-delimiter |
-create trigger feedback_check before insert on feedback
-for each row
-begin
-	if (new.user_id not in (
-		select user_id 
-        from order_detail, order_contains_product
-		where order_detail.order_id = order_contains_product.order_id 
-		and new.product_id = order_contains_product.product_id
-		and new.shop_id = order_contains_product.shop_id
-		and order_detail.order_status = "success"
-    ))  then 
-    begin 
-		signal sqlstate '45000' set message_text = "this user hasn't purchased this product successfully";
-	end;
-    end if;
-    if new.user_id in (
-		select user_id
-        from feedback
-        where user_id = new.user_id and shop_id = new.shop_id and product_id = new.product_id)
-	then 
-    begin 
-		signal sqlstate '45000' set message_text = "this user has sent feedback for this product";
-	end;
-    end if;
-end;
+-- -- 2.1
+-- drop trigger feedback_check
+-- delimiter |
+-- create trigger feedback_check before insert on feedback
+-- for each row
+-- begin
+-- 	if (new.user_id not in (
+-- 		select user_id 
+--         from order_detail, order_contains_product
+-- 		where order_detail.order_id = order_contains_product.order_id 
+-- 		and new.product_id = order_contains_product.product_id
+-- 		and new.shop_id = order_contains_product.shop_id
+-- 		and order_detail.order_status = "success"
+--     ))  then 
+--     begin 
+-- 		signal sqlstate '45000' set message_text = "this user hasn't purchased this product successfully";
+-- 	end;
+--     end if;
+--     if new.user_id in (
+-- 		select user_id
+--         from feedback
+--         where user_id = new.user_id and shop_id = new.shop_id and product_id = new.product_id)
+-- 	then 
+--     begin 
+-- 		signal sqlstate '45000' set message_text = "this user has sent feedback for this product";
+-- 	end;
+--     end if;
+-- end;
 | 
 Delimiter ;
 

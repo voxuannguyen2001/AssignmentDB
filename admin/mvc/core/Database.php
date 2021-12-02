@@ -19,8 +19,15 @@ class Database
     }
     function query($sql = '')
     {
-        return mysqli_query($this->conn, $sql);
+        $result = mysqli_query($this->conn, $sql);
+        if ($result) {
+            return $result;
+        }
+        else {
+            return mysqli_error($this->conn);
+        }
     }
+
     function get_list($sql = '')
     {
         $data = [];

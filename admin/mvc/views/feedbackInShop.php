@@ -1,4 +1,4 @@
-<div class="table-title">All feedbacks</div>
+<div class="table-title">All feedbacks in shop</div>
 <div class="dropdown">
     <button class="dropbtn">Choose the shop</button>
     <div class="dropdown-content">

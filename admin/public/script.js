@@ -19,7 +19,7 @@ $(document).ready(function () {
             success: function (result) {
                 if (result == "failed") {
                     $(".alert-insert-order").addClass("alert-danger");
-                    $(".alert-insert-order-text").text("Failed!! You should fill all input");
+                    $(".alert-insert-order-text").text("Failed!! You should fill all inputs");
                     $(".alert-insert-order").fadeIn();
                     setTimeout(function () {
                         $(".alert-insert-order").fadeOut();
@@ -53,7 +53,7 @@ $(document).ready(function () {
     });
     //end ajax insert order
     
-     //ajax insert new record into cart_contain_product
+    //ajax insert new record into cart_contain_product
     $(".alert-insert-ccp").fadeOut();
     $(".btn-insert-ccp").click(function () {
         $.ajax({
@@ -103,5 +103,205 @@ $(document).ready(function () {
         });
     });
     //end ajax insert new record into cart_contain_product
-});
 
+    //ajax edit order_contains_product
+    $(".alert-edit-ocp").fadeOut();
+    $(".btn-edit-ocp").click(function () {
+        var link = $(this).attr("id");
+        link = link.substr(12, 999);
+        $.ajax({
+            url: DOMAIN + "/OrderContainsProduct/doEdit/" + link,
+            method: "post",
+            data: {
+                amount: $(".input-amount").val(),
+                price: $(".input-price").val(),
+            },
+            success: function (result) {
+                if (result == "failed") {
+                    $(".alert-edit-ocp").addClass("alert-danger");
+                    $(".alert-edit-ocp-text").text("Failed!! You should fill all input");
+                    $(".alert-edit-ocp").fadeIn();
+                    setTimeout(function () {
+                        $(".alert-edit-ocp").fadeOut();
+                        $(".alert-edit-ocp-text").text("");
+                        $(".alert-edit-ocp").removeClass("alert-danger");
+                    }, 1500);
+
+                } else if (result == "1") {
+                    $(".alert-edit-ocp").fadeIn();
+                    $(".alert-edit-ocp").addClass("alert-success");
+                    $(".alert-edit-ocp-text").text("Success!!");
+                    setTimeout(function () {
+                        $(".alert-edit-ocp").fadeOut();
+                        $(".alert-edit-ocp").removeClass("alert-success");
+                        $(".alert-edit-ocp-text").text("");
+                    }, 1500);
+                } else {
+                    $(".alert-edit-ocp").addClass("alert-danger");
+                    $(".alert-edit-ocp-text").text("Error! The values invalid");
+                    $(".alert-edit-ocp").fadeIn();
+                    setTimeout(function () {
+                        $(".alert-edit-ocp").fadeOut();
+                        $(".alert-edit-ocp-text").text("");
+                        $(".alert-edit-ocp").removeClass("alert-danger");
+                    }, 1500);
+                }
+                $("#form_edit-ocp")[0].reset();
+            },
+            error: function () {},
+        });
+    });
+    //end edit order_contains_product
+
+    // add user
+    $(".alert-insert-user").fadeOut();
+    $(".btn-insert-user").click(function () {
+        const username = $("#adduser-username").val();
+        const password = $("#adduser-password").val();
+        const mobile = $("#adduser-mobile").val();
+        const email = $("#adduser-email").val();
+        const fullname = $("#adduser-fullname").val();
+        const dob = $("#adduser-dob").val();
+        const sex = $(".adduser-sex:checked").val();
+        const avatar = $("#adduser-avatar").val();
+        const is_buyer = ($("#adduser-usertype-buyer").is(':checked') ? 1 : 0);
+        const is_seller = ($("#adduser-usertype-seller").is(':checked') ? 1 : 0);
+        
+        let body = {
+            username,
+            password,
+            mobile,
+            email,
+            fullname,
+            dob,
+            sex,
+            avatar,
+            is_buyer,
+            is_seller
+        } 
+
+        console.log(body);
+
+        if (!(body.username && body.password && body.fullname)) {
+            $(".alert-insert-user").addClass("alert-danger");
+            $(".alert-insert-user-text").text("Failed!! You should fill all required input");
+            $(".alert-insert-user").fadeIn();
+            setTimeout(function () {
+                $(".alert-insert-user").fadeOut();
+                $(".alert-insert-user-text").text("");
+                $(".alert-insert-user").removeClass("alert-danger");
+            }, 1500);
+            return;
+        }
+        Object.keys(body).forEach(key => {
+            if (!body[key])
+                body[key] = null;
+        })
+
+        $.ajax({
+            url: DOMAIN + "/User/doInsertUser",
+            method: "post",
+            data: body,
+            success: function (result) {
+                if (result == "1") {
+                    $(".alert-insert-user").fadeIn();
+                    $(".alert-insert-user").addClass("alert-success");
+                    $(".alert-insert-user-text").text("Success!!");
+                    setTimeout(function () {
+                        $(".alert-insert-user").fadeOut();
+                        $(".alert-insert-user").removeClass("alert-success");
+                        $(".alert-insert-user-text").text("");
+                    }, 1500);
+                    $("#form_insert_user")[0].reset();
+                } else {
+                    $(".alert-insert-user").addClass("alert-danger");
+                    $(".alert-insert-user-text").text(result);
+                    $(".alert-insert-user").fadeIn();
+                    setTimeout(function () {
+                        $(".alert-insert-user").fadeOut();
+                        $(".alert-insert-user-text").text("");
+                        $(".alert-insert-user").removeClass("alert-danger");
+                    }, 1500);
+                }              
+            },
+            error: function () { },
+        });
+    });
+
+    // edit user
+    $(".alert-edit-user").fadeOut();
+    $(".btn-edit-user").click(function () {
+        let mobile = $("#edituser-mobile").val();
+        let email = $("#edituser-email").val();
+        let fullname = $("#edituser-fullname").val();
+        let dob = $("#edituser-dob").val();
+        let sex = $(".edituser-sex:checked").val();
+        let avatar = $("#edituser-avatar").val();
+        const is_buyer = ($("#edituser-usertype-buyer").is(':checked') ? 1 : 0);
+        const is_seller = ($("#edituser-usertype-seller").is(':checked') ? 1 : 0);
+
+        let url_string = window.location.href;
+        let user_id = url_string.slice(url_string.lastIndexOf('/')+1);
+        
+        let body = {
+            user_id,
+            mobile,
+            email,
+            fullname,
+            dob,
+            sex,
+            avatar,
+            is_buyer,
+            is_seller
+        } 
+
+        Object.keys(body).forEach(key => {
+            if (!body[key])
+                body[key] = null;
+        })
+
+        console.log(body);
+
+
+        if (!body.fullname) {
+            $(".alert-edit-user").addClass("alert-danger");
+            $(".alert-edit-user-text").text("Failed!! You should fill all required input");
+            $(".alert-edit-user").fadeIn();
+            setTimeout(function () {
+                $(".alert-edit-user").fadeOut();
+                $(".alert-edit-user-text").text("");
+                $(".alert-edit-user").removeClass("alert-danger");
+            }, 1500);
+            return;
+        }
+
+        $.ajax({
+            url: DOMAIN + "/User/doEditUserInfo",
+            method: "post",
+            data: body,
+            success: function (result) {
+                if (result == "1") {
+                    $(".alert-edit-user").fadeIn();
+                    $(".alert-edit-user").addClass("alert-success");
+                    $(".alert-edit-user-text").text("Success!!");
+                    setTimeout(function () {
+                        $(".alert-edit-user").fadeOut();
+                        $(".alert-edit-user").removeClass("alert-success");
+                        $(".alert-edit-user-text").text("");
+                    }, 1500);
+                    $("#form_edit_user")[0].reset();
+                } else {
+                    $(".alert-edit-user").addClass("alert-danger");
+                    $(".alert-edit-user-text").text(result);
+                    $(".alert-edit-user").fadeIn();
+                    setTimeout(function () {
+                        $(".alert-edit-user").fadeOut();
+                        $(".alert-edit-user-text").text("");
+                        $(".alert-edit-user").removeClass("alert-danger");
+                    }, 1500);
+                }              
+            },
+            error: function () { },
+        });
+    });
+});

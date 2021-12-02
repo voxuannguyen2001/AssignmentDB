@@ -32,3 +32,12 @@ ALTER TABLE cart_contain_product
 ALTER TABLE cart_contain_product
 	ADD CONSTRAINT cnp_cartuserfk
 	FOREIGN KEY (cart_id, user_id) REFERENCES cart(cart_id, user_id);
+
+-- add foreign key
+ALTER TABLE product
+ADD FOREIGN KEY (shop_id) REFERENCES shop(shop_id);
+
+ALTER TABLE feedback
+ADD FOREIGN KEY ( product_id,shop_id) REFERENCES product(product_id,shop_id);
+ALTER TABLE feedback
+ADD FOREIGN KEY ( user_id) REFERENCES users(user_id);
