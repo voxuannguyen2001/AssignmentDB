@@ -21,7 +21,7 @@
               <button type="button" class="btn btn-danger btn-action">Delete</button>
             </a>
             <a href="<?php echo $DOMAIN ?>/CategoryContainsProduct/CategoryContainsProductPage/<?php echo $value['category_id'] ?>">
-              <button type="button" class="btn btn-success btn-action">View</button>
+              <button type="button" class="btn btn-success btn-action">View</button> 
             </a>
           </td>
         </tr>

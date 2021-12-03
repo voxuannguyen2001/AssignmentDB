@@ -38,6 +38,6 @@ class Category extends Controller
     function deleteCategory($categoryID)
     {
         $this->CategoryModel->remove_category($categoryID);
-        header("Location: http://localhost/AssignmentDB/admin/Category/Catedorypage");
+        header("Location: http://localhost/AssignmentDB/admin/Category/Categorypage");
     }
 }
