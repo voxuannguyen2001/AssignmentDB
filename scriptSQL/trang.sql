@@ -55,7 +55,7 @@ CREATE TABLE shop (
     shop_id int not null auto_increment,
     shop_name varchar(25) not null,
     shop_description text,
-    shop_owner varchar(9) not null,
+    shop_owner int not null,
     create_date date,
     -- amount_customer int,
     primary key(shop_id)
@@ -88,6 +88,19 @@ CREATE TABLE product_category(
 );
 
 
+
+# Trigger: after insert a new shop. Insert (user_id, shop_id) into table user_manage_shop
+drop trigger if exists on_create_shop;
+delimiter //
+create trigger on_create_shop after insert on shop
+for each row
+begin
+    insert into user_manage_shop values(new.shop_owner, new.shop_id, CURRENT_DATE);
+end;//
+delimiter ;
+
+
+
 -- INSERT DATA INTO TABLES
 drop procedure if exists add_shop;
 delimiter //
@@ -116,7 +129,7 @@ delimiter ;
 call add_shop (
 'Casio',
 'Phố Đồng Hồ',
-11,
+7,
 date('2021-11-05')
 );
 
@@ -125,6 +138,7 @@ INSERT INTO shop(shop_name, shop_description, shop_owner, create_date) VALUES ('
 INSERT INTO shop(shop_name, shop_description, shop_owner, create_date) VALUES('PS','health care',3,'2021-11-03');
 INSERT INTO shop(shop_name, shop_description, shop_owner, create_date) VALUES('Blue Light','',4,'2021-11-04');
 INSERT INTO shop(shop_name, shop_description, shop_owner, create_date) VALUES('Eye Plus','',5,'2021-11-05');
+insert into shop(shop_name, shop_description, shop_owner, create_date) values("Nguyen'store", "Everything you need for your computers", 6, CURRENT_DATE);
 
 INSERT INTO order_detail(shipping_id, order_status, create_date, user_id, sname, saddress,sphone_number )  
 VALUES(1, 'waiting', '2021-11-23', 1,'Nguyen Trang', 'Phu Yen', '0123456789');

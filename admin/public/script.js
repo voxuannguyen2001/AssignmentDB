@@ -333,8 +333,6 @@ $(document).ready(function () {
             user_id
         }
 
-        console.log(body);
-
         if (!(body.product_id && body.review_content && body.rating && body.user_id)) {
             $(".alert-insert-feedback").addClass("alert-danger");
             $(".alert-insert-feedback-text").text("Failed!! You should fill all required input");
@@ -431,7 +429,8 @@ $(document).ready(function () {
 
     // search user
 
-    $("#searchuser-btn").click(async () => {
+    // search user
+    $("#searchuser-btn").click(() => {
         let url = DOMAIN + '/User/searchUser/' + $("#searchuser-input").val();
         window.location = url;
     })
@@ -490,3 +489,4 @@ $(document).ready(function () {
     //end insert order_contains_product
 
 });
+

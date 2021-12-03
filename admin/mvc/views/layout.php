@@ -26,6 +26,7 @@ $DOMAIN = 'http://localhost/AssignmentDB/admin';
                     else if ($data['render'] == 'ccp') echo "Manage Product in User's cart";
                     else if ($data['render'] == 'user' || $data['render'] == 'shopsManagedByUser' 
                     || $data['render'] == 'insertUser' || $data['render'] == 'userStats') echo 'Manage Users';
+                    else if ($data['render'] == 'category' || $data['render'] == 'insertCategory') echo "Category";
                     
                 ?>
         </h1>
@@ -48,6 +49,9 @@ $DOMAIN = 'http://localhost/AssignmentDB/admin';
                 </form>
                 <form action="<?php echo $DOMAIN ?>/User/UserPage">
                     <button class="order add-item bg-secondary mt-2 text-light">Manage User</button>
+                </form>
+                <form action="<?php echo $DOMAIN ?>/Category/CategoryPage">
+                    <button class="order add-item bg-secondary mt-2 text-light">Category</button>
                 </form>
                 <!-- Add new form here -->
             </div>
