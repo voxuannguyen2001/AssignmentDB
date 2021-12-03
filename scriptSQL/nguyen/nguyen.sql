@@ -21,7 +21,14 @@ create table the_user(
     primary key(user_id)
 );
 
-# Table order contains_product
+
+-- create index for the_user
+alter table the_user 
+drop index if exists idx_fullname;
+create index idx_fullname on the_user(fullname);
+
+
+-- Table order contains_product
 drop table if exists order_contains_product;
 create table order_contains_product(
 	shop_id integer not null,
@@ -33,7 +40,7 @@ create table order_contains_product(
 );
 
 
-# Procedure: insert to user procedure with input validation
+-- Procedure: insert to user procedure with input validation
 drop procedure if exists add_user;
 delimiter //
 create procedure add_user (
@@ -81,30 +88,30 @@ end//
 delimiter ;
 
 
--- # Trigger: after insert a new shop. Insert (user_id, shop_id) into table user_manage_shop
--- drop trigger if exists on_create_shop;
--- delimiter //
--- create trigger on_create_shop after insert on shop
--- for each row
--- begin
---     insert into user_manage_shop values(new.shop_owner, new.shop_id, CURRENT_DATE);
--- end;//
--- delimiter ;
+-- Trigger: after insert a new shop. Insert (user_id, shop_id) into table user_manage_shop
+drop trigger if exists on_create_shop;
+delimiter //
+create trigger on_create_shop after insert on shop
+for each row
+begin
+    insert into user_manage_shop values(new.shop_owner, new.shop_id, CURRENT_DATE);
+end;//
+delimiter ;
 
 
--- # Trigger: after insert new data to user_manage_shop, change user's seller_flag to true and increase shop_manage_count to one
--- drop trigger if exists on_insert_user_manage_shop;
--- delimiter //
--- create trigger on_insert_user_manage_shop after insert on user_manage_shop
--- for each row
--- begin
--- 	update the_user set seller_flag = true, shop_manage_count = shop_manage_count + 1
--- 	where user_id = new.user_id;
--- end;//
--- delimiter ;
+-- Trigger: after insert new data to user_manage_shop, change user's seller_flag to true and increase shop_manage_count to one
+drop trigger if exists on_insert_user_manage_shop;
+delimiter //
+create trigger on_insert_user_manage_shop after insert on user_manage_shop
+for each row
+begin
+	update the_user set seller_flag = true, shop_manage_count = shop_manage_count + 1
+	where user_id = new.user_id;
+end;//
+delimiter ;
 
 
-# Trigger: before inserting a new user, assign date_created to current date if it is not set
+-- Trigger: before inserting a new user, assign date_created to current date if it is not set
 drop trigger if exists on_create_user;
 delimiter //
 create trigger on_create_user before insert on the_user
@@ -115,130 +122,6 @@ end if;
 //
 delimiter ;
 
-
-# Procedure: get shop managed by a user
-drop procedure if exists get_shops_managed_by_user;
-delimiter //
-create procedure get_shops_managed_by_user (in _user_id int)
-begin
-	select owner.username as username, owner.fullname as owner_name, s.shop_name as shop_name, s.create_date as create_date, ums.start_date as start_date
-    from the_user as u, user_manage_shop as ums, shop as s, the_user as owner
-    where u.user_id = _user_id and u.user_id = ums.user_id and ums.shop_id = s.shop_id and s.shop_owner = owner.user_id
-    order by create_date;
-end //
-delimiter ;
-
-
-# Function: Calculate the total price of an order
-drop function if exists get_total_price;
-delimiter //
-create function get_total_price(_order_id integer)
-returns integer
-deterministic
-begin
-
-	declare done bool default false;
-	declare total_price int default 0;
-    declare price, amt int;
-    declare cur cursor for select selling_price, amount from order_contains_product where order_id = _order_id;
-    declare continue handler for not found set done = true;
-    
-	if not exists (select count(*) from order_detail where order_id = _order_id) then
-		signal sqlstate '45000' 
-			set message_text = 'Cannot found an order with order_id';
-	end if;
-    
-    open cur;
-    
-    read_loop: loop
-		fetch cur into price, amt;
-		if done then 
-			leave read_loop;
-		end if;
-		set total_price = total_price + price * amt;
-    end loop;
-    close cur;
-    return total_price;
-end //
-delimiter ;
-
-
-# Procedure: get number of orders of all users
-drop procedure if exists get_order_count_all_users;
-delimiter //
-create procedure get_order_count_all_users (in min_count int)
-begin
-    select u.user_id as user_id, u.username as username, u.fullname as fullname, count(*) as order_count
-    from the_user as u, order_detail as od
-    where u.user_id = od.user_id
-    group by u.user_id
-    having count(*) >= min_count
-    order by count(*), u.user_id;
-end //
-delimiter ;
-
-
-# Procedure: get shops information and number of its manager
-drop procedure if exists get_shop_manager_count;
-delimiter //
-create procedure get_shop_manager_count (in min_count integer) 
-begin
-	select s.shop_id, s.shop_name as Shop_Name, s.create_date as Date_Created, count(*) as Number_of_Managers
-    from shop as s, user_mange_shop as ums
-    where s.shop_id = ums.shop_id
-    group by s.shop_id
-    having count(*) >= min_count
-    order by count(*);
-end //
-delimiter ;
-
-
-# Function: Determine membership of a buyer
-drop function if exists get_buyer_membership;
-delimiter //
-create function get_buyer_membership (_user_id integer)
-returns varchar(8)
-deterministic
-begin
-	declare cur_year int default year(curdate());
-    declare order_cnt int default 0;
-    declare membership varchar(8) default 'Bronze';
-    
-    set order_cnt = (select count(*) from order_detail 
-						where user_id = _user_id and year(create_date) = cur_year);
-	if order_cnt < 30 then
-		set membership = 'Silver';
-	elseif order_cnt >= 30 and order_cnt < 50 then
-		set membership = 'Gold';
-	else 
-		set membership = 'Platinum';
-    end if;
-    return membership;
-end //
-delimiter ;
-
-
-
-# Procedure: update user info
-drop procedure if exists update_user_info;
-delimiter //
-create procedure update_user_info (
-    in _user_id integer, 
-    in _mobile varchar(12),
-    in _email varchar(12), 
-    in _fullname varchar(50),
-    in _sex char(1),
-    in _dob date,
-    in _avatar varchar(64),
-    in _seller_flag boolean,
-    in _buyer_flag boolean
-)
-begin
-    update the_user
-    set mobile = _mobile, email = _email, fullname = _fullname, sex = _sex, dob = _dob, avatar = _avatar, seller_flag = _seller_flag, buyer_flag = _buyer_flag
-    where user_id = _user_id;
-end //
-delimiter ;
 
 -- insert data to user
 call add_user (
@@ -416,30 +299,4 @@ insert into order_contains_product values (5, 1, 12, 1, 87000);
 insert into order_contains_product values (3, 3, 12, 1, 229000);
 
 
-alter table the_user 
-drop index if exists idx_fullname;
-create index idx_fullname on the_user(fullname);
 
--- explain select * from the_user where fullname = 'Vo Trinh Xuan Nguyen';
-
--- show index from the_user;
-
--- insert into shop(shop_name, shop_description, shop_owner, create_date) values("Nguyen'store", "Everything you need for your computers", 13, CURRENT_DATE);
--- call add_user (
--- 'voxuannguyen01',
--- '12345678',
--- '0397003301',
--- 'voxuannguyen2001@gmail.com',
--- 'Vo Trinh Xuan Nguyen',
--- 'M',
--- date('2001-02-18'),
--- concat('img/voxuannguyen2001/avatar_', date_format(now(), "%Y_%j_%H%_%i_%s")),
--- false,
--- true
--- );
-
--- call get_shops_managed_by_user(1);
-
--- call get_order_count_all_users(0);
-
--- select get_buyer_membership(0);

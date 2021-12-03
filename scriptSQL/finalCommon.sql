@@ -21,8 +21,15 @@ create table the_user(
     seller_flag boolean,
     buyer_flag boolean,
     date_created date not null,
+    shop_manage_count integer not null default 0,
     primary key(user_id)
 );
+
+-- add index to the_user table
+alter table the_user 
+drop index if exists idx_fullname;
+create index idx_fullname on the_user(fullname);
+
 
 -- table order contains_product
 drop table if exists order_contains_product;
@@ -36,12 +43,13 @@ create table order_contains_product(
 );
 
 -- table user_manage_shop
-DROP TABLE IF exists User_manage_shop;
-CREATE TABLE User_manage_shop (
+DROP TABLE IF exists user_manage_shop;
+CREATE TABLE user_manage_shop (
 user_id	int not null,
-shop_id int not null
+shop_id int not null,
+start_date date
 );
-ALTER TABLE User_manage_shop
+ALTER TABLE user_manage_shop
 ADD CONSTRAINT user_shop_pk
 primary key (user_id, shop_id);
 
@@ -312,25 +320,34 @@ delimiter ;
 -- ---- End Create Procedure Insert Data ----
 
 -- ---- Create Trigger ----
--- Trigger: when create a new shop. Insert (user_id, shop_id) into table user_manage_shop
+-- Trigger: before inserting a new entry in user_manage_shop , assign start_date to current date if it is not set
+delimiter //
+create trigger on_insert_user_manage_shop before insert on user_manage_shop
+for each row
+if (new.start_date = 0) then
+	set new.start_date = curdate();
+end if;
+//
+delimiter ;
+
+
+-- Trigger: after insert a new shop. Insert (user_id, shop_id) into table user_manage_shop
 drop trigger if exists on_create_shop;
 delimiter //
 create trigger on_create_shop after insert on shop
 for each row
 begin
-	update the_user set seller_flag = true 
-	where user_id = new.shop_owner;
-    insert into user_manage_shop values(new.shop_owner, new.shop_id);
+    insert into user_manage_shop values(new.shop_owner, new.shop_id, CURRENT_DATE);
 end;//
 delimiter ;
 
--- Trigger: after insert new data to user_manage_shop, change user's seller_flag to true
+-- Trigger: after insert new data to user_manage_shop, change user's seller_flag to true and increase shop_manage_count to one
 drop trigger if exists on_insert_user_manage_shop;
 delimiter //
-create trigger on_insert_user_manage_shop before insert on user_manage_shop
+create trigger on_insert_user_manage_shop after insert on user_manage_shop
 for each row
 begin
-	update the_user set seller_flag = true 
+	update the_user set seller_flag = true, shop_manage_count = shop_manage_count + 1
 	where user_id = new.user_id;
 end;//
 delimiter ;

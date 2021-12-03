@@ -68,8 +68,19 @@ class UserModel extends Database
         return $this->get_list($sql);
     }
 
-    function get_order_count_all_users($min_order_count) {
-        $sql = "call get_order_count_all_users($min_order_count)";
+    function search_user_by_fullname($fullname) {
+        if ($fullname == '') {
+            $fullname = "'.*'";
+        }
+        else {
+            $fullname = "'$fullname'";
+        }
+        $sql = "select * from the_user where fullname regexp $fullname";
+        return $this->get_list($sql);
+    }
+
+    function get_user_statistics($min_order_count) {
+        $sql = "call get_user_statistics($min_order_count)";
         return $this->get_list($sql);
     }
 

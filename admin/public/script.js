@@ -428,13 +428,20 @@ $(document).ready(function () {
     });
 
     // search user
-
-    // search user
     $("#searchuser-btn").click(() => {
         let url = DOMAIN + '/User/searchUser/' + $("#searchuser-input").val();
         window.location = url;
     })
 
+    $("#searchfullname-btn").click(() => {
+        let url = DOMAIN + '/User/searchFullname/' + $("#searchfullname-input").val();
+        window.location = url;
+    })
+
+    $("#userstats-btn").click(() => {
+        let url = DOMAIN + '/User/userStats/' + $("#userstats-input").val();
+        window.location = url;
+    })
 
     //ajax insert order_contains_product
     $(".alert-insert-ocp").fadeOut();
