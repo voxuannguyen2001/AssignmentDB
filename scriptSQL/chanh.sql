@@ -56,7 +56,7 @@ INSERT INTO CONTAINS_CATEGORY VALUES ('H04433','T372X6A');
 
 
 
--- Add dang mục
+--Add dang mục
 
 drop procedure if exists add_category
 
