@@ -35,9 +35,9 @@ class Category extends Controller
             echo $check;
         }
     }
-    function deleteCategory($categoriID)
+    function deleteCategory($categoryID)
     {
-        $this->CatemoryModal->remove_catedory($categoriID);
+        $this->CategoryModel->remove_category($categoryID);
         header("Location: http://localhost/AssignmentDB/admin/Category/Catedorypage");
     }
 }

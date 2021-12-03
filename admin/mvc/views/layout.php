@@ -26,7 +26,7 @@ $DOMAIN = 'http://localhost/AssignmentDB/admin';
                     else if ($data['render'] == 'ccp') echo "Manage Product in User's cart";
                     else if ($data['render'] == 'user' || $data['render'] == 'shopsManagedByUser' 
                     || $data['render'] == 'insertUser' || $data['render'] == 'userStats') echo 'Manage Users';
-                    else if ($data['render'] == 'category' || $data['render'] == 'insertCategory') echo "Category";
+                    else if ($data['render'] == 'category' || $data['render'] == 'insertCategory'|| $data['render'] == 'CategoryContainsProduct') echo "Category";
                     
                 ?>
         </h1>

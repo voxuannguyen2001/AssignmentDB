@@ -10,6 +10,8 @@
         } ?>
     </div>
 </div>
+<h2 style="text-align: center;"> <?php echo $data['shop']['shop_name'] ?> Shop</h2>
+
 <?php
 $link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 // echo $link;
@@ -29,12 +31,15 @@ $shopID = end($tmp);
             <th scope="col">Amount</th>
             <th scope="col">Information</th>
             <th scope="col">
-                <a class="" href="<?php echo $DOMAIN ?>/Feedback/FeedbackInShopASC/<?php echo $shopID?>">
-                    <button type="button" class="">Number of feedbacks</button>
-                </a>
                 <a class="" href="<?php echo $DOMAIN ?>/Feedback/FeedbackInShopDESC/<?php echo $shopID?>">
-                    <button type="button" class="">DESC</button>
+                    <button 
+                    type="button" 
+                    class="btn btn-success btn-action text-nowrap">
+                    Number of feedbacks</button>
                 </a>
+                <!-- <a class="" href="<?php echo $DOMAIN ?>/Feedback/FeedbackInShopDESC/<?php echo $shopID?>">
+                    <button type="button" class="">DESC</button>
+                </a> -->
             </th>
         </tr>
     </thead>
