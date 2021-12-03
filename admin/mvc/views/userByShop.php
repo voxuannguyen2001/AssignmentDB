@@ -24,8 +24,8 @@
         <?php if ($data['userList']) {
             foreach ($data['userList'] as $key => $value) { ?>
                 <tr>
-                    <td><?php echo $value['the_user_id'] ?> </td>
-                    <td><?php echo $value['the_username'] ?></td>
+                    <td><?php echo $value['user_id'] ?> </td>
+                    <td><?php echo $value['username'] ?></td>
                     <td><?php echo $value['total_num'] ?></td>
                     <td></td>
                     <td></td>
