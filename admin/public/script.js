@@ -506,3 +506,50 @@ $(document).ready(function () {
     })
 });
 
+
+
+$(".alert-insert-category").fadeOut();
+    $(".btn-insert-category").click(function () {
+        $.ajax({
+            url: DOMAIN + "/Category/doInsertCategory",
+            method: "post",
+            data: {
+                category_id: ($(".input-category_id").val()),
+                name_category: $(".input-name_category").val(),
+                total_product: $(".input-total_product").val(),
+            },
+            success: function (result) {
+                if (result == "failed") {
+                    $(".alert-insert-category").addClass("alert-danger");
+                    $(".alert-insert-category-text").text("Failed!! You should fill all inputs");
+                    $(".alert-insert-category").fadeIn();
+                    setTimeout(function () {
+                        $(".alert-insert-category").fadeOut();
+                        $(".alert-insert-category-text").text("");
+                        $(".alert-insert-category").removeClass("alert-danger");
+                    }, 1500);
+
+                } else if (result == "1") {
+                    $(".alert-insert-category").fadeIn();
+                    $(".alert-insert-category").addClass("alert-success");
+                    $(".alert-insert-category-text").text("Success!!");
+                    setTimeout(function () {
+                        $(".alert-insert-category").fadeOut();
+                        $(".alert-insert-category").removeClass("alert-success");
+                        $(".alert-insert-category-text").text("");
+                    }, 1500);
+                } else {
+                    $(".alert-insert-category").addClass("alert-danger");
+                    $(".alert-insert-category-text").text("Error! Can't add into database");
+                    $(".alert-insert-category").fadeIn();
+                    setTimeout(function () {
+                        $(".alert-insert-category").fadeOut();
+                        $(".alert-insert-category-text").text("");
+                        $(".alert-insert-category").removeClass("alert-danger");
+                    }, 1500);
+                }
+                // $("#form_insert_order")[0].reset();
+            },
+            error: function () { },
+        });
+    });
