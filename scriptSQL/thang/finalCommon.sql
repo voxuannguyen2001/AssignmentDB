@@ -470,6 +470,40 @@ END$$
 DELIMITER ;
 -- ---- End Create Trigger Data ----
 
+-- --- Fuction
+DELIMITER $$
+DROP function IF EXISTS  getTotal $$
+CREATE function getTotal(iorder_id int)
+returns int 
+READS SQL DATA
+DETERMINISTIC
+BEGIN
+    DECLARE total int default 0;   
+    declare iamount int;
+    declare iselling_price int;
+    DECLARE exit_loop BOOLEAN;   
+    DECLARE item_cursor CURSOR FOR
+        SELECT amount, selling_price 
+        FROM order_contains_product
+        where order_id = iorder_id;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET exit_loop = TRUE;
+    
+    OPEN item_cursor;
+    item_loop: LOOP
+        FETCH  item_cursor INTO iamount, iselling_price;
+        set total = total + iamount*iselling_price;
+        
+        IF exit_loop THEN
+            CLOSE item_cursor;
+            LEAVE item_loop;         
+        END IF;
+    END LOOP item_loop;
+    return total;
+   
+ END $$
+ DELIMITER ;
+-- ----
+
 call add_user (
 'voxuannguyen2001',
 '12345678',
@@ -746,16 +780,17 @@ insert into cart (user_id) values (8);
 insert into cart (user_id) values (9);
 insert into cart (user_id) values (10);
 
-insert into category (name_category) values ('categort_1');
-insert into category (name_category) values ('categort_2');
-insert into category (name_category) values ('categort_3');
-insert into category (name_category) values ('categort_4');
-insert into category (name_category) values ('categort_5');
-insert into category (name_category) values ('categort_6');
-insert into category (name_category) values ('categort_7');
-insert into category (name_category) values ('categort_8');
-insert into category (name_category) values ('categort_9');
-insert into category (name_category) values ('categort_10');
+insert into category (name_category,total_product) values ('Quần',8);
+insert into category (name_category,total_product) values ('Áo',8);
+insert into category (name_category,total_product) values ('Giày',4);
+insert into category (name_category,total_product) values ('Nón',5);
+insert into category (name_category,total_product) values ('Đồng hồ',3);
+insert into category (name_category,total_product) values ('Dép',4);
+insert into category (name_category,total_product) values ('Bông tai',2);
+insert into category (name_category,total_product) values ('Bàn học',5);
+insert into category (name_category,total_product) values ('Casio',2);
+insert into category (name_category,total_product) values ('Vở',5);
+
 
 INSERT INTO shop(shop_name, shop_description, shop_owner, create_date) VALUES ('Lilyeyewear','fashionista',2,'2021-11-02');
 INSERT INTO shop(shop_name, shop_description, shop_owner, create_date) VALUES ('FPT','this is description, cool here',1,'2021-11-01');
