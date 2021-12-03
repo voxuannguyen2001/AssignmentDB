@@ -470,6 +470,40 @@ END$$
 DELIMITER ;
 -- ---- End Create Trigger Data ----
 
+-- --- Fuction
+DELIMITER $$
+DROP function IF EXISTS  getTotal $$
+CREATE function getTotal(iorder_id int)
+returns int 
+READS SQL DATA
+DETERMINISTIC
+BEGIN
+    DECLARE total int default 0;   
+    declare iamount int;
+    declare iselling_price int;
+    DECLARE exit_loop BOOLEAN;   
+    DECLARE item_cursor CURSOR FOR
+        SELECT amount, selling_price 
+        FROM order_contains_product
+        where order_id = iorder_id;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET exit_loop = TRUE;
+    
+    OPEN item_cursor;
+    item_loop: LOOP
+        FETCH  item_cursor INTO iamount, iselling_price;
+        set total = total + iamount*iselling_price;
+        
+        IF exit_loop THEN
+            CLOSE item_cursor;
+            LEAVE item_loop;         
+        END IF;
+    END LOOP item_loop;
+    return total;
+   
+ END $$
+ DELIMITER ;
+-- ----
+
 call add_user (
 'voxuannguyen2001',
 '12345678',

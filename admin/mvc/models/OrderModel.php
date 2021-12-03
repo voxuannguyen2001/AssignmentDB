@@ -24,7 +24,7 @@ class OrderModel extends Database
     }
     function insert_order($shipping_id, $create_date, $the_user_id, $sname, $saddress, $sphone_number, $status)
     {
-        $sql = "INSERT INTO order_detail(shipping_id, order_status, create_date, the_user_id, sname, saddress, sphone_number ) VALUES($shipping_id, '$status', '$create_date', $the_user_id,'$sname', '$saddress', '$sphone_number')";
+        $sql = "INSERT INTO order_detail(shipping_id, order_status, create_date, user_id, sname, saddress, sphone_number ) VALUES($shipping_id, '$status', '$create_date', $the_user_id,'$sname', '$saddress', '$sphone_number')";
         return $this->query($sql);
     }
     function remove_all()
@@ -34,7 +34,7 @@ class OrderModel extends Database
     }
     function get_total($orderID)
     {
-        $sql = "select calculate_total_of_order($orderID) as total";
+        $sql = "select getTotal($orderID) as total";
         return $this->get_one($sql);
     }
 }
