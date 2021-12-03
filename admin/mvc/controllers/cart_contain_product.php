@@ -14,9 +14,9 @@ class cart_contain_product extends Controller
         $this->data['ccpList'] = $ccps;
         $this->view('layout', $this->data);
     }
-    function delete_ccp($cart_id, $the_user_id, $product_id, $shop_id)
+    function delete_ccp($cart_id, $user_id, $product_id, $shop_id)
     {
-        $this->cartContainProductModel->remove_ccp($cart_id, $the_user_id, $product_id, $shop_id);
+        $this->cartContainProductModel->remove_ccp($cart_id, $user_id, $product_id, $shop_id);
         header("Location: http://localhost/AssignmentDB/admin/cart_contain_product/cart_contain_product_page");
     }
     function insert_ccp()
@@ -26,7 +26,7 @@ class cart_contain_product extends Controller
     }
     function doInsert_ccp()
     {
-        if (empty($_POST['cart_id']) || empty($_POST['the_user_id']) || empty($_POST['product_id'])
+        if (empty($_POST['cart_id']) || empty($_POST['user_id']) || empty($_POST['product_id'])
             || empty($_POST['shop_id']) || empty($_POST['product_count']) || empty($_POST['saleprice']))
         {
             echo 'failed';
@@ -34,7 +34,7 @@ class cart_contain_product extends Controller
         else {
             $check = $this->cartContainProductModel->insert_record_into_ccp(
                 $_POST['cart_id'],
-                $_POST['the_user_id'],
+                $_POST['user_id'],
                 $_POST['product_id'],
                 $_POST['shop_id'],
                 $_POST['product_count'],

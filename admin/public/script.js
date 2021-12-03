@@ -10,7 +10,7 @@ $(document).ready(function () {
             data: {
                 shipping_id: parseInt($(".input-shipping_id").val()),
                 create_date: $(".input-create_date").val(),
-                the_user_id: parseInt($(".input-the_user_id").val()),
+                user_id: parseInt($(".input-user_id").val()),
                 sname: $(".input-sname").val(),
                 sphone_number: $(".input-sphone_number").val(),
                 saddress: $(".input-saddress").val(),
