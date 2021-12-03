@@ -104,8 +104,14 @@ class User extends Controller
     function userStats($min_order_count = "0")
     {
         $this->data['min_order_count'] = $min_order_count;
-        $this->data['userStats'] = $this->userModel->get_order_count_all_users($min_order_count);
+        $this->data['userStats'] = $this->userModel->get_user_statistics($min_order_count);
         $this->data['render'] = 'userStats';
+        $this->view('layout', $this->data);
+    }
+
+    function searchFullname($fullname = '') {
+        $this->data['userList'] = $this->userModel->search_user_by_fullname($fullname);
+        $this->data['render'] = 'user';
         $this->view('layout', $this->data);
     }
 

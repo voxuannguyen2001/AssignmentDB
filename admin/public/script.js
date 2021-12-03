@@ -51,6 +51,7 @@ $(document).ready(function () {
             error: function () { },
         });
     });
+
     //end ajax insert order
 
     //ajax insert new record into cart_contain_product
@@ -151,6 +152,7 @@ $(document).ready(function () {
             error: function () { },
         });
     });
+
     //end edit order_contains_product
 
     //Thang_procedure1
@@ -333,6 +335,8 @@ $(document).ready(function () {
             user_id
         }
 
+        console.log(body);
+
         if (!(body.product_id && body.review_content && body.rating && body.user_id)) {
             $(".alert-insert-feedback").addClass("alert-danger");
             $(".alert-insert-feedback-text").text("Failed!! You should fill all required input");
@@ -373,6 +377,74 @@ $(document).ready(function () {
                         $(".alert-insert-feedback").removeClass("alert-danger");
                     }, 1500);
                 }
+            },
+            error: function () { },
+        })
+    });
+
+    // search user
+    $("#searchuser-btn").click(() => {
+        let url = DOMAIN + '/User/searchUser/' + $("#searchuser-input").val();
+        window.location = url;
+    })
+
+    $("#searchfullname-btn").click(() => {
+        let url = DOMAIN + '/User/searchFullname/' + $("#searchfullname-input").val();
+        window.location = url;
+    })
+
+    // user statistics
+    $("#userstats-btn").click(() => {
+        let url = DOMAIN + '/User/userStats/' + $("#userstats-input").val();
+        window.location = url;
+    })
+
+    //ajax insert order_contains_product
+    $(".alert-insert-ocp").fadeOut();
+    $(".btn-insert-ocp").click(function () {
+        var link = $(this).attr("id");
+        link = link.substr(14, 999);
+        $.ajax({
+            url: DOMAIN + "/OrderContainsProduct/doInsert/" + link,
+            method: "post",
+            data: {
+                shop_id: $(".input-shop_id").val(),
+                product_id: $(".input-product_id").val(),
+                amount: $(".input-amount").val(),
+                price: $(".input-price").val(),
+            },
+            success: function (result) {
+                if (result == "failed") {
+                    $(".alert-insert-ocp").addClass("alert-danger");
+                    $(".alert-insert-ocp-text").text("Failed!! You should fill all input");
+                    $(".alert-insert-ocp").fadeIn();
+                    setTimeout(function () {
+                        $(".alert-insert-ocp").fadeOut();
+                        $(".alert-insert-ocp-text").text("");
+                        $(".alert-insert-ocp").removeClass("alert-danger");
+                    }, 1500);
+
+                } else if (result == "1") {
+                    $(".alert-insert-ocp").fadeIn();
+                    $(".alert-insert-ocp").addClass("alert-success");
+                    $(".alert-insert-ocp-text").text("Success!!");
+                    setTimeout(function () {
+                        $(".alert-insert-ocp").fadeOut();
+                        $(".alert-insert-ocp").removeClass("alert-success");
+                        $(".alert-insert-ocp-text").text("");
+                    }, 1500);
+                } else {
+                    $(".alert-insert-ocp").addClass("alert-danger");
+                    $(".alert-insert-ocp-text").text("Error! The values invalid");
+                    $(".alert-insert-ocp").fadeIn();
+                    setTimeout(function () {
+                        $(".alert-insert-ocp").fadeOut();
+                        $(".alert-insert-ocp-text").text("");
+                        $(".alert-insert-ocp").removeClass("alert-danger");
+                    }, 1500);
+                }
+                //    $("#form_insert-ocp")[0].reset();
+                // window.location = (DOMAIN + "/OrderContainsProduct/OrderContainsProductPage/" + link) 
             },
             error: function () { },
         });
@@ -427,66 +499,10 @@ $(document).ready(function () {
         });
     });
 
-    // search user
-
-    // search user
-    $("#searchuser-btn").click(() => {
-        let url = DOMAIN + '/User/searchUser/' + $("#searchuser-input").val();
-        window.location = url;
+    $(".btn-Trang_procedure1").click(function () {
+        let pID = $("#input-product_id_for_procedure").val();
+        console.log(pID);
+        window.location = ("http://localhost/AssignmentDB/admin/Feedback/FeedbackByProduct/" + pID);
     })
-
-
-    //ajax insert order_contains_product
-    $(".alert-insert-ocp").fadeOut();
-    $(".btn-insert-ocp").click(function () {
-        var link = $(this).attr("id");
-        link = link.substr(14, 999);
-        $.ajax({
-            url: DOMAIN + "/OrderContainsProduct/doInsert/" + link,
-            method: "post",
-            data: {
-                shop_id: $(".input-shop_id").val(),
-                product_id: $(".input-product_id").val(),
-                amount: $(".input-amount").val(),
-                price: $(".input-price").val(),
-            },
-            success: function (result) {
-                if (result == "failed") {
-                    $(".alert-insert-ocp").addClass("alert-danger");
-                    $(".alert-insert-ocp-text").text("Failed!! You should fill all input");
-                    $(".alert-insert-ocp").fadeIn();
-                    setTimeout(function () {
-                        $(".alert-insert-ocp").fadeOut();
-                        $(".alert-insert-ocp-text").text("");
-                        $(".alert-insert-ocp").removeClass("alert-danger");
-                    }, 1500);
-
-                } else if (result == "1") {
-                    $(".alert-insert-ocp").fadeIn();
-                    $(".alert-insert-ocp").addClass("alert-success");
-                    $(".alert-insert-ocp-text").text("Success!!");
-                    setTimeout(function () {
-                        $(".alert-insert-ocp").fadeOut();
-                        $(".alert-insert-ocp").removeClass("alert-success");
-                        $(".alert-insert-ocp-text").text("");
-                    }, 1500);
-                } else {
-                    $(".alert-insert-ocp").addClass("alert-danger");
-                    $(".alert-insert-ocp-text").text("Error! The values invalid");
-                    $(".alert-insert-ocp").fadeIn();
-                    setTimeout(function () {
-                        $(".alert-insert-ocp").fadeOut();
-                        $(".alert-insert-ocp-text").text("");
-                        $(".alert-insert-ocp").removeClass("alert-danger");
-                    }, 1500);
-                }
-                //    $("#form_insert-ocp")[0].reset();
-                // window.location = (DOMAIN + "/OrderContainsProduct/OrderContainsProductPage/" + link) 
-            },
-            error: function () { },
-        });
-    });
-    //end insert order_contains_product
-
 });
 

@@ -48,5 +48,9 @@ class FeedbackModel extends Database
         $sql = "CALL getFeedbackOfShop('$shopID','$type')";
         return $this->get_list($sql);
     }
-
+    function get_list_feedbacks_in_order_by_product($productID)
+    {
+        $sql = "call get_list_feedbacks_in_order_by_product($productID,'DESC')";
+        return $this->get_list($sql);
+    }
 }

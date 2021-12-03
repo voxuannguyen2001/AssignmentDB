@@ -25,55 +25,6 @@ BEGIN
 END$$
 DELIMITER ;
 
-DROP TRIGGER IF EXISTS before_update_order_contains_product;
-DELIMITER $$
-CREATE TRIGGER before_update_order_contains_product
-BEFORE UPDATE
-ON order_contains_product FOR EACH ROW
-BEGIN
-    DECLARE newAmount int;
-    DECLARE curAmount int;
-    DECLARE curPrice decimal(12,2);
-    
-    SELECT remaining_amount INTO curAmount FROM product WHERE (product.product_id = new.product_id and product.shop_id = new.shop_id);
-    IF new.amount > old.amount THEN 
-        SET newAmount = curAmount - (new.amount - old.amount);
-        IF newAmount < 0 THEN
-            SET new.amount = curAmount;  
-            UPDATE product SET remaining_amount + old.amount = 0 WHERE (product_id = new.product_id and shop_id = new.shop_id);
-	    ELSE
-            UPDATE product SET remaining_amount = newAmount WHERE (product_id = new.product_id and shop_id = new.shop_id);
-	    END IF;
-    ELSE
-        UPDATE product SET remaining_amount = curAmount + old.amount - new.amount WHERE (product_id = new.product_id and shop_id = new.shop_id);
-   
-    SELECT listed_price INTO curPrice FROM product WHERE (product.product_id = new.product_id and product.shop_id = new.shop_id);
-    IF new.selling_price < curPrice THEN
-        SET new.selling_price = curPrice;
-    END IF;
-END$$    
-
-DELIMITER ;
-
-DROP TRIGGER IF EXISTS before_insert_order_contains_product;
-DELIMITER $$
-CREATE TRIGGER before_insert_order_contains_product 
-BEFORE INSERT ON order_contains_product 
-FOR EACH ROW
-BEGIN
-    DECLARE newAmount int;
-    DECLARE curAmount int;
-    SELECT remaining_amount INTO curAmount FROM product WHERE (product.product_id = new.product_id and product.shop_id = new.shop_id); 
-    SET newAmount = curAmount - new.amount;
-    IF newAmount < 0 THEN
-        SET new.amount = curAmount;  
-        UPDATE product SET remaining_amount = 0 WHERE (product_id = new.product_id and shop_id = new.shop_id);
-	ELSE
-        UPDATE product SET remaining_amount = newAmount WHERE (product_id = new.product_id and shop_id = new.shop_id);
-	END IF;
-END$$
-DELIMITER ;
-
 DROP TRIGGER IF EXISTS after_delete_order_contains_product;
 DELIMITER $$
 CREATE TRIGGER after_delete_order_contains_product 
@@ -96,8 +47,6 @@ BEGIN
     WHERE order_detail.user_id = user_idx ORDER BY product.listed_price DESC;
 END;
 
-call get_products_ordered_by_user_in_order_of_price(1);
-
 -- lấy danh sách khách hàng sắp xếp theo số lượt mua hàng của shop
 DROP PROCEDURE IF EXISTS get_users_ordered_by_number_of_order_from_a_shop;
 DELIMITER $$
@@ -115,7 +64,7 @@ END;
 
 call get_users_ordered_by_number_of_order_from_a_shop(1);
 
--- tính tổng doanh thu của một shop_id trong 1 năm
+
 -- tính tổng doanh thu của một shop_id trong 1 năm
 DROP FUNCTION IF EXISTS  calculate_total_sales_of_shop_a_year;
 DELIMITER $$
@@ -147,8 +96,6 @@ BEGIN
     RETURN total;
 END $$
 DELIMITER ;  
-
-select calculate_total_sales_of_shop_a_year(1,2021);
 
 DROP FUNCTION IF EXISTS  rank_product_based_rating;
 DELIMITER $$
@@ -198,16 +145,3 @@ BEGIN
     RETURN result;
  END $$
  DELIMITER ;
- 
- select rank_product_based_rating(1,1);
-
-
-DROP TRIGGER IF EXISTS before_insert_order_detail;
-DELIMITER $$
-CREATE TRIGGER before_insert_order_detail 
-BEFORE INSERT ON order_detail 
-FOR EACH ROW
-BEGIN
-    SET new.total = 
-END$$
-DELIMITER ;

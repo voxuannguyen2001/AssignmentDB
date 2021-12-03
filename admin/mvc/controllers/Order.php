@@ -44,6 +44,13 @@ class Order extends Controller
             echo $check;
         }
     }
+
+    function ordersByUser($user_id) {
+        $orders = $this->orderModel->get_orders_by_user($user_id);
+        $this->data['render'] = 'order';
+        $this->data['orderList'] = $orders;
+        $this->view('layout', $this->data);
+    }
     // function removeAll()
     // {
     //     $orderModel = $this->model('OrderModel');

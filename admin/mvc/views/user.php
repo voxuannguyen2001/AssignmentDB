@@ -5,6 +5,11 @@
   <a class="btn btn-primary" id="searchuser-btn">Seach</a>
 </div>
 
+<div class="input-group mt-3 w-50 ">
+  <input type="text" class="form-control" placeholder="Search user by fullname" id="searchfullname-input">
+  <a class="btn btn-primary" id="searchfullname-btn">Seach</a>
+</div>
+
 <div class="table-responsive mt-4 table-bordered" id="manage-user">
     <table class="table table-striped table-hover mh-100">
     <thead>
@@ -52,6 +57,9 @@
                     </a>
                     <a href="<?php echo $DOMAIN ?>/User/getShops/<?php echo $value['user_id'] ?>">
                         <button type="button" class="btn btn-success btn-action text-nowrap">Get Shops</button>
+                    </a>
+                    <a href="<?php echo $DOMAIN ?>/Order/ordersByUser/<?php echo $value['user_id'] ?>">
+                        <button type="button" class="btn btn-success btn-action text-nowrap">Get Orders</button>
                     </a>
                 </div>
             </td>

@@ -37,4 +37,15 @@ class OrderModel extends Database
         $sql = "select getTotal($orderID) as total";
         return $this->get_one($sql);
     }
+
+    function get_orders_by_user($user_id) {
+        $sql = "SELECT * FROM order_detail WHERE user_id = '$user_id'";
+        $data = $this->get_list($sql);
+        foreach ($data as $key => $value)
+        {
+            $total = $this->get_total($value['order_id']);
+            $data[$key]['total'] = $total['total'];
+        }
+        return $data;
+    }
 }
