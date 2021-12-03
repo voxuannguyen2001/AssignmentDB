@@ -96,6 +96,7 @@ BEGIN
     WHERE order_detail.user_id = user_idx ORDER BY product.listed_price DESC;
 END;
 
+call get_products_ordered_by_user_in_order_of_price(1);
 
 -- lấy danh sách khách hàng sắp xếp theo số lượt mua hàng của shop
 DROP PROCEDURE IF EXISTS get_users_ordered_by_number_of_order_from_a_shop;
@@ -104,16 +105,17 @@ CREATE PROCEDURE get_users_ordered_by_number_of_order_from_a_shop(
     in shop_idx int
 )
 BEGIN
-    SELECT the_user.the_user_id, the_user.the_username, SUM(newtable.num) AS total_num FROM the_user
-    INNER JOIN (SELECT order_detail.the_user_id, COUNT(order_detail.the_user_id) AS num FROM shop 
+    SELECT the_user.user_id, the_user.username, SUM(newtable.num) AS total_num FROM the_user
+    INNER JOIN (SELECT order_detail.user_id, COUNT(order_detail.user_id) AS num FROM shop 
                 INNER JOIN order_contains_product ON shop.shop_id = order_contains_product.shop_id 
                 INNER JOIN order_detail ON order_detail.order_id = order_contains_product.order_id 
                 WHERE shop.shop_id = 1 GROUP BY order_contains_product.order_id) AS newtable 
-    ON the_user.the_user_id = newtable.the_user_id GROUP BY the_user.the_user_id ORDER BY total_num DESC; 
+    ON the_user.user_id = newtable.user_id GROUP BY the_user.user_id ORDER BY total_num DESC; 
 END;
 
 call get_users_ordered_by_number_of_order_from_a_shop(1);
 
+-- tính tổng doanh thu của một shop_id trong 1 năm
 -- tính tổng doanh thu của một shop_id trong 1 năm
 DROP FUNCTION IF EXISTS  calculate_total_sales_of_shop_a_year;
 DELIMITER $$
@@ -123,6 +125,7 @@ READS SQL DATA
 DETERMINISTIC
 BEGIN
 	DECLARE total decimal(12,2) default 0;
+    DECLARE iselling_price decimal(12,2);
     DECLARE exit_loop BOOLEAN default FALSE;  
     DECLARE cur CURSOR FOR
 		SELECT order_contains_product.selling_price
@@ -143,7 +146,7 @@ BEGIN
  
     RETURN total;
 END $$
-DELIMITER ; 
+DELIMITER ;  
 
 select calculate_total_sales_of_shop_a_year(1,2021);
 
@@ -196,7 +199,7 @@ BEGIN
  END $$
  DELIMITER ;
  
- select rank_product_based_rating(1,10);
+ select rank_product_based_rating(1,1);
 
 
 DROP TRIGGER IF EXISTS before_insert_order_detail;

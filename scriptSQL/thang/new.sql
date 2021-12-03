@@ -566,3 +566,5 @@ ADD FOREIGN KEY ( product_id,shop_id) REFERENCES product(product_id,shop_id);
 
 ALTER TABLE feedback
 ADD FOREIGN KEY ( the_user_id) REFERENCES the_user(the_user_id);
+
+call add_product(-2,'Hat cat thoi gian', 0, 'Campuchia', -5, 'Color: Yellow')

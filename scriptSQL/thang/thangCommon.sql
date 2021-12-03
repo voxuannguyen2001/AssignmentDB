@@ -567,3 +567,7 @@ ADD FOREIGN KEY ( product_id,shop_id) REFERENCES product(product_id,shop_id);
 
 ALTER TABLE feedback
 ADD FOREIGN KEY ( user_id) REFERENCES user(user_id);
+
+insert into order_contains_product(shop_id, product_id, order_id, amount, selling_price) values (1, 1, 9, 2, 117000);
+insert into order_contains_product(shop_id, product_id, order_id, amount, selling_price) values (1, 1, 10, 100, 10);
+DELETE FROM order_contains_product WHERE order_id = 10 AND shop_id = 1 AND product_id = 1;

@@ -46,7 +46,7 @@ $(document).ready(function () {
                         $(".alert-insert-order").removeClass("alert-danger");
                     }, 1500);
                 }
-                $("#form_insert_order")[0].reset();
+                // $("#form_insert_order")[0].reset();
             },
             error: function () { },
         });
@@ -146,7 +146,7 @@ $(document).ready(function () {
                         $(".alert-edit-ocp").removeClass("alert-danger");
                     }, 1500);
                 }
-                $("#form_edit-ocp")[0].reset();
+                // $("#form_edit-ocp")[0].reset();
             },
             error: function () { },
         });
@@ -428,9 +428,65 @@ $(document).ready(function () {
     });
 
     // search user
+
+    // search user
     $("#searchuser-btn").click(() => {
         let url = DOMAIN + '/User/searchUser/' + $("#searchuser-input").val();
         window.location = url;
+    })
+
+
+    //ajax insert order_contains_product
+    $(".alert-insert-ocp").fadeOut();
+    $(".btn-insert-ocp").click(function () {
+        var link = $(this).attr("id");
+        link = link.substr(14, 999);
+        $.ajax({
+            url: DOMAIN + "/OrderContainsProduct/doInsert/" + link,
+            method: "post",
+            data: {
+                shop_id: $(".input-shop_id").val(),
+                product_id: $(".input-product_id").val(),
+                amount: $(".input-amount").val(),
+                price: $(".input-price").val(),
+            },
+            success: function (result) {
+                if (result == "failed") {
+                    $(".alert-insert-ocp").addClass("alert-danger");
+                    $(".alert-insert-ocp-text").text("Failed!! You should fill all input");
+                    $(".alert-insert-ocp").fadeIn();
+                    setTimeout(function () {
+                        $(".alert-insert-ocp").fadeOut();
+                        $(".alert-insert-ocp-text").text("");
+                        $(".alert-insert-ocp").removeClass("alert-danger");
+                    }, 1500);
+
+                } else if (result == "1") {
+                    $(".alert-insert-ocp").fadeIn();
+                    $(".alert-insert-ocp").addClass("alert-success");
+                    $(".alert-insert-ocp-text").text("Success!!");
+                    setTimeout(function () {
+                        $(".alert-insert-ocp").fadeOut();
+                        $(".alert-insert-ocp").removeClass("alert-success");
+                        $(".alert-insert-ocp-text").text("");
+                    }, 1500);
+                } else {
+                    $(".alert-insert-ocp").addClass("alert-danger");
+                    $(".alert-insert-ocp-text").text("Error! The values invalid");
+                    $(".alert-insert-ocp").fadeIn();
+                    setTimeout(function () {
+                        $(".alert-insert-ocp").fadeOut();
+                        $(".alert-insert-ocp-text").text("");
+                        $(".alert-insert-ocp").removeClass("alert-danger");
+                    }, 1500);
+                }
+                //    $("#form_insert-ocp")[0].reset();
+                // window.location = (DOMAIN + "/OrderContainsProduct/OrderContainsProductPage/" + link) 
+            },
+            error: function () { },
+        });
     });
+    //end insert order_contains_product
+
 });
 
