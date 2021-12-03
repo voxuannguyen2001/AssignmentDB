@@ -29,7 +29,7 @@ DROP TABLE IF EXISTS CATEGORY;
 CREATE TABLE CATEGORY (
     category_id int not null, 
     name_category varchar(25) not null,
-    total_product int not null, 
+    total_product int not null,
     primary key(category_id)
 );
 
