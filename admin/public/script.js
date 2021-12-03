@@ -514,7 +514,7 @@ $(".alert-insert-category").fadeOut();
             url: DOMAIN + "/Category/doInsertCategory",
             method: "post",
             data: {
-                category_id: parseInt($(".input-category_id").val()),
+                category_id: ($(".input-category_id").val()),
                 name_category: $(".input-name_category").val(),
                 total_product: $(".input-total_product").val(),
             },
