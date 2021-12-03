@@ -3,7 +3,10 @@
 <br />
 
 <div class="form-container">
-  <form id="form_edit_feedback" action="" onsubmit="return false">
+  <form 
+  id="form_edit_feedback" 
+  action="" 
+  onsubmit="return false">
   <div class="alert alert-edit-feedback mt-4 mb-4">
       <strong class="alert-edit-feedback-text"></strong>
     </div>
@@ -12,15 +15,17 @@
         <div>
           <label class="form-label mt-2">Feedback ID <span style="color: red">*</span> </label>
           <input 
-          type="number" 
-          class="form-control"           
+          type="text" 
+          class="form-control"     
+          id="editfeedback-fid"       
           readonly value="<?php echo $data['feedback']['feedback_id'] ?>" />
         </div>
         <div>
           <label class="form-label mt-2">Product ID <span style="color: red">*</span> </label>
           <input 
-          type="number" 
+          type="text" 
           class="form-control" 
+          id="editfeedback-pid" 
           readonly value="<?php echo $data['feedback']['product_id'] ?>" />
         </div>
         <div>

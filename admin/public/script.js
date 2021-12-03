@@ -10,7 +10,7 @@ $(document).ready(function () {
             data: {
                 shipping_id: parseInt($(".input-shipping_id").val()),
                 create_date: $(".input-create_date").val(),
-                the_user_id: parseInt($(".input-the_user_id").val()),
+                user_id: parseInt($(".input-user_id").val()),
                 sname: $(".input-sname").val(),
                 sphone_number: $(".input-sphone_number").val(),
                 saddress: $(".input-saddress").val(),
@@ -51,6 +51,7 @@ $(document).ready(function () {
             error: function () { },
         });
     });
+
     //end ajax insert order
 
     //ajax insert new record into cart_contain_product
@@ -151,6 +152,7 @@ $(document).ready(function () {
             error: function () { },
         });
     });
+
     //end edit order_contains_product
 
     //Thang_procedure1
@@ -333,6 +335,8 @@ $(document).ready(function () {
             user_id
         }
 
+        console.log(body);
+
         if (!(body.product_id && body.review_content && body.rating && body.user_id)) {
             $(".alert-insert-feedback").addClass("alert-danger");
             $(".alert-insert-feedback-text").text("Failed!! You should fill all required input");
@@ -375,56 +379,7 @@ $(document).ready(function () {
                 }
             },
             error: function () { },
-        });
-    });
-    $(".alert-edit-feedback").fadeOut();
-    $(".btn-edit-feedback").click(function () {
-        let review_content = $("#editfeedback-review_content").val();
-        let rating = $("#editfeedback-rating").val();
-
-        let url_string = window.location.href;
-        let feedback_id = url_string.slice(url_string.lastIndexOf('/') + 1);
-
-        let body = {
-            feedback_id,
-            review_content,
-            rating
-        }
-
-        Object.keys(body).forEach(key => {
-            if (!body[key])
-                body[key] = null;
         })
-
-        console.log(body);
-        $.ajax({
-            url: DOMAIN + "/feedback/doEditFeedback",
-            method: "post",
-            data: body,
-            success: function (result) {
-                if (result == "1") {
-                    $(".alert-edit-feedback").fadeIn();
-                    $(".alert-edit-feedback").addClass("alert-success");
-                    $(".alert-edit-feedback-text").text("Success!!");
-                    setTimeout(function () {
-                        $(".alert-edit-feedback").fadeOut();
-                        $(".alert-edit-feedback").removeClass("alert-success");
-                        $(".alert-edit-feedback-text").text("");
-                    }, 1500);
-                    $("#form_edit_feedback")[0].reset();
-                } else {
-                    $(".alert-edit-feedback").addClass("alert-danger");
-                    $(".alert-edit-feedback-text").text(result);
-                    $(".alert-edit-feedback").fadeIn();
-                    setTimeout(function () {
-                        $(".alert-edit-feedback").fadeOut();
-                        $(".alert-edit-feedback-text").text("");
-                        $(".alert-edit-feedback").removeClass("alert-danger");
-                    }, 1500);
-                }
-            },
-            error: function () { },
-        });
     });
 
     // search user
@@ -438,6 +393,7 @@ $(document).ready(function () {
         window.location = url;
     })
 
+    // user statistics
     $("#userstats-btn").click(() => {
         let url = DOMAIN + '/User/userStats/' + $("#userstats-input").val();
         window.location = url;
@@ -493,7 +449,60 @@ $(document).ready(function () {
             error: function () { },
         });
     });
-    //end insert order_contains_product
+    $(".alert-edit-feedback").fadeOut();
+    $(".btn-edit-feedback").click(function () {
+        let review_content = $("#editfeedback-review_content").val();
+        let rating = $("#editfeedback-rating").val();
 
+        let url_string = window.location.href;
+        let feedback_id = url_string.slice(url_string.lastIndexOf('/') + 1);
+
+        let body = {
+            feedback_id,
+            review_content,
+            rating
+        }
+
+        Object.keys(body).forEach(key => {
+            if (!body[key])
+                body[key] = null;
+        })
+
+        console.log(body);
+        $.ajax({
+            url: DOMAIN + "/feedback/doEditFeedback",
+            method: "post",
+            data: body,
+            success: function (result) {
+                if (result == "1") {
+                    $(".alert-edit-feedback").fadeIn();
+                    $(".alert-edit-feedback").addClass("alert-success");
+                    $(".alert-edit-feedback-text").text("Success!!");
+                    setTimeout(function () {
+                        $(".alert-edit-feedback").fadeOut();
+                        $(".alert-edit-feedback").removeClass("alert-success");
+                        $(".alert-edit-feedback-text").text("");
+                    }, 1500);
+                    $("#form_edit_feedback")[0].reset();
+                } else {
+                    $(".alert-edit-feedback").addClass("alert-danger");
+                    $(".alert-edit-feedback-text").text(result);
+                    $(".alert-edit-feedback").fadeIn();
+                    setTimeout(function () {
+                        $(".alert-edit-feedback").fadeOut();
+                        $(".alert-edit-feedback-text").text("");
+                        $(".alert-edit-feedback").removeClass("alert-danger");
+                    }, 1500);
+                }
+            },
+            error: function () { },
+        });
+    });
+
+    $(".btn-Trang_procedure1").click(function () {
+        let pID = $("#input-product_id_for_procedure").val();
+        console.log(pID);
+        window.location = ("http://localhost/AssignmentDB/admin/Feedback/FeedbackByProduct/" + pID);
+    })
 });
 

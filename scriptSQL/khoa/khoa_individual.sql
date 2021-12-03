@@ -380,35 +380,6 @@ insert into shipping_unit (shipping_name,shipping_phone,shipping_website) values
 -- shop_id 4 --> product_id 19->24
 -- shop_id 5 --> product_id 25->30
 
--- cart of user 1
-insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (1,1,1,1,2,10000);
-insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (1,1,7,2,1,100000);
-insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (1,1,13,3,5,21000);
-
--- cart of user 3
-insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (3,3,2,1,4,10000);
-insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (3,3,8,2,1,50000);
-insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (3,3,14,3,2,20000);
-
--- cart of user 4
-insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (4,4,19,4,2,10000);
-insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (4,4,25,5,2,20000);
-
--- cart of user 5
-insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (5,5,20,4,2,30000);
-insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (5,5,26,5,2,40000);
-
--- cart of user 7
-insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (7,7,3,1,2,60000);
-insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (7,7,4,1,1,70000);
-
--- cart of user 8
-insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (8,8,15,3,3,80000);
-insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (8,8,16,3,4,100000);
-
--- cart of user 10
-insert into cart_contain_product (cart_id, user_id, product_id, shop_id, product_count, saleprice) values (9,9,30,5,1,7000);
-
 -- create data for table User_manage_shop
 insert into User_manage_shop values (1,1);
 insert into User_manage_shop values (2,2);
@@ -683,13 +654,41 @@ FOREIGN KEY (Cart_id,User_id) REFERENCES cart(Cart_id,User_id);
 
 -- sample call and select
 -- call insert procedure
-call add_product_into_cart(2,2,30,5,1,200000);
+-- call add_product_into_cart(2,2,30,5,1,200000);
+-- call add_product_into_cart(1,1,1,1,2,10000);
+call add_product_into_cart(1,1,7,2,1,100000);
+call add_product_into_cart(1,1,13,3,5,21000);
+call add_product_into_cart(3,3,2,1,4,10000);
+call add_product_into_cart(3,3,8,2,1,50000);
+call add_product_into_cart(3,3,14,3,2,20000);
+call add_product_into_cart(4,4,19,4,2,10000);
+call add_product_into_cart(4,4,25,5,2,20000);
+
+call add_product_into_cart(5,5,20,4,2,30000);
+call add_product_into_cart(5,5,26,5,2,40000);
+
+call add_product_into_cart(7,7,3,1,2,60000);
+call add_product_into_cart(7,7,4,1,1,70000);
+
+call add_product_into_cart(8,8,15,3,3,80000);
+call add_product_into_cart(8,8,16,3,4,100000);
+
+call add_product_into_cart(9,9,30,5,1,7000);
+
+select * from cart_contain_product;
+select * from cart;
+
 -- throw error
--- call add_product_into_cart(2,2,30,5,11,100000); 
+call add_product_into_cart(2,2,30,5,11,100000); 
 
 -- call for trigger1
 call add_product_into_cart(2,2,29,5,2,100000);
 call add_product_into_cart(1,1,29,5,1,100000);
+
+-- call for trigger2
+select * from cart;
+delete from cart_contain_product;
+delete from cart;
 
 -- call procedure1
 select * from cart_contain_product;
@@ -702,7 +701,7 @@ call get_total_money_in_cart_and_user_info(100000,"ASC");
 
 -- select for function1
 select * from order_contains_product where order_id = 3;
- select num_of_product_type_in_order(3,40000);
+select num_of_product_type_in_order(3,40000);
 -- throw error
 -- select num_of_product_type_in_order(3,2000000);
 
@@ -711,8 +710,3 @@ select * from cart_contain_product where shop_id = 1;
 select total_money_pay_shop_in_cart(1);
 -- throw error
 select total_money_pay_shop_in_cart(31);
-
-
-
-
-

@@ -13,7 +13,7 @@
             <div class="col-lg-8 form_insert_order">
                 <div>
                     <label for="input-shipping_id" class="form-label">Category ID: </label>
-                    <input type="number" min="190" class="form-control input-shipping_id" />
+                    <input type="number" min="1" class="form-control input-shipping_id" />
                 </div>
                 <div>
                     <label for="input-create_date" class="form-label mt-2">Name Category: </label>

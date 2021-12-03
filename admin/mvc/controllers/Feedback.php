@@ -24,22 +24,6 @@ class Feedback extends Controller
   }
   function FeedbackInShop($shopID)
   {
-    // $link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-    // $tmp = explode("/", $link);
-    // if ($tmp) echo sizeof($tmp);
-
-    // $e = end($tmp);
-    // if (strlen($e) < 3) $shopID = $e;
-    // else $shopID = 1;
-    // $type = $tmp[1];
-
-    // echo "\n";
-
-    // echo "hihi";
-    // echo $type;
-    // // echo "input";
-    // echo $shopID;
-
     $products = $this->feedbackModel->get_numfeedback_by_shop($shopID,"");
     $shops = $this->shopModel->get_all_shop();
     $shop = $this->shopModel->get_shop_by($shopID);
@@ -139,5 +123,12 @@ class Feedback extends Controller
   {
     $this->feedbackModel->view_feedback($feedbackID);
     // header("Location: http://localhost/AssignmentDB/admin/feedback/feedbackPage");
+  }
+  function FeedbackByProduct($productID)
+  {
+      $feedbacks = $this->feedbackModel->get_list_feedbacks_in_order_by_product($productID);
+      $this->data['render'] = 'feedbackByProduct';
+      $this->data['feedbackList'] = $feedbacks;
+      $this->view('layout', $this->data);
   }
 }
