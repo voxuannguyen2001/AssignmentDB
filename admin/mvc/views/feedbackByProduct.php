@@ -1,14 +1,19 @@
 <div class="table-title">All feedbacks</div>
-<div class="dropdown">
-  <button class="dropbtn">Choose the shop</button>
-  <div class="dropdown-content">
-    <?php if ($data['shopList']) {
-      foreach ($data['shopList'] as $key => $value) { ?>
-        <a href="<?php echo $DOMAIN ?>/Feedback/FeedbackInShop/<?php echo $value['shop_id'] ?>"><?php echo $value['shop_name'] ?></a>
-    <?php }
-    } ?>
+<div>
+    <label 
+    for="input-product_id" 
+    class="form-label">Get all feedbacks of product </label>
+    <input 
+    type="number" 
+    min="1" 
+    class="form-control" 
+    id="input-product_id_for_procedure" placeholder="Product ID" />
+    <div class="dropdown">
+      <button class="dropbtn btn-Trang_procedure1">Submit</button>
+    </div>
   </div>
-</div>
+
+
 <table class="table table-striped mt-4">
   <thead>
     <tr>
@@ -55,28 +60,3 @@
   </tbody>
 </table>
 
-<div class="manage-feedback">
-  <div class="function-text">
-    <a class="text-danger" href="<?php echo $DOMAIN ?>/feedback/removeAll">
-      Delete All
-    </a>
-  </div>
-  <div class="function-text">
-    <a class="text-primary" href="<?php echo $DOMAIN ?>/feedback/insertFeedback">
-      Insert Feedback
-    </a>
-  </div>
-  <div>
-    <label 
-    for="input-product_id" 
-    class="form-label">Get all feedbacks of product </label>
-    <input 
-    type="number" 
-    min="1" 
-    class="form-control" 
-    id="input-product_id_for_procedure" placeholder="Product ID" />
-    <div class="dropdown">
-      <button class="dropbtn btn-Trang_procedure1">Submit</button>
-    </div>
-  </div>
-</div>
